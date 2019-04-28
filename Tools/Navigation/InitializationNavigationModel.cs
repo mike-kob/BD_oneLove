@@ -1,4 +1,5 @@
 ﻿using System;
+using BD_oneLove.Views;
 
 namespace BD_oneLove.Tools.Navigation
 {
@@ -13,9 +14,9 @@ namespace BD_oneLove.Tools.Navigation
         {
             switch (viewType)
             {
-                //case ViewType.DataView:
-                //    ViewsDictionary.Add(viewType, new DataView());
-                //    break;
+                case ViewType.SignInView:
+                    ViewsDictionary.Add(viewType, new SignInView());
+                    break;
                 //case ViewType.AddPersonView:
                 //    ViewsDictionary.Add(viewType, new AddPersonView());
                 //    break;

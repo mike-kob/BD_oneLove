@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BD_oneLove"
         xmlns:views="clr-namespace:BD_oneLove.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+
         mc:Ignorable="d"
         Title="MainWindow" Height="720" Width="1024">
     <Grid>
-        <views:SignInView></views:SignInView>
+        <ContentControl Name="_contentControl" IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
+        <fa:ImageAwesome Name="_loader"  Icon="Refresh" Width="50" Height="50" Spin="True" Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></fa:ImageAwesome>
     </Grid>
 </Window>
