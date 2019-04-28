@@ -42,5 +42,10 @@ namespace BD_oneLove.Tools.Managers
             _loaderOwner.LoaderVisibility = Visibility.Hidden;
             _loaderOwner.IsControlEnabled = true;
         }
+
+        internal void Freeze()
+        {
+            _loaderOwner.IsControlEnabled = true;
+        }
     }
 }

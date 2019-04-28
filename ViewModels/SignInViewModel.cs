@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using BD_oneLove.Views;
 
 namespace BD_oneLove.ViewModels
 {
@@ -19,6 +20,7 @@ namespace BD_oneLove.ViewModels
         #region Commands
         private RelayCommand<object> _signInCommand;
         private RelayCommand<object> _closeCommand;
+        private RelayCommand<object> _settingsCommand;
         #endregion
         #endregion
 
@@ -69,6 +71,18 @@ namespace BD_oneLove.ViewModels
             }
         }
 
+        public RelayCommand<Object> SettingsCommand
+        {
+            get
+            {
+                return _closeCommand ?? (_closeCommand = new RelayCommand<object>(o =>
+                {
+                    SettingsWindowView win = new SettingsWindowView();
+                    win.Owner = StationManager.myMain;
+                    win.ShowDialog();
+                }));
+            }
+        }
         #endregion
         #endregion
 

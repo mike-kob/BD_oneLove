@@ -2,7 +2,8 @@
 {
     internal static class StationManager
     {
-       
+        public static MainWindow myMain { get; set; }
+
 
     }
 }
