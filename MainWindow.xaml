@@ -4,9 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BD_oneLove"
+        xmlns:views="clr-namespace:BD_oneLove.Views"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
+
         mc:Ignorable="d"
+
         Title="MainWindow" Height="800" Width="1300">
     <Grid>
-        <local:TemplateControl Photo="dailyplanner.jpg" Caption="Dasha Yaskova"></local:TemplateControl>
+      <!--  <local:TemplateControl Photo="dailyplanner.jpg" Caption="Dasha Yaskova"></local:TemplateControl> !-->
+        <ContentControl Name="_contentControl" IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
+        <fa:ImageAwesome Name="_loader"  Icon="Refresh" Width="50" Height="50" Spin="True" Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></fa:ImageAwesome>
     </Grid>
 </Window>
