@@ -10,6 +10,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using BD_oneLove.Tools.Managers;
+using BD_oneLove.ViewModels;
 
 namespace BD_oneLove.Views
 {
@@ -21,6 +23,11 @@ namespace BD_oneLove.Views
         public SettingsWindowView()
         {
             InitializeComponent();
+            StationManager.DbPassword = PBPasswordDB;
+            StationManager.MySettings = this;
+            DataContext = new SettingsWindowViewModel();
+            
         }
+
     }
 }

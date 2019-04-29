@@ -23,7 +23,7 @@ namespace BD_oneLove
             DataContext = new MainWindowViewModel();
             NavigationManager.Instance.Initialize(new InitializationNavigationModel(this));
             NavigationManager.Instance.Navigate(ViewType.SignInView);
-            StationManager.myMain = this;
+            StationManager.MyMain = this;
         }
     }
 }
