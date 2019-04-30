@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BD_oneLove.Tools.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,7 +19,7 @@ namespace BD_oneLove.ViewModels
     /// <summary>
     /// Interaction logic for TemplateControlView.xaml
     /// </summary>
-    public partial class TemplateControlView : UserControl
+    public partial class TemplateControlView : UserControl, INavigatable
     {
         public TemplateControlView()
         {
@@ -27,38 +28,5 @@ namespace BD_oneLove.ViewModels
         }
 
 
-        public string Caption
-        {
-            get { return (string) GetValue(CaptionProperty); }
-            set { SetValue(CaptionProperty, value); }
-        }
-
-
-        public Uri Photo
-        {
-            get { return (Uri) GetValue(PhotoProperty); }
-            set { SetValue(PhotoProperty, value); }
-        }
-
-
-        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register
-        (
-            "Caption",
-            typeof(string),
-            typeof(TemplateControlView),
-            new PropertyMetadata(null)
-        );
-
-        public static readonly DependencyProperty PhotoProperty = DependencyProperty.Register
-        (
-            "Photo",
-            typeof(Uri),
-            typeof(TemplateControlView),
-            new PropertyMetadata(null)
-        );
-
-        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
     }
 }

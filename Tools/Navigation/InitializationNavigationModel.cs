@@ -1,4 +1,5 @@
 ﻿using System;
+using BD_oneLove.ViewModels;
 using BD_oneLove.Views;
 
 namespace BD_oneLove.Tools.Navigation
@@ -16,6 +17,9 @@ namespace BD_oneLove.Tools.Navigation
             {
                 case ViewType.SignInView:
                     ViewsDictionary.Add(viewType, new SignInView());
+                    break;
+                case ViewType.MainView:
+                    ViewsDictionary.Add(viewType, new TemplateControlView());
                     break;
                 //case ViewType.AddPersonView:
                 //    ViewsDictionary.Add(viewType, new AddPersonView());
