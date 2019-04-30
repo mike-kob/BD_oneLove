@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Windows;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
@@ -41,23 +36,7 @@ namespace BD_oneLove.ViewModels
             }
         }
 
-        public string Password
-        {
-            get { return _password; }
-            set
-            {
-                _password = "";
-                for (int i = 0; i < value.Length; i++)
-                {
-                    _password += '*';
-                }
-
-                OnPropertyChanged("Password");
-            }
-        }
-
-        #region Commands
-
+        
         public RelayCommand<object> SignInCommand
         {
             get
@@ -77,7 +56,7 @@ namespace BD_oneLove.ViewModels
         {
             get
             {
-                return _closeCommand ?? (_closeCommand = new RelayCommand<object>(o =>
+                return _settingsCommand ?? (_settingsCommand = new RelayCommand<object>(o =>
                 {
                     SettingsWindowView win = new SettingsWindowView();
                     win.Owner = StationManager.MyMain;
@@ -88,8 +67,6 @@ namespace BD_oneLove.ViewModels
 
         #endregion
 
-        #endregion
-
         private bool CanExecuteCommand()
         {
             return !String.IsNullOrEmpty(_login) && !string.IsNullOrEmpty(StationManager.MainPassword.Password);
@@ -97,20 +74,17 @@ namespace BD_oneLove.ViewModels
 
         private void SignInInplementation(object obj)
         {
-            LoaderManeger.Instance.ShowLoader();
             bool answ = StationManager.DataStorage.UserExists(_login, StationManager.MainPassword.Password);
             if (answ)
             {
                 User u = StationManager.DataStorage.GetUser(_login, StationManager.MainPassword.Password);
 
-                MessageBox.Show($"Login successful for {answ} user {_login} and {StationManager.MainPassword.Password} and your rights: {u.AccessType}");
+                MessageBox.Show($"Login successful for user {_login} and {StationManager.MainPassword.Password} and your rights: {u.AccessType}");
             }
             else
             {
                 MessageBox.Show("User not found");
             }
-
-            LoaderManeger.Instance.HideLoader();
         }
     }
 }

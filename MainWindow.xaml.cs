@@ -28,6 +28,7 @@ namespace BD_oneLove
             NavigationManager.Instance.Initialize(new InitializationNavigationModel(this));
             NavigationManager.Instance.Navigate(ViewType.SignInView);
             StationManager.MyMain = this;
+      
         }
     }
 }

@@ -187,7 +187,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\loader.gif" />
+    <Resource Include="Resources\loader2.gif" />
+    <Resource Include="Resources\loader3..gif" />
+    <Resource Include="Resources\settings.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\background.jpg" />
   </ItemGroup>
