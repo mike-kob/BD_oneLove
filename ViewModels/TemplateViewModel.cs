@@ -40,7 +40,7 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Табель", ViewType.MarkGrid);
                    // Items.Add("Классы");
                     break;
-                case "Класный руководитель":
+                case "Классный руководитель":
                    // Items.Add("Мой класс");
                    // Items.Add("Выставление оценок");
                    // Items.Add("Социальный паспорт");
