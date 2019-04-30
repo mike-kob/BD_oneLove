@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>BD_oneLove</RootNamespace>
     <AssemblyName>BD_oneLove</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -56,21 +56,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-<<<<<<< HEAD
-    <Compile Include="BaseViewModel.cs" />
     <Compile Include="LeftToolBar.xaml.cs">
       <DependentUpon>LeftToolBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RelayCommand.cs" />
-    <Compile Include="TemplateControl.xaml.cs">
-      <DependentUpon>TemplateControl.xaml</DependentUpon>
+    <Compile Include="Views\TemplateControlView.xaml.cs">
+      <DependentUpon>TemplateControlView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TemplateViewModel.cs" />
+    <Compile Include="ViewModels\TemplateViewModel.cs" />
     <Page Include="LeftToolBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-=======
     <Compile Include="Models\User.cs" />
     <Compile Include="Tools\BaseViewModel.cs" />
     <Compile Include="Tools\DataStorage\DataStorage.cs" />
@@ -95,7 +91,6 @@
     <Compile Include="Views\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
->>>>>>> b663e02b3730982ed7cec95e052463c85cb813c5
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,15 +103,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-<<<<<<< HEAD
-    <Page Include="TemplateControl.xaml">
-=======
+    <Page Include="Views\TemplateControlView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\SettingsWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SignInView.xaml">
->>>>>>> b663e02b3730982ed7cec95e052463c85cb813c5
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -139,26 +134,20 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-<<<<<<< HEAD
     <None Include="app.config" />
-=======
     <None Include="packages.config" />
->>>>>>> b663e02b3730982ed7cec95e052463c85cb813c5
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-<<<<<<< HEAD
   <ItemGroup>
-    <Resource Include="dailyplanner.jpg" />
+    <Resource Include="Resources\dailyplanner.jpg" />
   </ItemGroup>
   <ItemGroup />
-=======
   <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\background.jpg" />
   </ItemGroup>
->>>>>>> b663e02b3730982ed7cec95e052463c85cb813c5
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
