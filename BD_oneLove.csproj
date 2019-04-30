@@ -87,6 +87,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
+    <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
     <Compile Include="Views\TemplateControlView.xaml.cs">
       <DependentUpon>TemplateControlView.xaml</DependentUpon>
     </Compile>
