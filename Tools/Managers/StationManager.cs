@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using BD_oneLove.Models;
 using BD_oneLove.Tools.DataStorage;
 
 namespace BD_oneLove.Tools.Managers
@@ -7,7 +8,9 @@ namespace BD_oneLove.Tools.Managers
     internal static class StationManager
     {
         private static IDataStorage _dataStorage = new DataStorage.DataStorage();
-        
+
+        public static User CurrentUser { get; set; }
+
         public static Window MyMain { get; set; }
         public static Window MySettings { get; set; }
 

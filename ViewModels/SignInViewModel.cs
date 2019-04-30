@@ -82,6 +82,8 @@ namespace BD_oneLove.ViewModels
 
                 MessageBox.Show($"Login successful for user {_login} and {StationManager.MainPassword.Password} and your rights: {u.AccessType}");
 
+                StationManager.CurrentUser = u;
+
                 NavigationManager.Instance.Navigate(ViewType.MainView);
             }
             else
