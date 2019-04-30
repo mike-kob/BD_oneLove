@@ -26,7 +26,5 @@ namespace BD_oneLove.ViewModels
             InitializeComponent();
             DataContext = new TemplateViewModel();
         }
-
-
     }
 }

@@ -2,7 +2,7 @@
 {
     internal enum ViewType
     {
-        SignInView, MainView
+        SignInView, MainView, TeachersView, MarkGrid
     }
 
     interface INavigationModel

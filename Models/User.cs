@@ -15,7 +15,7 @@ namespace BD_oneLove.Models
         {
             Username = uname;
             Password = password;
-            AccessType = accessType;
+            AccessType = accessType.Trim();
         }
     }
 }
