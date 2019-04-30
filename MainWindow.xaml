@@ -8,8 +8,10 @@
         xmlns:fa="http://schemas.fontawesome.io/icons/"
 
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1024">
+
+        Title="MainWindow" Height="800" Width="1300">
     <Grid>
+      <!--  <local:TemplateControl Photo="dailyplanner.jpg" Caption="Dasha Yaskova"></local:TemplateControl> !-->
         <ContentControl Name="_contentControl" IsEnabled="{Binding IsControlEnabled, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></ContentControl>
         <fa:ImageAwesome Name="_loader"  Icon="Refresh" Width="50" Height="50" Spin="True" Visibility="{Binding LoaderVisibility, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"></fa:ImageAwesome>
     </Grid>
