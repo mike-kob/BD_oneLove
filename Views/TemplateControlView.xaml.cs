@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 
 namespace BD_oneLove.ViewModels
@@ -20,14 +21,19 @@ namespace BD_oneLove.ViewModels
     /// <summary>
     /// Interaction logic for TemplateControlView.xaml
     /// </summary>
-    public partial class TemplateControlView : UserControl, INavigatable
+    public partial class TemplateControlView : UserControl, INavigatable, IContentOwner
     {
         public TemplateControlView()
         {
             InitializeComponent();
             DataContext = new TemplateViewModel();
+            ViewNavigationManager.Instance.Initialize(new ViewNavigationModel(this));
+            //ViewNavigationManager.Instance.Navigate();
         }
 
-
+        public ContentControl ContentControl
+        {
+            get { return _viewContentControl; }
+        }
     }
 }
