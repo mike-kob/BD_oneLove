@@ -87,17 +87,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="LeftToolBar.xaml.cs">
-      <DependentUpon>LeftToolBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TemplateControlView.xaml.cs">
       <DependentUpon>TemplateControlView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\TemplateViewModel.cs" />
-    <Page Include="LeftToolBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Compile Include="Models\User.cs" />
     <Compile Include="Tools\BaseViewModel.cs" />
     <Compile Include="Tools\DataStorage\DataStorage.cs" />
