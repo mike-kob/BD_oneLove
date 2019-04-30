@@ -2,7 +2,8 @@
 {
     internal enum ViewType
     {
-        SignInView
+        SignInView,
+        TemplateView
     }
 
     interface INavigationModel
