@@ -1,7 +1,9 @@
+
 ﻿using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+
 
 namespace BD_oneLove.ViewModels
 {
@@ -10,7 +12,9 @@ namespace BD_oneLove.ViewModels
         private string _name = StationManager.CurrentUser.Username; // change and get from station manager
         private string _position = StationManager.CurrentUser.AccessType;
         private string _photo = "Resources/dailyplanner.jpg";
-      
+
+        private KeyValuePair<string, ViewType> _selectedView;
+
 
         public TemplateViewModel()
         {
@@ -67,6 +71,16 @@ namespace BD_oneLove.ViewModels
         {
             get { return _photo; }
             set { _photo = value; }
+        }
+
+        public KeyValuePair<string, ViewType> SelectedView
+        {
+            get { return _selectedView;}
+            set
+            {
+                _selectedView = value;
+                ViewNavigationManager.Instance.Navigate(value.Value);
+            }
         }
 
 

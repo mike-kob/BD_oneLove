@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using BD_oneLove.Models;
 using BD_oneLove.Tools.Managers;
 
@@ -29,7 +27,7 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Can not open connection! " + ex.Message);
+                MessageBox.Show("There's problem with you connection!\n"+ex.Message);
             }
 
             return false;
@@ -58,7 +56,7 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Can not open connection! " + ex.Message);
+                MessageBox.Show("There's problem with you connection!\n"+ex.Message);
             }
 
             return null;
