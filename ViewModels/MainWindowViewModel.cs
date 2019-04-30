@@ -21,10 +21,14 @@ namespace BD_oneLove.ViewModels
                 {
                     string props = File.ReadAllText(FileFolderHelper.StorageFilePath);
                     string[] splitProps = props.Split(' ');
-                    if (splitProps.Length != 0)
+                    if (splitProps.Length == 5)
                     {
                         StationManager.ConnectionString = $"Data Source={splitProps[0]}\\{splitProps[1]};" +
                                                           $"Initial Catalog={splitProps[2]};User ID={splitProps[3]};Password={splitProps[4]}";
+                    }
+                    else
+                    {
+                        StationManager.ConnectionString = "";
                     }
                 }
                 else

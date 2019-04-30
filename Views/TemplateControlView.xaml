@@ -59,13 +59,13 @@
             <Ellipse Grid.Row="1" Grid.Column="1">
                 <Ellipse.Fill>
                     <ImageBrush
-                        ImageSource="{Binding Photo, RelativeSource={RelativeSource FindAncestor, AncestorType=bdOneLove1:TemplateControl}, UpdateSourceTrigger=PropertyChanged}" />
+                        ImageSource="{Binding Photo, RelativeSource={RelativeSource FindAncestor, AncestorType=local:TemplateControlView}, UpdateSourceTrigger=PropertyChanged}" />
                 </Ellipse.Fill>
             </Ellipse>
 
             <Label HorizontalAlignment="Center" Name="Name" Grid.Row="2" Grid.Column="1" FontWeight="Bold"
                    FontSize="10"
-                   Content="{Binding Caption, RelativeSource={RelativeSource FindAncestor, AncestorType=bdOneLove1:TemplateControl}, UpdateSourceTrigger=PropertyChanged}" />
+                   Content="{Binding Caption, RelativeSource={RelativeSource FindAncestor, AncestorType=local:TemplateControlView}, UpdateSourceTrigger=PropertyChanged}" />
 
         </Grid>
 

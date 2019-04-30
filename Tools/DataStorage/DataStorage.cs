@@ -16,6 +16,7 @@ namespace BD_oneLove.Tools.DataStorage
             try
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+
                 myConn.Open();
                 int count = 0;
                 using (SqlCommand command = new SqlCommand(sql, myConn))
@@ -45,7 +46,11 @@ namespace BD_oneLove.Tools.DataStorage
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
                     var reader = command.ExecuteReader();
-                    user = new User(login, password, reader.GetString(0));
+                    while (reader.Read())
+                    {
+                        user = new User(login, password, reader.GetString(0));
+                    }
+                    
                     reader.Close();
                 }
                 myConn.Close();

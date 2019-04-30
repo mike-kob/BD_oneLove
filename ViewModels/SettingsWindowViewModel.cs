@@ -21,7 +21,7 @@ namespace BD_oneLove.ViewModels
                 {
                     string props = File.ReadAllText(FileFolderHelper.StorageFilePath);
                     string[] splitProps = props.Split(' ');
-                    if (splitProps.Length != 0)
+                    if (splitProps.Length == 5)
                     {
                         CompName = splitProps[0];
                         ServerName = splitProps[1];

@@ -17,6 +17,9 @@ namespace BD_oneLove.Tools
         internal static readonly string StorageFilePath =
             Path.Combine(AppFolderPath, "Storage.schj");
 
+        internal static readonly string LogFilePath =
+            Path.Combine(AppFolderPath, "Log.txt");
+
         internal static bool CreateFolderAndCheckFileExistance(string filePath)
         {
             var file = new FileInfo(filePath);
