@@ -1,4 +1,5 @@
 ﻿using BD_oneLove.Tools.Navigation;
+using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BD_oneLove.Views
+namespace BD_oneLove.Views.UsersViews
 {
     /// <summary>
     /// Логика взаимодействия для TeachersView.xaml
@@ -23,6 +24,8 @@ namespace BD_oneLove.Views
         public TeachersView()
         {
             InitializeComponent();
+            DataContext = new TeachersViewModel();
+
         }
     }
 }

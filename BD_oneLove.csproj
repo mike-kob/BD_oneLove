@@ -92,10 +92,12 @@
     </ApplicationDefinition>
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MyClassViewModel.cs" />
-    <Compile Include="Views\TeachersView.xaml.cs">
+    <Compile Include="ViewModels\UsersViewModels\TeachersViewModel.cs" />
+    <Compile Include="Views\UsersViews\TeachersView.xaml.cs">
       <DependentUpon>TeachersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TemplateControlView.xaml.cs">
@@ -141,7 +143,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\TeachersView.xaml">
+    <Page Include="Views\UsersViews\TeachersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

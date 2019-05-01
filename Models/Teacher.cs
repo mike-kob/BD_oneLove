@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace BD_oneLove.Models
+{
+    class Teacher
+    {
+        public Teacher(string tabNum)
+        {
+            TabNumber = tabNum;
+        }
+
+        #region Property
+
+        public string TabNumber { get; }
+        public string HName { get; set; }
+        public string Surname { get; set; }
+        public string Patronymiс { get; set; }
+
+        #endregion
+
+    }
+}
