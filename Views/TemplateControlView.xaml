@@ -68,7 +68,7 @@
                    Content="{Binding Caption}" />
 
 
-            <ListBox ItemsSource="{Binding Items.Keys}" SelectionMode="Single" SelectedItem="{Binding SelectedView, Mode=TwoWay}" Grid.Row="3" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3">
+            <ListBox IsEnabled="True" ItemsSource="{Binding Items.Keys}" SelectionMode="Single"   SelectedItem="{Binding SelectedView, Mode=TwoWay}" Grid.Row="3" Grid.RowSpan="6" Grid.Column="0" Grid.ColumnSpan="3">
 
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">

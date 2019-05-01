@@ -1,5 +1,6 @@
 
-﻿using BD_oneLove.Tools.Managers;
+using BD_oneLove.Tools;
+using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,13 +8,13 @@ using System.Collections.ObjectModel;
 
 namespace BD_oneLove.ViewModels
 {
-    class TemplateViewModel
+    class TemplateViewModel: BaseViewModel
     {
         private string _name = StationManager.CurrentUser.Username; // change and get from station manager
         private string _position = StationManager.CurrentUser.AccessType;
         private string _photo = "Resources/dailyplanner.jpg";
 
-        private KeyValuePair<string, ViewType> _selectedView;
+        private string _selectedView;
 
 
         public TemplateViewModel()
@@ -38,9 +39,9 @@ namespace BD_oneLove.ViewModels
                 case "Директор":
                     Items.Add("Учителя",ViewType.TeachersView);
                     Items.Add("Табель", ViewType.MarkGrid);
-                   // Items.Add("Классы");
+                    Items.Add("Классы", ViewType.ClassesView);
                     break;
-                case "Класный руководитель":
+                case "Классный руководитель":
                    // Items.Add("Мой класс");
                    // Items.Add("Выставление оценок");
                    // Items.Add("Социальный паспорт");
@@ -73,13 +74,17 @@ namespace BD_oneLove.ViewModels
             set { _photo = value; }
         }
 
-        public KeyValuePair<string, ViewType> SelectedView
+        public string SelectedView
         {
             get { return _selectedView;}
             set
             {
                 _selectedView = value;
-                ViewNavigationManager.Instance.Navigate(value.Value);
+                ViewType selval;
+                Items.TryGetValue(value, out selval);
+                ViewNavigationManager.Instance.Navigate(selval);
+                OnPropertyChanged();
+
             }
         }
 
