@@ -1,3 +1,4 @@
+using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Collections.ObjectModel;
 
 namespace BD_oneLove.ViewModels
 {
-    class TemplateViewModel
+    class TemplateViewModel: BaseViewModel
     {
         private string _name = StationManager.CurrentUser.Username; // change and get from station manager
         private string _position = StationManager.CurrentUser.AccessType;
@@ -33,7 +34,7 @@ namespace BD_oneLove.ViewModels
                 case "Директор":
                     Items.Add("Учителя", ViewType.TeachersView);
                     Items.Add("Табель", ViewType.MarkGrid);
-                    // Items.Add("Классы");
+                    Items.Add("Классы", ViewType.ClassesView);
                     break;
                 case "Классный рук-ль":
                     Items.Add("Мой класс", ViewType.MyClassView);
