@@ -1,5 +1,4 @@
-
-﻿using BD_oneLove.Tools.Managers;
+using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,12 +12,11 @@ namespace BD_oneLove.ViewModels
         private string _position = StationManager.CurrentUser.AccessType;
         private string _photo = "Resources/dailyplanner.jpg";
 
-        private KeyValuePair<string, ViewType> _selectedView;
+        private string _selectedView;
 
 
         public TemplateViewModel()
         {
-
             //  Tabs = new ObservableCollection<TabItem>();
             //  Tabs.Add(new TabItem { Header = "One", Content = "One's content" });
             //  Tabs.Add(new TabItem { Header = "Two", Content = "Two's content" });
@@ -26,9 +24,6 @@ namespace BD_oneLove.ViewModels
 
             Items = new Dictionary<string, ViewType>();
             addItems();
-           
-           
-
         }
 
         private void addItems()
@@ -36,28 +31,27 @@ namespace BD_oneLove.ViewModels
             switch (_position)
             {
                 case "Директор":
-                    Items.Add("Учителя",ViewType.TeachersView);
+                    Items.Add("Учителя", ViewType.TeachersView);
                     Items.Add("Табель", ViewType.MarkGrid);
-                   // Items.Add("Классы");
+                    // Items.Add("Классы");
                     break;
-                case "Класный руководитель":
-                   // Items.Add("Мой класс");
-                   // Items.Add("Выставление оценок");
-                   // Items.Add("Социальный паспорт");
-                   // Items.Add("Родители");
-                   // Items.Add("Выбывшие/прибывшие");
+                case "Классный рук-ль":
+                    Items.Add("Мой класс", ViewType.MyClassView);
+                    Items.Add("Выставление оценок", ViewType.PutMarksView);
+                    Items.Add("Социальный паспорт", ViewType.SocialPassportView);
+                    Items.Add("Родители", ViewType.ParentsView);
+                    Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     break;
                 case "Заместитель директора":
-                   // Items.Add("Ученики");
-                   // Items.Add("Классы");
-                   // Items.Add("Выбывшие/прибывшие");
-                   // Items.Add("Учебный план");
-                   // Items.Add("Успеваемость");
-                   // Items.Add("Отчет по ученикам");
-                   // Items.Add("Выставление оценок");
+                    // Items.Add("Ученики");
+                    // Items.Add("Классы");
+                    // Items.Add("Выбывшие/прибывшие");
+                    // Items.Add("Учебный план");
+                    // Items.Add("Успеваемость");
+                    // Items.Add("Отчет по ученикам");
+                    // Items.Add("Выставление оценок");
                     break;
             }
-
         }
 
         public string Caption
@@ -73,13 +67,14 @@ namespace BD_oneLove.ViewModels
             set { _photo = value; }
         }
 
-        public KeyValuePair<string, ViewType> SelectedView
+        public string SelectedView
         {
-            get { return _selectedView;}
+            get { return _selectedView; }
             set
             {
                 _selectedView = value;
-                ViewNavigationManager.Instance.Navigate(value.Value);
+                Items.TryGetValue(value, out var view);
+                ViewNavigationManager.Instance.Navigate(view);
             }
         }
 
@@ -92,6 +87,5 @@ namespace BD_oneLove.ViewModels
             public string Header { get; set; }
             public string Content { get; set; }
         }
-
     }
 }

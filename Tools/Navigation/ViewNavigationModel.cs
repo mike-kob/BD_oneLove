@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BD_oneLove.Views.UsersViews;
 
 namespace BD_oneLove.Tools.Navigation
 {
@@ -16,9 +17,9 @@ namespace BD_oneLove.Tools.Navigation
         {
             switch (viewType)
             {
-                //case ViewType.SignInView:
-                //    ViewsDictionary.Add(viewType, new SignInView());
-                //    break;
+                case ViewType.MyClassView:
+                    ViewsDictionary.Add(viewType, new MyClassView());
+                    break;
                 //case ViewType.MainView:
                 //    ViewsDictionary.Add(viewType, new TemplateControlView());
                 //    break;
