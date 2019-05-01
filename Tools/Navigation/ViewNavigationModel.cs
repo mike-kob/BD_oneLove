@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BD_oneLove.Views.UsersViews;
 
 namespace BD_oneLove.Tools.Navigation
 {
@@ -17,6 +18,9 @@ namespace BD_oneLove.Tools.Navigation
         {
             switch (viewType)
             {
+                case ViewType.MyClassView:
+                    ViewsDictionary.Add(viewType, new MyClassView());
+                    break;
                 case ViewType.TeachersView:
                    ViewsDictionary.Add(viewType, new TeachersView());
                    break;

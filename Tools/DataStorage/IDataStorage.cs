@@ -7,5 +7,8 @@ namespace BD_oneLove.Tools.DataStorage
     {
         bool UserExists(string login, string password);
         User GetUser(string login, string password);
+
+        Class GetClass(string classId);
+        List<Student> GetStudents(Class c);
     }
 }

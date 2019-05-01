@@ -11,6 +11,8 @@ namespace BD_oneLove.Models
         public string Password { get; set; }
         public string AccessType { get; set; }
 
+        public string ClassId { get; set; }
+
         public User(string uname, string password, string accessType)
         {
             Username = uname;
