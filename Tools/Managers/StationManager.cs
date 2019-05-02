@@ -24,5 +24,7 @@ namespace BD_oneLove.Tools.Managers
             get { return _dataStorage; }
         }
 
+        public static Class CurrentClass { get; set; }
+        public static Student CurrentStudent { get; set; }
     }
 }
