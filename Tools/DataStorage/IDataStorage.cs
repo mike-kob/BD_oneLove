@@ -23,7 +23,7 @@ namespace BD_oneLove.Tools.DataStorage
         List<Teacher> GetTeachers(string year);
         List<Teacher> GetTeachers();
         List<User> GetUsers();
-        void AddTeacher(Teacher t);
+        Teacher AddTeacher(Teacher t);
         void AddUser(User t);
 
         bool ExpelStudent(Student s, Class c);

@@ -49,9 +49,10 @@ namespace BD_oneLove.Tools.DataStorage
 
 
 
-        public void AddTeacher(Teacher t)
+        public Teacher AddTeacher(Teacher t)
         {
             //мб добавить проверку на существование учителя
+
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                $"'{t.User.Username}', 'Классный руководитель'); ";
 
@@ -59,16 +60,22 @@ namespace BD_oneLove.Tools.DataStorage
                 $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
                 $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
 
-           
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
+            Teacher temp = null;
 
+            if(TeacherExists(t.TabNumber)) {
+                MessageBox.Show("Классный руководитель с таким номером уже существует!");
+                return null;
+            }
             try
             {
             
                 myConn.Open();
-               
+
+
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
                     
@@ -88,7 +95,17 @@ namespace BD_oneLove.Tools.DataStorage
                     res = command.ExecuteNonQuery();
                 }
 
+                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                   
+                    while (reader.Read())
+                    {
+                        temp = new Teacher(reader.GetString(0));  
+                    }
 
+                    reader.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -98,6 +115,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+            return temp;
         }
 
 
@@ -134,7 +152,34 @@ namespace BD_oneLove.Tools.DataStorage
             return false;
         }
 
-  
+
+        public bool TeacherExists(string tabNum)
+        {
+            string sql = $"SELECT COUNT(*) FROM head_teachers WHERE tab_number='{tabNum}'";
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+
+                myConn.Open();
+                int count = 0;
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    count = (int)command.ExecuteScalar();
+                }
+
+                myConn.Close();
+                return count != 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return false;
+        }
+
+
+
         public bool UserExists(string login, string password)
         {
             string sql = $"SELECT COUNT(*) FROM \"User\" WHERE login='{login}' AND password='{password}'";

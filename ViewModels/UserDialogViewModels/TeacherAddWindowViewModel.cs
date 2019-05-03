@@ -51,8 +51,16 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void SaveImplementation(Window win)
         {
-            StationManager.DataStorage.AddTeacher(Teacher);
-            win?.Close();
+            try
+            {
+                Teacher t = StationManager.DataStorage.AddTeacher(Teacher);
+                if(t!=null) win?.Close();
+            }
+            catch(Exception e)
+            {
+
+            }
+         
         }
 
       
