@@ -102,7 +102,6 @@
     <Compile Include="ViewModels\UserDialogViewModels\ParentCardViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MyClassViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ParentsViewModel.cs" />
-    <Compile Include="Views\TeachersView.xaml.cs">
     <Compile Include="ViewModels\UsersViewModels\TeacherAddWindowViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\TeachersViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\UsersAddWindowViewModel.cs" />
@@ -155,6 +154,7 @@
     </Compile>
     <Compile Include="Views\UsersViews\UsersView.xaml.cs">
       <DependentUpon>UsersView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UsersViews\ParentsView.xaml.cs">
       <DependentUpon>ParentsView.xaml</DependentUpon>
     </Compile>
@@ -207,6 +207,9 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UsersViews\UsersView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UsersViews\ParentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

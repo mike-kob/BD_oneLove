@@ -34,7 +34,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         public UsersAddWindowViewModel()
         {
-            User = new User;
+            User = new User();
         }
 
         public ICommand CancelCommand
