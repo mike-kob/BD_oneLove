@@ -74,6 +74,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -91,9 +92,13 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\Parent.cs" />
+    <Compile Include="Models\ResponPerson.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\AddStudentDialogViewModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\ParentCardViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MyClassViewModel.cs" />
     <Compile Include="Views\TeachersView.xaml.cs">
       <DependentUpon>TeachersView.xaml</DependentUpon>
@@ -126,8 +131,17 @@
     <Compile Include="Views\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserDialogs\AddStudentDialogView.xaml.cs">
+      <DependentUpon>AddStudentDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserDialogs\ParentCardView.xaml.cs">
+      <DependentUpon>ParentCardView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UsersViews\MyClassView.xaml.cs">
       <DependentUpon>MyClassView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\ParentsView.xaml.cs">
+      <DependentUpon>ParentsView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -157,7 +171,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserDialogs\AddStudentDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserDialogs\ParentCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UsersViews\MyClassView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\ParentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

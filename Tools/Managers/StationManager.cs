@@ -10,6 +10,10 @@ namespace BD_oneLove.Tools.Managers
         private static IDataStorage _dataStorage = new DataStorage.DataStorage();
 
         public static User CurrentUser { get; set; }
+        public static Parent CurrentParent { get; set; }
+        public static Class CurrentClass { get; set; }
+        public static Student CurrentStudent { get; set; }
+
 
         public static Window MyMain { get; set; }
         public static Window MySettings { get; set; }
@@ -23,6 +27,5 @@ namespace BD_oneLove.Tools.Managers
         {
             get { return _dataStorage; }
         }
-
     }
 }

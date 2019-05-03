@@ -32,14 +32,17 @@
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Margin="15 5">Добавить</Button>
-            <Button Margin="15 5" Grid.Column="1">Редак-ть</Button>
+            <Button Margin="15 5" Command="{Binding AddCommand}">Добавить</Button>
+            <Button Margin="15 5" Command="{Binding EditCommand}" Grid.Column="1">Ред-ть</Button>
+            <Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>
         </Grid>
         <!--  -->
         <controls:DataGrid ItemsSource="{Binding ClassStudents}" 
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
                            AutoGenerateColumns="False"
+                           SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
+                           CanUserAddRows="False"
                            >
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Id"
@@ -67,7 +70,7 @@
                                              Binding="{Binding Sex}"
                                              Visibility="{Binding DataContext.IsShowSex, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Дата рождения"
-                                             Binding="{Binding Birthday}"
+                                             Binding="{Binding BirthdayString, Mode=OneWay}" IsReadOnly="True"
                                              Visibility="{Binding DataContext.IsShowBirthday, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Алф. книга"
                                              Binding="{Binding AlphBook}"
