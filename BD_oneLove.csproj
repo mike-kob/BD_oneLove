@@ -95,6 +95,7 @@
     <Compile Include="Models\Parent.cs" />
     <Compile Include="Models\ResponPerson.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddStudentDialogViewModel.cs" />
@@ -102,6 +103,11 @@
     <Compile Include="ViewModels\UsersViewModels\MyClassViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ParentsViewModel.cs" />
     <Compile Include="Views\TeachersView.xaml.cs">
+    <Compile Include="ViewModels\UsersViewModels\TeacherAddWindowViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\TeachersViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\UsersAddWindowViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\UsersViewModel.cs" />
+    <Compile Include="Views\UsersViews\TeachersView.xaml.cs">
       <DependentUpon>TeachersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TemplateControlView.xaml.cs">
@@ -141,6 +147,14 @@
     <Compile Include="Views\UsersViews\MyClassView.xaml.cs">
       <DependentUpon>MyClassView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UsersViews\TeachersAddWindowView.xaml.cs">
+      <DependentUpon>TeachersAddWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\UsersAddWindowView.xaml.cs">
+      <DependentUpon>UsersAddWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\UsersView.xaml.cs">
+      <DependentUpon>UsersView.xaml</DependentUpon>
     <Compile Include="Views\UsersViews\ParentsView.xaml.cs">
       <DependentUpon>ParentsView.xaml</DependentUpon>
     </Compile>
@@ -156,7 +170,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\TeachersView.xaml">
+    <Page Include="Views\UsersViews\TeachersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,6 +198,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UsersViews\TeachersAddWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\UsersAddWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\UsersView.xaml">
     <Page Include="Views\UsersViews\ParentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

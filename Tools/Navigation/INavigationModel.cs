@@ -3,7 +3,7 @@
     internal enum ViewType
     {
 
-        SignInView, MainView, TeachersView, MarkGrid, ClassesView,
+        SignInView, MainView, TeachersView, MarkGrid, ClassesView, UsersView,
 
 
         //классный рук-ль
