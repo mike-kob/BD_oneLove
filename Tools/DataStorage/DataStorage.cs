@@ -56,14 +56,13 @@ namespace BD_oneLove.Tools.DataStorage
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                $"'{t.User.Username}', 'Классный руководитель'); ";
 
-            string sql3 =  $"INSERT INTO head_teachers " +
+            string sql2 =  $"INSERT INTO head_teachers " +
                 $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
                 $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
 
            
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            User u = null;
             int res = 0;
 
             try
@@ -85,7 +84,7 @@ namespace BD_oneLove.Tools.DataStorage
                     }
                 }
 
-                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
                     res = command.ExecuteNonQuery();
                 }
