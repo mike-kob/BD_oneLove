@@ -1,0 +1,283 @@
+﻿<Window x:Class="BD_oneLove.Views.UserDialogs.AddStudentDialogView"
+        x:Name="AddStudentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BD_oneLove.Views.UserDialogs"
+        xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
+        mc:Ignorable="d"
+        Title="Карта ученика" Height="620" Width="1000">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="1" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Rectangle Grid.Column="1" Grid.RowSpan="3" Fill="Black" />
+        <Rectangle Grid.Column="2"  Grid.Row="1"  Fill="Black" />
+
+        <!-- Student grid -->
+        <Grid Grid.Column="0" Grid.RowSpan="3" Grid.ColumnSpan="2" Margin="0.8,0,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="60" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="*" />
+         
+                <RowDefinition Height="35" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Ученик:" VerticalAlignment="Center" TextAlignment="Center"
+                       Grid.ColumnSpan="2" FontSize="18" Margin="5" />
+            <TextBlock Text="Фамилия:"
+                       Grid.Row="1"
+                       VerticalAlignment="Center" FontSize="16" Foreground="Gray" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Surname, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+                     Margin="5" MaxLength="30" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock Text="Имя:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="3" Margin="5" />
+            <TextBox Text="{Binding CurStudent.StName, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="2"
+                     Margin="5" MaxLength="30" FontWeight="SemiBold" FontSize="16"/>
+            <TextBlock Text="Отчество:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="5" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Patronymic, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                     Margin="5" MaxLength="30" FontWeight="SemiBold" FontSize="16"/>
+
+            <TextBlock Text="Дата рождения:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="7" Grid.Column="0" Margin="5 0" />
+            <controls:DatePicker SelectedDate="{Binding CurStudent.Birthday, Mode=TwoWay}" Grid.Column="0" Grid.Row="8"
+                                 Margin="5 10" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" />
+
+            <TextBlock Text="Пол:" VerticalAlignment="Center" FontSize="18"
+                       Grid.Row="7" Grid.Column="1" Margin="5 0" Foreground="Gray" />
+            <ComboBox Grid.Column="1" Grid.Row="8"
+                      Width="40" Height="25"
+                      HorizontalAlignment="Left"
+                      Margin="5 0 0 0"
+                      Text="{Binding CurStudent.Sex}">
+                <ComboBoxItem>м</ComboBoxItem>
+                <ComboBoxItem>ж</ComboBoxItem>
+            </ComboBox>
+
+    
+
+            <TextBlock Text="Документ (тип, серия, номер):" VerticalAlignment="Center" FontSize="17" Foreground="Gray"
+                       Grid.Row="9" Grid.Column="0" Margin="5 0" />
+            <ComboBox Grid.Column="0" Grid.Row="10"
+                      Width="40" Height="25" FontWeight="SemiBold" FontSize="15"
+                      HorizontalAlignment="Left"
+                      Margin="25 0 0 0"
+                      Text="{Binding CurStudent.TypeDoc}">
+                <ComboBoxItem>СР</ComboBoxItem>
+                <ComboBoxItem>П</ComboBoxItem>
+            </ComboBox>
+
+            <TextBox Text="{Binding CurStudent.SerDoc}"
+                     Grid.Column="0" Grid.Row="10"
+                     Width="50" Height="25" FontWeight="SemiBold" FontSize="16" />
+            <TextBox Text="{Binding CurStudent.NumDoc}"
+                     Width="80" Height="25" FontWeight="SemiBold" FontSize="16"
+                     HorizontalAlignment="Right"
+                     Grid.Column="0" Grid.Row="10"
+                     Margin="0 0 10 0" />
+
+            <TextBlock Text="Номер алф. книги:" VerticalAlignment="Center" FontSize="17" Foreground="Gray"
+                       Grid.Row="9" Grid.Column="1" Margin="5 0" />
+
+            <TextBox Text="{Binding CurStudent.NumAlphBook}"
+                     Grid.Column="1" Grid.Row="10"
+                     Width="50" Height="25"
+                     FontWeight="SemiBold" FontSize="16"/>
+
+            <TextBlock Text="Адрес:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="11" Grid.Column="0"
+                       Grid.ColumnSpan="2" Margin="5 0" />
+
+
+            <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Индекс" Margin="5" Grid.Column="0" TextAlignment="Center" />
+                <TextBlock Text="Город" Margin="5" Grid.Column="1" TextAlignment="Center" />
+                <TextBlock Text="Улица" Margin="5" Grid.Column="2" TextAlignment="Center" />
+                <TextBlock Text="Дом" Margin="5" Grid.Column="3" TextAlignment="Center" />
+                <TextBlock Text="Квартира" Margin="5" Grid.Column="4" TextAlignment="Center" />
+
+                <TextBox Text="{Binding CurStudent.Index}" Grid.Column="0" Grid.Row="1" Margin="10 5" FontWeight="SemiBold" FontSize="14"/>
+                <TextBox Text="{Binding CurStudent.City}" Grid.Column="1" Grid.Row="1" Margin="10 5" FontWeight="SemiBold" FontSize="14"/>
+                <TextBox Text="{Binding CurStudent.Street}" Grid.Column="2" Grid.Row="1" Margin="10 5" FontWeight="SemiBold" FontSize="14"/>
+                <TextBox Text="{Binding CurStudent.House}" Grid.Column="3" Grid.Row="1" Margin="10 5" FontWeight="SemiBold" FontSize="14"/>
+                <TextBox Text="{Binding CurStudent.Apart}" Grid.Column="4" Grid.Row="1" Margin="10 5" FontWeight="SemiBold" FontSize="14"/>
+            </Grid>
+
+            <Separator Grid.ColumnSpan="2" Grid.Row="13" VerticalAlignment="Top" />
+            <TextBlock Text="Дом. телефон:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2" Margin="5 0" />
+            <TextBlock Text="Моб. телефоны:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="13" Grid.Column="1" Grid.ColumnSpan="2" Margin="5 0" />
+
+            <TextBox Text="{Binding CurStudent.HomePhone}"
+                     Grid.Column="0" Grid.Row="14" Width="100" HorizontalAlignment="Left" Margin="5 0" FontWeight="SemiBold" FontSize="16"/>
+            <Button Command="{Binding MobilesCommand}"
+                    Grid.Column="1" Grid.Row="14"
+                    HorizontalAlignment="Left"
+                    Margin="5 0" Width="100" Content="Моб. телефоны" />
+
+            <CheckBox Grid.Column="0" Grid.Row="15"
+                      Content="Допуск к екзамену" Margin="10" />
+            <CheckBox Grid.Column="1" Grid.Row="15" Content="ГПД" Margin="10" />
+
+            <Button Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=AddStudentWindow}" Content="Сохранить" Grid.Column="1" Grid.Row="18" Margin="5" />
+            <Button Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=AddStudentWindow}"
+                    Content="Отмена" Grid.Column="0" Grid.Row="18" Margin="5" />
+
+        </Grid>
+
+
+        <!-- Father grid -->
+        <Grid Grid.Column="2" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Отец:" VerticalAlignment="Center" TextAlignment="Center"
+                       Grid.ColumnSpan="2" FontSize="18" Margin="5" />
+            <TextBlock Text="Фамилия:"
+                       Grid.Row="1" Foreground="Gray"
+                       VerticalAlignment="Center" FontSize="16" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Father.Surname, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="2"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+            <TextBlock Text="Имя:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="3" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Father.PName, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="4"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+            <TextBlock Text="Отчество:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="5" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Father.Patronymic, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="6"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+
+            <TextBlock Text="Дата рождения:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="1" Grid.Column="1" Margin="5 0" />
+            <controls:DatePicker SelectedDate="{Binding CurStudent.Father.Birthday, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"
+                                 Margin="5 5" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" />
+
+            <Button Command="{Binding SearchFatherCommand}"
+                    Grid.Column="0" Grid.Row="8"
+                    Margin="5" Width="150" Content="Искать в базе"/>
+            <Button Command="{Binding EditFatherCommand}"
+                    Grid.Column="1" Grid.Row="7"
+                    Margin="5" Width="150" Content="Редактировать"/>
+            <Button Command="{Binding SaveFatherCommand}"
+                    Grid.Column="1" Grid.Row="8"
+                    Margin="5" Width="150" Content="Сохранить в базу"/>
+        </Grid>
+
+        <!-- Mother grid -->
+        <Grid Grid.Column="2" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Text="Мать:" VerticalAlignment="Center" TextAlignment="Center"
+                       Grid.ColumnSpan="2" FontSize="18" Margin="5" />
+            <TextBlock Text="Фамилия:"
+                       Grid.Row="1"
+                       VerticalAlignment="Center" FontSize="16" Foreground="Gray" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Mother.Surname, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="2"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+            <TextBlock Text="Имя:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="3" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Mother.PName, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="4"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+            <TextBlock Text="Отчество:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="5" Margin="5" />
+            <TextBox Text="{Binding CurStudent.Mother.Patronymic, Mode=TwoWay}"
+                     Grid.Column="0" Grid.Row="6"
+                     Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+
+            <TextBlock Text="Дата рождения:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                       Grid.Row="1" Grid.Column="1" Margin="5 0" />
+            <controls:DatePicker SelectedDate="{Binding CurStudent.Mother.Birthday, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"
+                                 Margin="5 5" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" />
+
+            <Button Command="{Binding SearchMotherCommand}"
+                    Grid.Column="0" Grid.Row="8"
+                    Margin="5" Width="150" Content="Искать в базе"/>
+            <Button Command="{Binding EditMotherCommand}"
+                    Grid.Column="1" Grid.Row="7"
+                    Margin="5" Width="150" Content="Редактировать"/>
+            <Button Command="{Binding SaveMotherCommand}"
+                    Grid.Column="1" Grid.Row="8"
+                    Margin="5" Width="150" Content="Сохранить в базу"/>
+
+            <Button Command="{Binding ResponPersonsCommand}"
+                    Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="9"
+                    Margin="5" Width="150" Content="Панель опекунов"/>
+        </Grid>
+    </Grid>
+</Window>

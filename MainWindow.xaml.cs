@@ -8,6 +8,7 @@ using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels;
+using BD_oneLove.Views.UserDialogs;
 
 namespace BD_oneLove
 {
@@ -28,7 +29,9 @@ namespace BD_oneLove
             NavigationManager.Instance.Initialize(new InitializationNavigationModel(this));
             NavigationManager.Instance.Navigate(ViewType.SignInView);
             StationManager.MyMain = this;
-      
+            //Window w = new AddStudentDialogView();
+            //w.ShowDialog();
+            //this.Close();
         }
     }
 }

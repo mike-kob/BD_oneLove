@@ -1,0 +1,136 @@
+﻿<Window x:Class="BD_oneLove.Views.UserDialogs.ParentCardView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BD_oneLove.Views.UserDialogs"
+        xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
+        mc:Ignorable="d"
+        Title="Карта родителя" Height="550" Width="500">
+    <!-- Mother grid -->
+    <Grid Grid.Column="2" Grid.Row="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="60" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="35" />
+
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding ParentType}"
+                   Grid.Row="0" Grid.ColumnSpan="2" TextAlignment="Center"
+                   VerticalAlignment="Center" FontSize="18" Margin="5" />
+
+
+        <TextBlock Text="Фамилия:"
+                   Grid.Row="1"
+                   VerticalAlignment="Center" FontSize="16" Foreground="Gray" Margin="5" />
+        <TextBox Text="{Binding CurParent.Surname, Mode=TwoWay}"
+                 Grid.Column="0" Grid.Row="2"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+        <TextBlock Text="Имя:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="3" Margin="5" />
+        <TextBox Text="{Binding CurParent.PName, Mode=TwoWay}"
+                 Grid.Column="0" Grid.Row="4"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+        <TextBlock Text="Отчество:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="5" Margin="5" />
+        <TextBox Text="{Binding CurParent.Patronymic, Mode=TwoWay}"
+                 Grid.Column="0" Grid.Row="6"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+
+        <TextBlock Text="Дата рождения:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="1" Grid.Column="1" Margin="5 0" />
+        <controls:DatePicker SelectedDate="{Binding CurParent.Birthday, Mode=TwoWay}" Grid.Column="1"
+                             Grid.Row="2"
+                             Margin="5 5" FontWeight="SemiBold" FontSize="16" VerticalAlignment="Top" />
+
+
+        <TextBlock Text="Дом. телефон:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="5" Grid.Column="1" Margin="5" />
+        <TextBox Text="{Binding CurParent.HomePhone, Mode=TwoWay}"
+                 Grid.Column="1" Grid.Row="6" Width="150" HorizontalAlignment="Left"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+
+        <TextBlock Text="Адрес:" VerticalAlignment="Center" FontSize="16" Foreground="Gray" Grid.Row="7"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2" Margin="5 0" />
+
+
+        <Grid Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="8">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Индекс" Margin="5" Grid.Column="0" TextAlignment="Center" />
+            <TextBlock Text="Город" Margin="5" Grid.Column="1" TextAlignment="Center" />
+            <TextBlock Text="Улица" Margin="5" Grid.Column="2" TextAlignment="Center" />
+            <TextBlock Text="Дом" Margin="5" Grid.Column="3" TextAlignment="Center" />
+            <TextBlock Text="Квартира" Margin="5" Grid.Column="4" TextAlignment="Center" />
+
+            <TextBox Text="{Binding CurParent.Index}" Grid.Column="0" Grid.Row="1" Margin="10 5" FontWeight="SemiBold"
+                     FontSize="14" />
+            <TextBox Text="{Binding CurParent.City}" Grid.Column="1" Grid.Row="1" Margin="10 5" FontWeight="SemiBold"
+                     FontSize="14" />
+            <TextBox Text="{Binding CurParent.Street}" Grid.Column="2" Grid.Row="1" Margin="10 5"
+                     FontWeight="SemiBold" FontSize="14" />
+            <TextBox Text="{Binding CurParent.House}" Grid.Column="3" Grid.Row="1" Margin="10 5" FontWeight="SemiBold"
+                     FontSize="14" />
+            <TextBox Text="{Binding CurParent.Apart}" Grid.Column="4" Grid.Row="1" Margin="10 5" FontWeight="SemiBold"
+                     FontSize="14" />
+
+        </Grid>
+        <TextBlock Text="Работа:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="9" Grid.Column="0"
+                   Grid.ColumnSpan="2" Margin="5 0" />
+        <TextBlock Text="Комментарий:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="9" Grid.Column="1"
+                   Margin="5 0" />
+        <TextBox Text="{Binding CurParent.Work, Mode=TwoWay}"
+                 Grid.Column="0" Grid.Row="10"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+        <TextBox Text="{Binding CurParent.Commentary, Mode=TwoWay}"
+                 Grid.Column="1" Grid.Row="10"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+
+        <TextBlock Text="Моб. телефоны:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="11" Grid.Column="1"
+                   Margin="5 0" />
+        <TextBlock Text="Раб. телефон:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
+                   Grid.Row="11" Grid.Column="0"
+                   Margin="5 0" />
+
+        <TextBox Text="{Binding CurParent.WorkPhone, Mode=TwoWay}"
+                 Grid.Column="0" Grid.Row="12" Width="150" HorizontalAlignment="Left"
+                 Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
+        <Button Grid.Column="1" Grid.Row="12"
+                Width="150" Margin="5" HorizontalAlignment="Left"
+                Content="Моб. телефоны" />
+
+        <Button Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=AddStudentWindow}"
+                Content="Сохранить" Grid.Column="1" Grid.Row="14" Margin="5" />
+        <Button Command="{Binding CancelCommand}" CommandParameter="{Binding ElementName=AddStudentWindow}"
+                Content="Отмена" Grid.Column="0" Grid.Row="14" Margin="5" />
+    </Grid>
+</Window>

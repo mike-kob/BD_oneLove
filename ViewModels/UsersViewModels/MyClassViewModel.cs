@@ -10,6 +10,9 @@ using System.Windows.Media.Imaging;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using BD_oneLove.Views.UserDialogs;
+using System.Windows.Forms;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -19,11 +22,14 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             string classId = "3";
 
-            Class myClass = StationManager.DataStorage.GetClass(classId);
-            ClassStudents = StationManager.DataStorage.GetStudents(myClass);
+            _myClass = StationManager.DataStorage.GetClass(classId);
+            ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
         }
 
         #region Fields
+
+        private Class _myClass;
+        private Student _selectedStudent;
 
         public Visibility _isShowId;
         public Visibility _isShowName;
@@ -39,7 +45,10 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Visibility _isShowPhone;
 
         private ICommand _saveCommand;
+        private ICommand _removeCommand;
+        private ICommand _editCommand;
         private ICommand _cancelCommand;
+        private ICommand _addCommand;
         #endregion
 
         #region Props
@@ -55,9 +64,60 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
+        public ICommand RemoveCommand
+        {
+            get
+            {
+                return _removeCommand ?? (_removeCommand =
+                           new RelayCommand<object>(RemoveImplementation, IsSelected));
+            }
+        }
 
+      
 
+        public ICommand AddCommand
+        {
+            get
+            {
+                return _addCommand ?? (_addCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               StationManager.CurrentClass = _myClass;
+                               StationManager.CurrentStudent = new Student();
+                               AddStudentDialogView win = new AddStudentDialogView();
+                               win.ShowDialog();
+                               RefreshList();
+                           }));
+            }
+        }
 
+        public ICommand EditCommand
+        {
+            get
+            {
+                return _editCommand ?? (_editCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               StationManager.CurrentClass = _myClass;
+                               StationManager.CurrentStudent = _selectedStudent;
+
+                               StationManager.CurrentStudent.Father =
+                                   StationManager.DataStorage.GetFather(_selectedStudent);
+
+                               StationManager.CurrentStudent.Mother =
+                                   StationManager.DataStorage.GetMother(_selectedStudent);
+                               AddStudentDialogView win = new AddStudentDialogView();
+                               win.ShowDialog();
+                               RefreshList();
+                           }, IsSelected));
+            }
+        }
+
+        public Student SelectedStudent
+        {
+            get { return _selectedStudent; }
+            set { _selectedStudent = value; }
+        }
 
 
 
@@ -184,5 +244,31 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
         #endregion
+
+
+        private void RemoveImplementation(object obj)
+        {
+            
+            var res = MessageBox.Show("Вы действитьно хотите выписать ученика из класса?", "Warning", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
+                StationManager.DataStorage.ExpelStudent(_selectedStudent, _myClass);
+                ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+                OnPropertyChanged("ClassStudents");
+            }
+        }
+
+        private bool IsSelected(object obj)
+        {
+            return _selectedStudent != null;
+        }
+
+        private void RefreshList()
+        {
+            ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+            OnPropertyChanged("ClassStudents");
+        }
+
     }
 }
