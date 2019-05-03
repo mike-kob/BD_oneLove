@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Input;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using BD_oneLove.Views.UserDialogs;
 
 namespace BD_oneLove.ViewModels.UserDialogViewModels
 {
-    internal class AddStudentDialogViewModel
+    internal class AddStudentDialogViewModel : BaseViewModel
     {
         #region Fields
 
@@ -16,7 +18,12 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
 
         private ICommand _addFatherCommand;
         private ICommand _addMotherCommand;
-        private ICommand _addResponCommand;
+
+        private ICommand _editFatherCommand;
+        private ICommand _editMotherCommand;
+
+        private ICommand _searchFatherCommand;
+        private ICommand _searchMotherCommand;
 
         #endregion
 
@@ -35,6 +42,31 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
         public ICommand CancelCommand
         {
             get { return _cancelCommand ?? (_cancelCommand = new RelayCommand<Window>(w => w?.Close())); }
+        }
+
+        public ICommand EditFatherCommand
+        {
+            get { return _editFatherCommand ?? (_editFatherCommand = new RelayCommand<object>(o =>
+                             {
+                                 StationManager.CurrentParent = CurStudent.Father;
+                                 Window win = new ParentCardView();
+                                 win.ShowDialog();
+                                 OnPropertyChanged("CurStudent");
+                             }, o => { return CurStudent.Father != null;})); }
+        }
+
+        public ICommand EditMotherCommand
+        {
+            get
+            {
+                return _editMotherCommand ?? (_editMotherCommand = new RelayCommand<object>(o =>
+                {
+                    StationManager.CurrentParent = CurStudent.Mother;
+                    Window win = new ParentCardView();
+                    win.ShowDialog();
+                    OnPropertyChanged("CurStudent");
+                }, o => { return CurStudent.Mother != null; }));
+            }
         }
 
         #endregion

@@ -216,10 +216,10 @@
                     Grid.Column="0" Grid.Row="8"
                     Margin="5" Width="150" Content="Искать в базе"/>
             <Button Command="{Binding EditFatherCommand}"
-                    Grid.Column="1" Grid.Row="8"
+                    Grid.Column="1" Grid.Row="7"
                     Margin="5" Width="150" Content="Редактировать"/>
             <Button Command="{Binding SaveFatherCommand}"
-                    Grid.Column="1" Grid.Row="7"
+                    Grid.Column="1" Grid.Row="8"
                     Margin="5" Width="150" Content="Сохранить в базу"/>
         </Grid>
 
@@ -269,10 +269,10 @@
                     Grid.Column="0" Grid.Row="8"
                     Margin="5" Width="150" Content="Искать в базе"/>
             <Button Command="{Binding EditMotherCommand}"
-                    Grid.Column="1" Grid.Row="8"
+                    Grid.Column="1" Grid.Row="7"
                     Margin="5" Width="150" Content="Редактировать"/>
             <Button Command="{Binding SaveMotherCommand}"
-                    Grid.Column="1" Grid.Row="7"
+                    Grid.Column="1" Grid.Row="8"
                     Margin="5" Width="150" Content="Сохранить в базу"/>
 
             <Button Command="{Binding ResponPersonsCommand}"
