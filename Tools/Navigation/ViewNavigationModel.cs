@@ -1,5 +1,4 @@
-﻿using BD_oneLove.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +23,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.TeachersView:
                    ViewsDictionary.Add(viewType, new TeachersView());
                    break;
+                case ViewType.UsersView:
+                    ViewsDictionary.Add(viewType, new UsersView());
+                    break;
                 //case ViewType.MainView:
                 //    ViewsDictionary.Add(viewType, new TemplateControlView());
                 //    break;
