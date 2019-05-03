@@ -100,6 +100,7 @@
     <Compile Include="ViewModels\UserDialogViewModels\AddStudentDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ParentCardViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MyClassViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\ParentsViewModel.cs" />
     <Compile Include="Views\TeachersView.xaml.cs">
       <DependentUpon>TeachersView.xaml</DependentUpon>
     </Compile>

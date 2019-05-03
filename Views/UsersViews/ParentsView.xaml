@@ -4,9 +4,114 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BD_oneLove.Views.UsersViews"
+             xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <FrameworkElement x:Key="ProxyElement" DataContext="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="200"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <!-- proxy element to contol visibility of columns -->
+        <ContentControl Content="{StaticResource ProxyElement}" Visibility="Collapsed" />
+        <!--Grid for top buttons-->
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Margin="15 5" Command="{Binding AddCommand}">Добавить</Button>
+            <Button Margin="15 5" Command="{Binding SearchCommand}" Grid.Column="1">Поиск в базе</Button>
+            <!--<Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>-->
+        </Grid>
+        <!--  -->
+        <controls:DataGrid ItemsSource="{Binding ClassParents}" 
+                           Grid.Column="0" Grid.Row="1" 
+                           Margin="20"
+                           AutoGenerateColumns="False"
+                           SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
+                           CanUserAddRows="False"
+                           >
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Id"
+                                             Binding="{Binding Id, Mode=OneWay}"
+                                             Visibility="{Binding DataContext.IsShowId, Source={StaticResource ProxyElement}}"/>
+              
+                <controls:DataGridTextColumn Header="Фамилия"
+                                             Binding="{Binding Surname}"
+                                             Visibility="{Binding DataContext.IsShowSurname, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Имя"
+                                             Binding="{Binding StName}"
+                                             Visibility="{Binding DataContext.IsShowName, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Отчество"
+                                             Binding="{Binding Patronymic}"
+                                             Visibility="{Binding DataContext.IsShowPatr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Пол"
+                                             Binding="{Binding Sex}"
+                                             Visibility="{Binding DataContext.IsShowSex, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Дата рождения"
+                                             Binding="{Binding BirthdayString, Mode=OneWay}" IsReadOnly="True"
+                                             Visibility="{Binding DataContext.IsShowBirthday, Source={StaticResource ProxyElement}}"/>
+               
+                <controls:DataGridTextColumn Header="Индекс"
+                                             Binding="{Binding Index}"
+                                             Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Город"
+                                             Binding="{Binding City}"
+                                             Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Улица"
+                                             Binding="{Binding Street}"
+                                             Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Дом"
+                                             Binding="{Binding House}"
+                                             Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Квартира"
+                                             Binding="{Binding Apart}"
+                                             Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Дом. телефон"
+                                             Binding="{Binding HomePhone}"
+                                             Visibility="{Binding DataContext.IsShowHomePhone, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Работа"
+                                             Binding="{Binding Work}"
+                                             Visibility="{Binding DataContext.IsShowWork, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Раб. телефон"
+                                             Binding="{Binding WorkPhone}"
+                                             Visibility="{Binding DataContext.IsShowWorkPhone, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Комментарий"
+                                             Binding="{Binding Comment}"
+                                             Visibility="{Binding DataContext.IsShowComment, Source={StaticResource ProxyElement}}"/>
+
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+
+
+        <ListBox Grid.Column="1" Grid.Row="1"
+                 Margin="10 20"
+                 Background="Transparent" 
+                 ItemsSource="{Binding IsShowColumns}">
+            <CheckBox Content="Id" IsChecked="{Binding IsShowIdBool}"></CheckBox>
+            <CheckBox Content="Фамилия" IsChecked="{Binding IsShowSurnameBool}"></CheckBox>
+            <CheckBox Content="Имя" IsChecked="{Binding IsShowNameBool}"></CheckBox>
+            <CheckBox Content="Отчество" IsChecked="{Binding IsShowPatrBool}"></CheckBox>
+            <CheckBox Content="Дата рождения" IsChecked="{Binding IsShowBirthdayBool}"></CheckBox>
+            <CheckBox Content="Пол" IsChecked="{Binding IsShowSexBool}"></CheckBox>
+            <CheckBox Content="Адрес" IsChecked="{Binding IsShowAddrBool}"></CheckBox>
+            <CheckBox Content="Дом. телефон" IsChecked="{Binding IsShowHomePhoneBool}"></CheckBox>
+            <CheckBox Content="Работа" IsChecked="{Binding IsShowWorkBool}"></CheckBox>
+            <CheckBox Content="Раб. телефон" IsChecked="{Binding IsShowWorkPhoneBool}"></CheckBox>
+            <CheckBox Content="Комментарий" IsChecked="{Binding IsShowCommentBool}"></CheckBox>
+        </ListBox>
+
     </Grid>
 </UserControl>

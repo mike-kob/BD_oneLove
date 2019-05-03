@@ -52,7 +52,7 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
                                  Window win = new ParentCardView();
                                  win.ShowDialog();
                                  OnPropertyChanged("CurStudent");
-                             }, o => { return CurStudent.Father != null;})); }
+                             }, o => { return CurStudent?.Father != null;})); }
         }
 
         public ICommand EditMotherCommand
@@ -65,7 +65,7 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
                     Window win = new ParentCardView();
                     win.ShowDialog();
                     OnPropertyChanged("CurStudent");
-                }, o => { return CurStudent.Mother != null; }));
+                }, o => { return CurStudent?.Mother != null; }));
             }
         }
 

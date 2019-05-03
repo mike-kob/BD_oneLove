@@ -31,18 +31,18 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Class _myClass;
         private Student _selectedStudent;
 
-        public Visibility _isShowId;
-        public Visibility _isShowName;
-        public Visibility _isShowSurname;
-        public Visibility _isShowPatr;
-        public Visibility _isShowAddr;
-        public Visibility _isShowAlph;
-        public Visibility _isShowSex;
-        public Visibility _isShowBirthday;
-        public Visibility _isShowDoc;
-        public Visibility _isShowExam;
-        public Visibility _isShowGPD;
-        public Visibility _isShowPhone;
+        private Visibility _isShowId;
+        private Visibility _isShowName;
+        private Visibility _isShowSurname;
+        private Visibility _isShowPatr;
+        private Visibility _isShowAddr;
+        private Visibility _isShowAlph;
+        private Visibility _isShowSex;
+        private Visibility _isShowBirthday;
+        private Visibility _isShowDoc;
+        private Visibility _isShowExam;
+        private Visibility _isShowGPD;
+        private Visibility _isShowPhone;
 
         private ICommand _saveCommand;
         private ICommand _removeCommand;

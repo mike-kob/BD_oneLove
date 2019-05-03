@@ -67,7 +67,8 @@
             <TextBlock Text="Отчество:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
                        Grid.Row="5" Margin="5" />
             <TextBox Text="{Binding CurStudent.Patronymic, Mode=TwoWay}"
-                     Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2"
+                     Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" 
+                     BorderThickness="0" Background="#F0F0F0"
                      Margin="5" MaxLength="30" FontWeight="SemiBold" FontSize="16"/>
 
             <TextBlock Text="Дата рождения:" VerticalAlignment="Center" FontSize="16" Foreground="Gray"
