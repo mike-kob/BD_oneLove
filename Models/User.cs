@@ -19,5 +19,9 @@ namespace BD_oneLove.Models
             Password = password;
             AccessType = accessType.Trim();
         }
+
+        public User()
+        {
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace BD_oneLove.Models
         public string Number { get; set; }
         public string Letter { get; set; }
         public string StYear { get; set; }
+      
 
         public Class(string id)
         {
