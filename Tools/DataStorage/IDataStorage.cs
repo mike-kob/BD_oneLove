@@ -5,9 +5,11 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal interface IDataStorage
     {
+        bool TeacherExists(string tabNum);
         bool UserExists(string login, string password);
         bool UserExistsUseless(string login);
         User GetUser(string login, string password);
+
 
         Student SaveStudent(Student s);
         Student UpdateStudent(Student s);
@@ -24,6 +26,7 @@ namespace BD_oneLove.Tools.DataStorage
         List<Teacher> GetTeachers();
         List<User> GetUsers();
         Teacher AddTeacher(Teacher t);
+        void DeleteTeacher(Teacher t);
         void AddUser(User t);
 
         bool ExpelStudent(Student s, Class c);

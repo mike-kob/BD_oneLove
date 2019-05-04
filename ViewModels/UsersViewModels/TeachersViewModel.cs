@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -17,6 +18,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         public List<Teacher> SchoolTeachers { get; set; }
         public List<string> SchoolYears { get; set; }
+        public Teacher SelectedTeacher { get; set; }
         /*   public string SelectedYear
            {
                get { return _selYear; }
@@ -49,12 +51,33 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
+        public RelayCommand<object> DeleteTeacherCommand
+        {
+            get
+            {
+                return _deleteTeacherCommand ?? (_deleteTeacherCommand = new RelayCommand<object>(
+                         o => DeleteTeacherImplementation()));
+            }
+        }
+
         public void AddTeacherImplementation()
         {
             TeachersAddWindowView win = new TeachersAddWindowView();
             win.Owner = StationManager.MyMain;
             win.ShowDialog();
             RefreshList();
+        }
+
+        private void DeleteTeacherImplementation()
+        {
+            if (SelectedTeacher != null)
+            {
+                StationManager.DataStorage.DeleteTeacher(SelectedTeacher);
+                RefreshList();
+            }else
+            {
+                MessageBox.Show("Выберите кого-то чтобы удалить!");
+            }
         }
 
         public TeachersViewModel()

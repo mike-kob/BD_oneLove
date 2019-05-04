@@ -46,6 +46,42 @@ namespace BD_oneLove.Tools.DataStorage
             }
         }
 
+        public void DeleteTeacher(Teacher t)
+        {
+         
+             string sql = $"DELETE FROM head_teachers WHERE tab_number LIKE '{t.TabNumber}' ESCAPE '#'";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+
+            try
+            {
+
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+           
+        }
+
 
 
 
