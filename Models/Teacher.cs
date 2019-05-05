@@ -15,6 +15,7 @@ namespace BD_oneLove.Models
 
         public Teacher()
         {
+            User = new User();
         }
 
         #region Property

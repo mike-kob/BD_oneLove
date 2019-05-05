@@ -49,8 +49,8 @@ namespace BD_oneLove.Tools.DataStorage
         public bool DeleteTeacher(Teacher t)
         {
          
-             string sql1 = $"DELETE FROM head_teachers WHERE tab_number LIKE '{t.TabNumber}' ESCAPE '#'";
-            string sql2 = $"DELETE FROM [user] WHERE login LIKE '{t.User.Username}' ESCAPE '#'";
+             string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
+            string sql2 = $"DELETE FROM [user] WHERE login = '{t.User.Username}'; ";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
 
