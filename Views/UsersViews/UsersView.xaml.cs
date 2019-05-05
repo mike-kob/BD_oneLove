@@ -1,4 +1,5 @@
-﻿using BD_oneLove.Tools.Navigation;
+﻿using BD_oneLove.Tools.Managers;
+using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,9 @@ namespace BD_oneLove.Views.UsersViews
         public UsersView()
         {
             InitializeComponent();
-            DataContext = new UsersViewModel();
+            StationManager.usersView = new UsersViewModel();
+            DataContext = StationManager.usersView;
+
         }
     }
 }
