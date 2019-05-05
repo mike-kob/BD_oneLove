@@ -13,6 +13,10 @@ namespace BD_oneLove.Models
             User = new User();
         }
 
+        public Teacher()
+        {
+        }
+
         #region Property
 
         public string TabNumber { get; set; }

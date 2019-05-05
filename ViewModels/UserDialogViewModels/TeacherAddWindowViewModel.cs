@@ -14,8 +14,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         #region Props
         public Teacher Teacher { get; set; }
+        public bool AddWindow { get; set; }
+
         #endregion
 
+        public TeacherAddWindowViewModel()
+        {
+            Teacher = StationManager.CurrentTeacher;
+            AddWindow = Teacher.TabNumber == null;
+        }
 
         #region Commands
 
@@ -24,10 +31,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         #endregion
 
-        public TeacherAddWindowViewModel()
-        {
-            Teacher = new Teacher("");
-        }
 
         public ICommand CancelCommand
         {
@@ -51,16 +54,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void SaveImplementation(Window win)
         {
-            try
-            {
-                Teacher t = StationManager.DataStorage.AddTeacher(Teacher);
-                if(t!=null) win?.Close();
-            }
-            catch(Exception e)
-            {
+        
+                Teacher t = AddWindow ? StationManager.DataStorage.AddTeacher(Teacher): 
+                    StationManager.DataStorage.UpdateTeacher(Teacher);
+  
+            if (t != null) win?.Close();
 
-            }
-         
         }
 
        

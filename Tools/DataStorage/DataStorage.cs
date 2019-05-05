@@ -94,7 +94,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         public Teacher AddTeacher(Teacher t)
         {
-            //мб добавить проверку на существование учителя
 
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                $"'{t.User.Username}', 'Классный руководитель'); ";
@@ -612,6 +611,74 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return s;
+        }
+
+       public Teacher UpdateTeacher(Teacher t)
+        {
+            string sql1 = "UPDATE [user] " +
+                $"SET password = '{t.User.Password}' " +
+                $"WHERE login='{t.User.Username}'";
+
+
+            string sql2 = "UPDATE  head_teachers " +
+           $"SET h_name = '{t.HName}', " + 
+           $"surname = '{t.Surname}', " +
+           $"patronymic = '{t.Patronymiс}' " +
+           $"WHERE tab_number='{t.TabNumber}'";
+
+       
+
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+            Teacher temp = null;
+
+            try
+            {
+
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+               
+                    using (SqlCommand command = new SqlCommand(sql1, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
+                
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                {
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        temp = new Teacher(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return temp;
         }
 
         public Student UpdateStudent(Student s)

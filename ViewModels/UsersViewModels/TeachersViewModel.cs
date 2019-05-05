@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -42,7 +43,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         #endregion
 
-        public RelayCommand<object> AddTeacherCommand
+        public ICommand AddTeacherCommand
         {
             get
             {
@@ -51,17 +52,37 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
-        public RelayCommand<object> DeleteTeacherCommand
+        public ICommand EditTeacherCommand
+        {
+            get
+            {
+                return _editTeacherCommand ?? (_editTeacherCommand = new RelayCommand<object>(
+                         o => EditTeacherImplementation(), o=>SelectedTeacher!=null));
+            }
+        }
+
+        public ICommand DeleteTeacherCommand
         {
             get
             {
                 return _deleteTeacherCommand ?? (_deleteTeacherCommand = new RelayCommand<object>(
-                         o => DeleteTeacherImplementation()));
+                         o => DeleteTeacherImplementation(), o => SelectedTeacher != null));
             }
         }
 
+        public void EditTeacherImplementation()
+        {
+            StationManager.CurrentTeacher = SelectedTeacher;
+            TeachersAddWindowView win = new TeachersAddWindowView();
+            win.Owner = StationManager.MyMain;
+            win.ShowDialog();
+            RefreshList();
+        }
+
+
         public void AddTeacherImplementation()
         {
+            StationManager.CurrentTeacher= new Teacher();
             TeachersAddWindowView win = new TeachersAddWindowView();
             win.Owner = StationManager.MyMain;
             win.ShowDialog();
@@ -71,18 +92,14 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private void DeleteTeacherImplementation()
         {
           
-            if (SelectedTeacher != null)
-            {
+         
                 if (!StationManager.DataStorage.DeleteTeacher(SelectedTeacher))
                 {
                     MessageBox.Show("Вы не можете удалить учителя у которого есть класс!");
                     return;
                 }
                 RefreshList();
-            }else
-            {
-                MessageBox.Show("Выберите кого-то чтобы удалить!");
-            }
+           
         }
 
         public TeachersViewModel()

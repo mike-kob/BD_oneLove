@@ -30,7 +30,7 @@
 
 
             <Button Command="{Binding AddTeacherCommand}" Margin="15 5" Grid.Row="1">Добавить</Button>
-            <Button Margin="15 5" Grid.Column="1" Grid.Row="1">Редак-ть</Button>
+            <Button Command="{Binding EditTeacherCommand}" Margin="15 5" Grid.Column="1" Grid.Row="1">Редак-ть</Button>
             <Button Command="{Binding DeleteTeacherCommand}" Margin="15 5" Grid.Column="2" Grid.Row="1">Удалить</Button>
         <!--    <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SchoolYears}"
                       SelectedItem="{Binding SelectedYear}"></ComboBox> !-->
