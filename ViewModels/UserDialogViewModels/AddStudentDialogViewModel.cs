@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
@@ -46,13 +47,16 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
 
         public ICommand EditFatherCommand
         {
-            get { return _editFatherCommand ?? (_editFatherCommand = new RelayCommand<object>(o =>
-                             {
-                                 StationManager.CurrentParent = CurStudent.Father;
-                                 Window win = new ParentCardView();
-                                 win.ShowDialog();
-                                 OnPropertyChanged("CurStudent");
-                             }, o => { return CurStudent?.Father != null;})); }
+            get
+            {
+                return _editFatherCommand ?? (_editFatherCommand = new RelayCommand<object>(o =>
+                {
+                    StationManager.CurrentParent = CurStudent.Father;
+                    Window win = new ParentCardView();
+                    win.ShowDialog();
+                    OnPropertyChanged("CurStudent");
+                }, o => { return CurStudent?.Father != null; }));
+            }
         }
 
         public ICommand EditMotherCommand
@@ -69,11 +73,53 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
             }
         }
 
+        public ICommand SearchMotherCommand
+        {
+            get
+            {
+                return _searchMotherCommand ?? (_searchMotherCommand = new RelayCommand<object>(o =>
+                {
+                    Window win = new SearchParentDialog();
+
+
+                    win.ShowDialog();
+                    bool? result = win.DialogResult;
+                    if (result == true)
+                    {
+                        StationManager.DataStorage.AssignParentToStudent(CurStudent, StationManager.CurrentParent,
+                            false);
+                        CurStudent.Mother = StationManager.CurrentParent;
+                        OnPropertyChanged("CurStudent");
+                    }
+                }));
+            }
+        }
+
+        public ICommand SearchFatherCommand
+        {
+            get
+            {
+                return _searchFatherCommand ?? (_searchFatherCommand = new RelayCommand<object>(o =>
+                {
+                    Window win = new SearchParentDialog();
+
+                    win.ShowDialog();
+                    bool? result = win.DialogResult;
+                    if (result == true)
+                    {
+                        StationManager.DataStorage.AssignParentToStudent(CurStudent, StationManager.CurrentParent,
+                            false);
+                        CurStudent.Father = StationManager.CurrentParent;
+                        OnPropertyChanged("CurStudent");
+                    }
+                }));
+            }
+        }
+
         #endregion
 
         private void SaveImplementation(Window win)
         {
-            
             if (String.IsNullOrEmpty(CurStudent.Id))
             {
                 StationManager.DataStorage.SaveStudent(CurStudent);
@@ -96,7 +142,5 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
                    !String.IsNullOrEmpty(CurStudent?.NumDoc) &&
                    !String.IsNullOrEmpty(CurStudent?.NumAlphBook);
         }
-
-
     }
 }

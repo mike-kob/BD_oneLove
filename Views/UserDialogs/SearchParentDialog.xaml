@@ -1,0 +1,83 @@
+﻿<Window x:Class="BD_oneLove.Views.UserDialogs.SearchParentDialog"
+        x:Name="SearchParentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BD_oneLove.Views.UserDialogs"
+        xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
+        mc:Ignorable="d"
+        Title="Искать родителя в базе" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="80"></ColumnDefinition>
+            <ColumnDefinition Width="130"></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Фильтр:" FontSize="16" TextAlignment="Center" VerticalAlignment="Center"/>
+        <TextBox Grid.Column="1" Margin="5"
+                 Text="{Binding FilterText, Mode=TwoWay}"/>
+        <ComboBox Grid.Column="2" Margin="5" ItemsSource="{Binding FilterBy}" 
+                  SelectedItem="{Binding SelectedFilterBy, Mode=TwoWay}"/>
+        <Button Content="Фильтровать" Grid.Column="3" Margin="5"
+                Command="{Binding FilterCommand}"/>
+        <Button Grid.Column="6" Grid.Row="2" Margin="5"
+                Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=SearchParentWindow}"
+                Content="Выбрать"
+                FontSize="16"/>
+        <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
+                           Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="7"
+                           Margin="20"
+                           AutoGenerateColumns="False"
+                           SelectedItem="{Binding SelectedParent, Mode=TwoWay}"
+                           CanUserAddRows="False" IsReadOnly="True">
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Id"
+                                             Binding="{Binding Id, Mode=OneWay}" />
+
+                <controls:DataGridTextColumn Header="Фамилия"
+                                             Binding="{Binding Surname}" />
+                <controls:DataGridTextColumn Header="Имя"
+                                             Binding="{Binding PName}" />
+                <controls:DataGridTextColumn Header="Отчество"
+                                             Binding="{Binding Patronymic}" />
+                <controls:DataGridTextColumn Header="Пол"
+                                             Binding="{Binding Sex}" />
+                <controls:DataGridTextColumn Header="Дата рождения"
+                                             Binding="{Binding BirthdayString, Mode=OneWay}" IsReadOnly="True" />
+
+                <controls:DataGridTextColumn Header="Индекс"
+                                             Binding="{Binding Index}" />
+                <controls:DataGridTextColumn Header="Город"
+                                             Binding="{Binding City}" />
+                <controls:DataGridTextColumn Header="Улица"
+                                             Binding="{Binding Street}" />
+                <controls:DataGridTextColumn Header="Дом"
+                                             Binding="{Binding House}" />
+                <controls:DataGridTextColumn Header="Квартира"
+                                             Binding="{Binding Apart}" />
+                <controls:DataGridTextColumn Header="Дом. телефон"
+                                             Binding="{Binding HomePhone}" />
+                <controls:DataGridTextColumn Header="Работа"
+                                             Binding="{Binding Work}" />
+                <controls:DataGridTextColumn Header="Раб. телефон"
+                                             Binding="{Binding WorkPhone}" />
+                <controls:DataGridTextColumn Header="Комментарий"
+                                             Binding="{Binding Comment}" />
+                <controls:DataGridTextColumn Header="Опекун"
+                                             Binding="{Binding Trustee}" />
+                <controls:DataGridTextColumn Header="Родственник"
+                                             Binding="{Binding Relation}" />
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+    </Grid>
+</Window>

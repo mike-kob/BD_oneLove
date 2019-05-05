@@ -52,7 +52,7 @@
                                              Binding="{Binding Surname}"
                                              Visibility="{Binding DataContext.IsShowSurname, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Имя"
-                                             Binding="{Binding StName}"
+                                             Binding="{Binding PName}"
                                              Visibility="{Binding DataContext.IsShowName, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Отчество"
                                              Binding="{Binding Patronymic}"
@@ -91,7 +91,12 @@
                 <controls:DataGridTextColumn Header="Комментарий"
                                              Binding="{Binding Comment}"
                                              Visibility="{Binding DataContext.IsShowComment, Source={StaticResource ProxyElement}}"/>
-
+                <controls:DataGridTextColumn Header="Опекун"
+                                             Binding="{Binding Trustee}"
+                                             Visibility="{Binding DataContext.IsShowComment, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Родственник"
+                                             Binding="{Binding Relation}"
+                                             Visibility="{Binding DataContext.IsShowComment, Source={StaticResource ProxyElement}}"/>
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
