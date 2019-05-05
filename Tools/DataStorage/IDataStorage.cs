@@ -26,7 +26,7 @@ namespace BD_oneLove.Tools.DataStorage
         List<Teacher> GetTeachers();
         List<User> GetUsers();
         Teacher AddTeacher(Teacher t);
-        void DeleteTeacher(Teacher t);
+        bool DeleteTeacher(Teacher t);
         void AddUser(User t);
 
         bool ExpelStudent(Student s, Class c);

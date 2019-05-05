@@ -44,7 +44,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             Users = StationManager.DataStorage.GetUsers();
         }
 
-        private void RefreshList()
+        public void RefreshList()
         {
             Users = StationManager.DataStorage.GetUsers();
             OnPropertyChanged("Users");

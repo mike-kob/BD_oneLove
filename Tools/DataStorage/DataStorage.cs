@@ -46,10 +46,11 @@ namespace BD_oneLove.Tools.DataStorage
             }
         }
 
-        public void DeleteTeacher(Teacher t)
+        public bool DeleteTeacher(Teacher t)
         {
          
-             string sql = $"DELETE FROM head_teachers WHERE tab_number LIKE '{t.TabNumber}' ESCAPE '#'";
+             string sql1 = $"DELETE FROM head_teachers WHERE tab_number LIKE '{t.TabNumber}' ESCAPE '#'";
+            string sql2 = $"DELETE FROM [user] WHERE login LIKE '{t.User.Username}' ESCAPE '#'";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
 
@@ -66,20 +67,26 @@ namespace BD_oneLove.Tools.DataStorage
                 }
 
 
-                using (SqlCommand command = new SqlCommand(sql, myConn))
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
                     res = command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+               // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
             }
             finally
             {
                 myConn?.Close();
             }
-           
+           return true;
         }
 
 

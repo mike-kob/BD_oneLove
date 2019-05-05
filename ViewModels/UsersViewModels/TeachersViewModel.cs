@@ -70,9 +70,14 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void DeleteTeacherImplementation()
         {
+          
             if (SelectedTeacher != null)
             {
-                StationManager.DataStorage.DeleteTeacher(SelectedTeacher);
+                if (!StationManager.DataStorage.DeleteTeacher(SelectedTeacher))
+                {
+                    MessageBox.Show("Вы не можете удалить учителя у которого есть класс!");
+                    return;
+                }
                 RefreshList();
             }else
             {
@@ -90,6 +95,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             SchoolTeachers = StationManager.DataStorage.GetTeachers();
             OnPropertyChanged("SchoolTeachers");
+            StationManager.usersView?.RefreshList();
         }
     }
 }
