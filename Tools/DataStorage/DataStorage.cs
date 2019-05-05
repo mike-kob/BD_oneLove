@@ -615,6 +615,8 @@ namespace BD_oneLove.Tools.DataStorage
 
        public Teacher UpdateTeacher(Teacher t)
         {
+
+            //to make with parameters
             string sql1 = "UPDATE [user] " +
                 $"SET password = '{t.User.Password}' " +
                 $"WHERE login='{t.User.Username}'";
