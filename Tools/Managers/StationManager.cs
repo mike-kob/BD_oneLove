@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using BD_oneLove.Models;
 using BD_oneLove.Tools.DataStorage;
+using BD_oneLove.ViewModels.UsersViewModels;
 
 namespace BD_oneLove.Tools.Managers
 {
@@ -13,7 +14,8 @@ namespace BD_oneLove.Tools.Managers
         public static Parent CurrentParent { get; set; }
         public static Class CurrentClass { get; set; }
         public static Student CurrentStudent { get; set; }
-
+        public static Teacher CurrentTeacher { get; set; }
+        public static UsersViewModel usersView { get; set; }
 
         public static Window MyMain { get; set; }
         public static Window MySettings { get; set; }

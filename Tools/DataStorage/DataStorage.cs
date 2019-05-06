@@ -39,10 +39,54 @@ namespace BD_oneLove.Tools.DataStorage
                 myConn?.Close();
             }
         }
-
-        public void AddTeacher(Teacher t)
+        
+        public bool DeleteTeacher(Teacher t)
         {
-            //мб добавить проверку на существование учителя
+         
+             string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
+            string sql2 = $"DELETE FROM [user] WHERE login = '{t.User.Username}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+
+            try
+            {
+
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+               // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+           return true;
+        }
+
+        public Teacher AddTeacher(Teacher t)
+
+        {
+
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                           $"'{t.User.Username}', 'Классный руководитель'); ";
 
@@ -50,10 +94,16 @@ namespace BD_oneLove.Tools.DataStorage
                           $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
                           $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
 
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
+            Teacher temp = null;
 
+            if(TeacherExists(t.TabNumber)) {
+                MessageBox.Show("Классный руководитель с таким номером уже существует!");
+                return null;
+            }
             try
             {
                 myConn.Open();
@@ -75,6 +125,18 @@ namespace BD_oneLove.Tools.DataStorage
                 {
                     res = command.ExecuteNonQuery();
                 }
+
+                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                   
+                    while (reader.Read())
+                    {
+                        temp = new Teacher(reader.GetString(0));  
+                    }
+
+                    reader.Close();
+                }
             }
             catch (Exception ex)
             {
@@ -84,6 +146,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+            return temp;
         }
 
         public bool UserExistsUseless(string login)
@@ -110,6 +173,31 @@ namespace BD_oneLove.Tools.DataStorage
 
                 myConn.Close();
                 return count1 != 0 && count2 == 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return false;
+        }
+
+        public bool TeacherExists(string tabNum)
+        {
+            string sql = $"SELECT COUNT(*) FROM head_teachers WHERE tab_number='{tabNum}'";
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+
+                myConn.Open();
+                int count = 0;
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    count = (int)command.ExecuteScalar();
+                }
+
+                myConn.Close();
+                return count != 0;
             }
             catch (Exception ex)
             {
@@ -734,6 +822,76 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return s;
+        }
+
+       public Teacher UpdateTeacher(Teacher t)
+        {
+
+            //to make with parameters
+            string sql1 = "UPDATE [user] " +
+                $"SET password = '{t.User.Password}' " +
+                $"WHERE login='{t.User.Username}'";
+
+
+            string sql2 = "UPDATE  head_teachers " +
+           $"SET h_name = '{t.HName}', " + 
+           $"surname = '{t.Surname}', " +
+           $"patronymic = '{t.Patronymiс}' " +
+           $"WHERE tab_number='{t.TabNumber}'";
+
+       
+
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+            Teacher temp = null;
+
+            try
+            {
+
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+               
+                    using (SqlCommand command = new SqlCommand(sql1, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
+                
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                {
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        temp = new Teacher(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return temp;
         }
 
         public Student UpdateStudent(Student s)
