@@ -10,15 +10,13 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
-
-       public void AddUser(User t)
+        public void AddUser(User t)
         {
             string sql = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.Password}', " +
-                 $"'{t.Username}', '{t.AccessType}'); ";
+                         $"'{t.Username}', '{t.AccessType}'); ";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
-
                 myConn.Open();
                 int res = 0;
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
@@ -29,23 +27,19 @@ namespace BD_oneLove.Tools.DataStorage
 
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
-
                     res = command.ExecuteNonQuery();
                 }
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-
             }
             finally
             {
                 myConn?.Close();
             }
         }
-
+        
         public bool DeleteTeacher(Teacher t)
         {
          
@@ -89,18 +83,16 @@ namespace BD_oneLove.Tools.DataStorage
            return true;
         }
 
-
-
-
         public Teacher AddTeacher(Teacher t)
+
         {
 
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
-               $"'{t.User.Username}', 'Классный руководитель'); ";
+                          $"'{t.User.Username}', 'Классный руководитель'); ";
 
-            string sql2 =  $"INSERT INTO head_teachers " +
-                $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
-                $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
+            string sql2 = $"INSERT INTO head_teachers " +
+                          $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
+                          $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
 
             string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
 
@@ -114,13 +106,10 @@ namespace BD_oneLove.Tools.DataStorage
             }
             try
             {
-            
                 myConn.Open();
-
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
-                    
                     command.ExecuteNonQuery();
                 }
 
@@ -160,13 +149,11 @@ namespace BD_oneLove.Tools.DataStorage
             return temp;
         }
 
-
-       public bool UserExistsUseless(string login)
+        public bool UserExistsUseless(string login)
         {
-            
             string sql1 = $"SELECT COUNT(*) FROM [User] WHERE login='{login}'";
             string sql2 = $"SELECT COUNT(*) FROM [User] u INNER JOIN head_teachers ht ON u.login=ht.login" +
-                $" WHERE u.login='{login}'";
+                          $" WHERE u.login='{login}'";
             try
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -176,15 +163,16 @@ namespace BD_oneLove.Tools.DataStorage
                 int count2 = 0;
                 using (SqlCommand command = new SqlCommand(sql1, myConn))
                 {
-                    count1 = (int)command.ExecuteScalar();
+                    count1 = (int) command.ExecuteScalar();
                 }
+
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
-                    count2 = (int)command.ExecuteScalar();
+                    count2 = (int) command.ExecuteScalar();
                 }
 
                 myConn.Close();
-                return count1!=0 && count2==0;
+                return count1 != 0 && count2 == 0;
             }
             catch (Exception ex)
             {
@@ -193,7 +181,6 @@ namespace BD_oneLove.Tools.DataStorage
 
             return false;
         }
-
 
         public bool TeacherExists(string tabNum)
         {
@@ -219,8 +206,6 @@ namespace BD_oneLove.Tools.DataStorage
 
             return false;
         }
-
-
 
         public bool UserExists(string login, string password)
         {
@@ -299,8 +284,6 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -347,15 +330,15 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return list;
-
         }
 
         public List<Teacher> GetTeachers(string year)
         {
-            string sql = "SELECT ht.tab_number, ht.h_name, ht.patronymic, c.class_id, c.number, c.letter, c.st_year, ht.surname" +
-                         " FROM (head_teachers ht INNER JOIN head_teachers_classes htc ON ht.tab_number=htc.tab_number) " +
-                         "INNER JOIN classes c ON c.class_id = htc.class_id "+
-                         $"WHERE c.st_year='{year}'";
+            string sql =
+                "SELECT ht.tab_number, ht.h_name, ht.patronymic, c.class_id, c.number, c.letter, c.st_year, ht.surname" +
+                " FROM (head_teachers ht INNER JOIN head_teachers_classes htc ON ht.tab_number=htc.tab_number) " +
+                "INNER JOIN classes c ON c.class_id = htc.class_id " +
+                $"WHERE c.st_year='{year}'";
 
             List<Teacher> res = new List<Teacher>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -377,7 +360,7 @@ namespace BD_oneLove.Tools.DataStorage
                         c.Letter = reader.GetString(5);
                         c.StYear = reader.GetString(6);
                         cur.Class = c;
-                   
+
                         res.Add(cur);
                     }
 
@@ -401,7 +384,7 @@ namespace BD_oneLove.Tools.DataStorage
         public List<User> GetUsers()
         {
             string sql = "SELECT password, login, rights" +
-                                  " FROM [user] ";
+                         " FROM [user] ";
 
             List<User> res = new List<User>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -439,8 +422,8 @@ namespace BD_oneLove.Tools.DataStorage
         public List<Teacher> GetTeachers()
         {
             string sql = "SELECT ht.tab_number, ht.h_name, ht.patronymic, ht.surname, ht.login, u.password, u.rights" +
-                         " FROM head_teachers ht INNER JOIN [user] u ON u.login=ht.login; "; 
-           
+                         " FROM head_teachers ht INNER JOIN [user] u ON u.login=ht.login; ";
+
             List<Teacher> res = new List<Teacher>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
@@ -456,7 +439,7 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HName = reader.GetString(1);
                         cur.Patronymiс = reader.GetString(2);
                         cur.Surname = reader.GetString(3);
-                        cur.User.Username = reader.GetString(4); 
+                        cur.User.Username = reader.GetString(4);
                         cur.User.Password = reader.GetString(5);
                         cur.User.AccessType = reader.GetString(6);
 
@@ -479,8 +462,6 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
-
-
 
         public List<Student> GetStudents(Class c)
         {
@@ -542,15 +523,246 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
+        public List<Parent> GetParentsInClass(Class c)
+        {
+            string sql1 =
+                $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
+                $"FROM parents " +
+                $"WHERE parent_id IN " +
+                $"(SELECT father_id FROM students s " +
+                $"INNER JOIN classes_students cs ON s.student_id=cs.student_id " +
+                $"WHERE cs.class_id={c.ClassId}) " +
+                $"  OR parent_id IN" +
+                $"(SELECT mother_id FROM students s " +
+                $"INNER JOIN classes_students cs ON s.student_id=cs.student_id " +
+                $"WHERE cs.class_id={c.ClassId})";
+
+            string sql2 =
+                "SELECT rp.respon_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, trustee, relation " +
+                "FROM respon_person rp INNER JOIN respon_student rs ON rp.respon_id=rs.respon_id " +
+                "WHERE rs.student_id IN " +
+                "(SELECT s.student_id " +
+                "FROM students s INNER JOIN classes_students cs ON s.student_id= cs.student_id " +
+                $"WHERE class_id ={c.ClassId});";
+
+            List<Parent> res = new List<Parent>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Parent cur = new Parent();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.PName = reader.GetString(1);
+                        cur.Patronymic = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+
+                        cur.Sex = reader.GetString(4);
+                        cur.Birthday = reader.IsDBNull(5) ? new DateTime() : reader.GetDateTime(5);
+                        cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                        cur.House = reader.IsDBNull(9) ? "" : reader.GetString(9);
+                        cur.Apart = reader.IsDBNull(10) ? "" : reader.GetString(10);
+
+
+                        cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Parent cur = new Parent();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.PName = reader.GetString(1);
+                        cur.Patronymic = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+
+                        cur.Sex = reader.GetString(4);
+                        cur.Birthday = reader.IsDBNull(5) ? new DateTime() : reader.GetDateTime(5);
+                        cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                        cur.House = reader.IsDBNull(9) ? "" : reader.GetString(9);
+                        cur.Apart = reader.IsDBNull(10) ? "" : reader.GetString(10);
+
+
+                        cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Trustee = reader.GetBoolean(14);
+                        cur.Relation = reader.GetString(15);
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<Parent> GetAllParents()
+        {
+            string sql1 =
+                $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
+                $"FROM parents;";
+
+            string sql2 =
+                "SELECT respon_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, trustee, relation " +
+                $"FROM respon_person;";
+
+            List<Parent> res = new List<Parent>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Parent cur = new Parent();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.PName = reader.GetString(1);
+                        cur.Patronymic = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+
+                        cur.Sex = reader.GetString(4);
+                        cur.Birthday = reader.IsDBNull(5) ? new DateTime() : reader.GetDateTime(5);
+                        cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                        cur.House = reader.IsDBNull(9) ? "" : reader.GetString(9);
+                        cur.Apart = reader.IsDBNull(10) ? "" : reader.GetString(10);
+
+
+                        cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Parent cur = new Parent();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.PName = reader.GetString(1);
+                        cur.Patronymic = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+
+                        cur.Sex = reader.GetString(4);
+                        cur.Birthday = reader.IsDBNull(5) ? new DateTime() : reader.GetDateTime(5);
+                        cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                        cur.House = reader.IsDBNull(9) ? "" : reader.GetString(9);
+                        cur.Apart = reader.IsDBNull(10) ? "" : reader.GetString(10);
+
+
+                        cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Trustee = reader.GetBoolean(14);
+                        cur.Relation = reader.GetString(15);
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public bool AssignParentToStudent(Student st, Parent p, bool father)
+        {
+            string sql1 = "UPDATE students " +
+                          $"SET father_id={p.Id} " +
+                          $"WHERE student_id={st.Id}";
+            string sql2 = "UPDATE students " +
+                          $"SET mother_id={p.Id} " +
+                          $"WHERE student_id={st.Id}";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                if (!father)
+                    sql1 = sql2;
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                return res == 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
         public Student SaveStudent(Student s)
         {
             string sql1 =
                 "INSERT INTO students (type_doc, ser_doc, num_doc, st_name, patronymic,surname, sex, birthday, num_alph_book, [index], city, street, house, apart, home_phone, gpd_attendance, exam) " +
                 $"VALUES ('{s.TypeDoc}', @serdoc, '{s.NumDoc}'," +
-                        $"'{s.StName}', @patr, '{s.Surname}'," +
-                        $"'{s.Sex}','{s.Birthday}','{s.NumAlphBook}'," +
-                        $"@ind, @city, @street, @house, @apart," +
-                        $"@phone, '{s.GpdAttendance}', '{s.ExamAllowedToPass}')";
+                $"'{s.StName}', @patr, '{s.Surname}'," +
+                $"'{s.Sex}','{s.Birthday}','{s.NumAlphBook}'," +
+                $"@ind, @city, @street, @house, @apart," +
+                $"@phone, '{s.GpdAttendance}', '{s.ExamAllowedToPass}')";
             string sql2 = $"SELECT student_id FROM students WHERE num_alph_book='{s.NumAlphBook}'";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
@@ -573,15 +785,15 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@apart", SqlDbType.VarChar);
                     command.Parameters.Add("@phone", SqlDbType.VarChar);
 
-                    command.Parameters["@serdoc"].Value = (object)s.SerDoc ?? DBNull.Value;
-                    command.Parameters["@patr"].Value = (object)s.Patronymic ?? DBNull.Value;
-                    command.Parameters["@ind"].Value = (object)s.Index ?? DBNull.Value;
-                    command.Parameters["@city"].Value = (object)s.City ?? DBNull.Value;
-                    command.Parameters["@street"].Value = (object)s.Street ?? DBNull.Value;
-                    command.Parameters["@house"].Value = (object)s.House ?? DBNull.Value;
-                    command.Parameters["@apart"].Value = (object)s.Apart ?? DBNull.Value;
-                    command.Parameters["@phone"].Value = (object)s.HomePhone ?? DBNull.Value;
-                   
+                    command.Parameters["@serdoc"].Value = (object) s.SerDoc ?? DBNull.Value;
+                    command.Parameters["@patr"].Value = (object) s.Patronymic ?? DBNull.Value;
+                    command.Parameters["@ind"].Value = (object) s.Index ?? DBNull.Value;
+                    command.Parameters["@city"].Value = (object) s.City ?? DBNull.Value;
+                    command.Parameters["@street"].Value = (object) s.Street ?? DBNull.Value;
+                    command.Parameters["@house"].Value = (object) s.House ?? DBNull.Value;
+                    command.Parameters["@apart"].Value = (object) s.Apart ?? DBNull.Value;
+                    command.Parameters["@phone"].Value = (object) s.HomePhone ?? DBNull.Value;
+
                     res = command.ExecuteNonQuery();
                 }
 
@@ -598,7 +810,6 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
-
             }
             catch (Exception ex)
             {
@@ -688,26 +899,26 @@ namespace BD_oneLove.Tools.DataStorage
             string sql1 =
                 "UPDATE students " +
                 $"SET type_doc = '{s.TypeDoc}', " +
-                    $"ser_doc = @serdoc, " +
-                    $"num_doc = '{s.NumDoc}', " +
-                    $"st_name = '{s.StName}', " +
-                    $"patronymic = @patr, " +
-                    $"surname = '{s.Surname}', " +
-                    $"sex = '{s.Sex}', " +
-                    $"birthday = @date, " +
-                    $"num_alph_book = '{s.NumAlphBook}', " +
-                    $"[index] = @ind, city=@city, street=@street, house=@house, apart=@apart, " +
-                    $"home_phone = @phone, " +
-                    $"gpd_attendance = '{s.GpdAttendance}', " +
-                    $"exam = '{s.ExamAllowedToPass}' " +
-                $"WHERE student_id={s.Id}"; 
-  
+                $"ser_doc = @serdoc, " +
+                $"num_doc = '{s.NumDoc}', " +
+                $"st_name = '{s.StName}', " +
+                $"patronymic = @patr, " +
+                $"surname = '{s.Surname}', " +
+                $"sex = '{s.Sex}', " +
+                $"birthday = @date, " +
+                $"num_alph_book = '{s.NumAlphBook}', " +
+                $"[index] = @ind, city=@city, street=@street, house=@house, apart=@apart, " +
+                $"home_phone = @phone, " +
+                $"gpd_attendance = '{s.GpdAttendance}', " +
+                $"exam = '{s.ExamAllowedToPass}' " +
+                $"WHERE student_id={s.Id}";
+
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
             try
             {
                 myConn.Open();
-                
+
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
                     command.ExecuteNonQuery();
@@ -725,15 +936,15 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@apart", SqlDbType.VarChar);
                     command.Parameters.Add("@phone", SqlDbType.VarChar);
 
-                    command.Parameters["@serdoc"].Value = (object)s.SerDoc ?? DBNull.Value;
-                    command.Parameters["@patr"].Value = (object)s.Patronymic ?? DBNull.Value;
+                    command.Parameters["@serdoc"].Value = (object) s.SerDoc ?? DBNull.Value;
+                    command.Parameters["@patr"].Value = (object) s.Patronymic ?? DBNull.Value;
                     command.Parameters["@date"].Value = s.Birthday;
-                    command.Parameters["@ind"].Value = (object)s.Index ?? DBNull.Value;
-                    command.Parameters["@city"].Value = (object)s.City ?? DBNull.Value;
-                    command.Parameters["@street"].Value = (object)s.Street ?? DBNull.Value;
-                    command.Parameters["@house"].Value = (object)s.House ?? DBNull.Value;
-                    command.Parameters["@apart"].Value = (object)s.Apart ?? DBNull.Value;
-                    command.Parameters["@phone"].Value = (object)s.HomePhone ?? DBNull.Value;
+                    command.Parameters["@ind"].Value = (object) s.Index ?? DBNull.Value;
+                    command.Parameters["@city"].Value = (object) s.City ?? DBNull.Value;
+                    command.Parameters["@street"].Value = (object) s.Street ?? DBNull.Value;
+                    command.Parameters["@house"].Value = (object) s.House ?? DBNull.Value;
+                    command.Parameters["@apart"].Value = (object) s.Apart ?? DBNull.Value;
+                    command.Parameters["@phone"].Value = (object) s.HomePhone ?? DBNull.Value;
 
                     res = command.ExecuteNonQuery();
                 }
@@ -747,6 +958,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             if (res == 0)
                 return null;
             return s;
@@ -768,8 +980,6 @@ namespace BD_oneLove.Tools.DataStorage
                 }
 
                 return res == 0;
-                
-
             }
             catch (Exception ex)
             {
@@ -798,8 +1008,6 @@ namespace BD_oneLove.Tools.DataStorage
                 }
 
                 return res == 0;
-
-
             }
             catch (Exception ex)
             {
@@ -814,9 +1022,10 @@ namespace BD_oneLove.Tools.DataStorage
 
         public Parent GetFather(Student s)
         {
-            string sql1 = $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
-                          $"FROM parents WHERE parent_id IN (SELECT father_id FROM students WHERE student_id={s.Id})";
-            
+            string sql1 =
+                $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
+                $"FROM parents WHERE parent_id IN (SELECT father_id FROM students WHERE student_id={s.Id})";
+
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             Parent father = new Parent();
             try
@@ -826,7 +1035,7 @@ namespace BD_oneLove.Tools.DataStorage
                 using (SqlCommand command = new SqlCommand(sql1, myConn))
                 {
                     var reader = command.ExecuteReader();
-                    
+
                     while (reader.Read())
                     {
                         father.Id = reader.GetInt64(0).ToString();
@@ -847,15 +1056,10 @@ namespace BD_oneLove.Tools.DataStorage
                         father.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
                         father.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
                         father.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
-                        
-
-
                     }
 
                     reader.Close();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -872,8 +1076,9 @@ namespace BD_oneLove.Tools.DataStorage
 
         public Parent GetMother(Student s)
         {
-            string sql1 = $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
-                          $"FROM parents WHERE parent_id IN (SELECT mother_id FROM students WHERE student_id={s.Id})";
+            string sql1 =
+                $"SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
+                $"FROM parents WHERE parent_id IN (SELECT mother_id FROM students WHERE student_id={s.Id})";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             Parent mother = new Parent();
@@ -905,15 +1110,10 @@ namespace BD_oneLove.Tools.DataStorage
                         mother.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
                         mother.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
                         mother.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
-
-
-
                     }
 
                     reader.Close();
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -928,8 +1128,202 @@ namespace BD_oneLove.Tools.DataStorage
             return mother;
         }
 
+
+        public List<string> GetSubjects(Class c, string type)
+        {
+            string sql = "SELECT DISTINCT subject" +
+                         " FROM Marks " +
+                         $"WHERE class_id={c.ClassId} AND mark_type='{type}';";
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        //----------------------Marks-----------------------------
+        public bool AddSubject(string subject)
+        {
+            string sql = "INSERT INTO helping_subject" +
+                         $"VALUES ('{subject}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+        }
+
+        public List<Mark> GetMarks(Class c, string subject, string type)
+        {
+            string sql =
+                "SELECT m.mark_id, m.grade, m.mark_type, m.subject, m.mark_date, s.student_id, s.st_name, s.surname, m.class_id " +
+                " FROM Marks m INNER JOIN students s ON m.student_id=s.student_id " +
+                $"WHERE class_id={c.ClassId} AND subject='{subject}' AND mark_type='{type}';";
+
+            List<Mark> res = new List<Mark>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Mark cur = new Mark();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.Grade = reader.GetInt32(1).ToString();
+                        cur.MarkType = reader.GetString(2);
+                        cur.Subject = subject;
+                        cur.MarkDate = reader.GetDateTime(4);
+                        cur.StudentId = reader.GetInt64(5).ToString();
+                        cur.StudentName = reader.GetString(6);
+                        cur.StudentSurname = reader.GetString(7);
+                        cur.ClassId = reader.GetInt64(8).ToString();
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<Mark> SaveMarks(List<Mark> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                for (int i = 0; i < l.Count; i++)
+                {
+                    string sql = "";
+                    if (!String.IsNullOrEmpty(l[i].Id) && !String.IsNullOrEmpty(l[i].Grade))
+                    {
+                        sql = "UPDATE marks " +
+                              $" SET grade={l[i].Grade}, mark_type='{l[i].MarkType}', subject='{l[i].Subject}', mark_date=@date, student_id={l[i].StudentId} " +
+                              $"WHERE mark_id={l[i].Id};";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            command.Parameters.Add("@date", SqlDbType.DateTime);
+                            command.Parameters["@date"].Value = l[i].MarkDate;
+                            var res = command.ExecuteNonQuery();
+                        }
+                    }
+                    else if(!String.IsNullOrEmpty(l[i].Grade))
+                    {
+                        sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
+                              " OUTPUT INSERTED.mark_id " +
+                              $" VALUES ({l[i].Grade}, '{l[i].MarkType}', '{l[i].Subject}', @date, {l[i].StudentId}, {l[i].ClassId});";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            command.Parameters.Add("@date", SqlDbType.DateTime);
+                            command.Parameters["@date"].Value = l[i].MarkDate;
+                            var res = command.ExecuteScalar();
+                            l[i].Id = res.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return l;
+
+        }
+
+        public bool RemoveMarks(List<Mark> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                for (int i = 0; i < l.Count; i++)
+                {
+                    if (!String.IsNullOrEmpty(l[i].Id))
+                    {
+                        string sql = "DELETE FROM marks " +
+                              $"WHERE mark_id={l[i].Id};";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            var res = command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
     }
-
-
-
 }

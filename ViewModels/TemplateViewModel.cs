@@ -25,6 +25,7 @@ namespace BD_oneLove.ViewModels
 
             Items = new Dictionary<string, ViewType>();
             addItems();
+            StationManager.CurrentClass = StationManager.DataStorage.GetClass("3");
         }
 
         private void addItems()
