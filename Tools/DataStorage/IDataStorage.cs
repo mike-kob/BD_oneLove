@@ -36,8 +36,12 @@ namespace BD_oneLove.Tools.DataStorage
         void AddUser(User t);
 
         //-------------Marks-------------------
+        bool AddSubject(string subject);
         List<string> GetSubjects(Class c, string type);
         List<Mark> GetMarks(Class c, string subject, string type);
+        List<Mark> SaveMarks(List<Mark> l);
+        bool RemoveMarks(List<Mark> l);
+
 
 
     }

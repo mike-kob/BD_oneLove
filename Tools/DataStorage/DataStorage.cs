@@ -586,6 +586,7 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
+
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
                     var reader = command.ExecuteReader();
@@ -617,6 +618,7 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
+
                 return res;
             }
             catch (Exception ex)
@@ -1006,11 +1008,42 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
+        //----------------------Marks-----------------------------
+        public bool AddSubject(string subject)
+        {
+            string sql = "INSERT INTO helping_subject" +
+                         $"VALUES ('{subject}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+        }
+
         public List<Mark> GetMarks(Class c, string subject, string type)
         {
-            string sql = "SELECT m.mark_id, m.grade, m.mark_type, m.subject, m.mark_date, s.student_id, s.st_name, s.surname, m.class_id " +
-                         " FROM Marks m INNER JOIN students s ON m.student_id=s.student_id " +
-                         $"WHERE class_id={c.ClassId} AND subject='{subject}' AND mark_type='{type}';";
+            string sql =
+                "SELECT m.mark_id, m.grade, m.mark_type, m.subject, m.mark_date, s.student_id, s.st_name, s.surname, m.class_id " +
+                " FROM Marks m INNER JOIN students s ON m.student_id=s.student_id " +
+                $"WHERE class_id={c.ClassId} AND subject='{subject}' AND mark_type='{type}';";
 
             List<Mark> res = new List<Mark>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -1025,7 +1058,7 @@ namespace BD_oneLove.Tools.DataStorage
                     {
                         Mark cur = new Mark();
                         cur.Id = reader.GetInt64(0).ToString();
-                        cur.Grade = reader.GetInt32(1);
+                        cur.Grade = reader.GetInt32(1).ToString();
                         cur.MarkType = reader.GetString(2);
                         cur.Subject = subject;
                         cur.MarkDate = reader.GetDateTime(4);
@@ -1051,6 +1084,88 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
+        }
+
+        public List<Mark> SaveMarks(List<Mark> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                for (int i = 0; i < l.Count; i++)
+                {
+                    string sql = "";
+                    if (!String.IsNullOrEmpty(l[i].Id) && !String.IsNullOrEmpty(l[i].Grade))
+                    {
+                        sql = "UPDATE marks " +
+                              $" SET grade={l[i].Grade}, mark_type='{l[i].MarkType}', subject='{l[i].Subject}', mark_date=@date, student_id={l[i].StudentId} " +
+                              $"WHERE mark_id={l[i].Id};";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            command.Parameters.Add("@date", SqlDbType.DateTime);
+                            command.Parameters["@date"].Value = l[i].MarkDate;
+                            var res = command.ExecuteNonQuery();
+                        }
+                    }
+                    else if(!String.IsNullOrEmpty(l[i].Grade))
+                    {
+                        sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
+                              " OUTPUT INSERTED.mark_id " +
+                              $" VALUES ({l[i].Grade}, '{l[i].MarkType}', '{l[i].Subject}', @date, {l[i].StudentId}, {l[i].ClassId});";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            command.Parameters.Add("@date", SqlDbType.DateTime);
+                            command.Parameters["@date"].Value = l[i].MarkDate;
+                            var res = command.ExecuteScalar();
+                            l[i].Id = res.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return l;
+
+        }
+
+        public bool RemoveMarks(List<Mark> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                for (int i = 0; i < l.Count; i++)
+                {
+                    if (!String.IsNullOrEmpty(l[i].Id))
+                    {
+                        string sql = "DELETE FROM marks " +
+                              $"WHERE mark_id={l[i].Id};";
+
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            var res = command.ExecuteNonQuery();
+                        }
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
         }
     }
 }

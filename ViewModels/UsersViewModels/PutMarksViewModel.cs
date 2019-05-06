@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
@@ -15,6 +13,19 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public PutMarksViewModel()
         {
             Subjects = StationManager.DataStorage.GetSubjects(StationManager.CurrentClass, SelectedType);
+            StudentsDict = new Dictionary<string, Student>();
+            MarksDict = new List<Mark>();
+
+            var studs = StationManager.DataStorage.GetStudents(StationManager.CurrentClass);
+            foreach (Student s in studs)
+            {
+                StudentsDict.Add(s.Id, s);
+            }
+
+            ViewSource = new CollectionViewSource();
+            SubjectsViewSource = new CollectionViewSource();
+            ViewSource.Source = MarksDict;
+            SubjectsViewSource.Source = Subjects;
         }
 
         #region Fields
@@ -31,6 +42,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         #region Props
 
         public List<string> Subjects { get; set; }
+        public CollectionViewSource SubjectsViewSource { get; set; }
+
         public string[] Types { get; } = new string[] {"семестр1", "семестр2", "годовая"};
 
         public string SelectedSubject
@@ -39,9 +52,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             set
             {
                 _selectedSubject = value;
-                Marks = StationManager.DataStorage.GetMarks(StationManager.CurrentClass, value, SelectedType);
-                OnPropertyChanged("SelectedSubject");
-                OnPropertyChanged("Marks");
+                RefreshDict();
             }
         }
 
@@ -52,16 +63,20 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 _selectedType = value;
                 Subjects = StationManager.DataStorage.GetSubjects(StationManager.CurrentClass, _selectedType);
-                OnPropertyChanged("Subjects");
+                SubjectsViewSource.Source = Subjects;
+                SubjectsViewSource.View.Refresh();
+                OnPropertyChanged("SubjectsViewSource");
 
-                Marks = StationManager.DataStorage.GetMarks(StationManager.CurrentClass, SelectedSubject, value);
-                OnPropertyChanged("SelectedSubject");
-                OnPropertyChanged("SelectedType");
-                OnPropertyChanged("Marks");
+                RefreshDict();
             }
         }
 
-        public List<Mark> Marks { get; set; }
+
+        public CollectionViewSource ViewSource { get; }
+
+        public Dictionary<string, Student> StudentsDict { get; set; }
+
+        public List<Mark> MarksDict { get; set; }
 
         public ICommand AddCommand
         {
@@ -73,11 +88,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                string s = Microsoft.VisualBasic.Interaction.InputBox("Введите предмет:", "Предмет", "");
                                s = s.Trim().ToUpper();
                                Subjects.Add(s);
+                               SubjectsViewSource.View.Refresh();
                                OnPropertyChanged("Subjects");
+                               OnPropertyChanged("SubjectsViewSource");
 
                                SelectedSubject = s;
                                OnPropertyChanged("SelectedSubject");
-                               CreateList(s);
+                               CreateDict(s);
                            }));
             }
         }
@@ -86,10 +103,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             get
             {
-                return _addCommand ?? (_addCommand =
+                return _saveCommand ?? (_saveCommand =
                            new RelayCommand<object>(o =>
                            {
-                               //TODO
+                               StationManager.DataStorage.SaveMarks(MarksDict);
+                               OnPropertyChanged("Marks");
                            }));
             }
         }
@@ -101,36 +119,62 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _removeCommand ?? (_removeCommand =
                            new RelayCommand<object>(o =>
                            {
-                               //TODO remove from DB
-                               Subjects.Remove(SelectedSubject);
-                               OnPropertyChanged("Subjects");
-                               SelectedSubject = null;
-                               OnPropertyChanged("SelectedSubject");
+                               if (StationManager.DataStorage.RemoveMarks(MarksDict))
+                               {
+                                   var res = MessageBox.Show(
+                                       $"Вы действительно хотите удалить '{SelectedSubject}', '{SelectedType}' со всеми оценками?",
+                                       "Удаление оценок", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                                   if (res == DialogResult.Yes)
+                                   {
+                                       Subjects.Remove(SelectedSubject);
+                                       SubjectsViewSource.View.Refresh();
+                                       OnPropertyChanged("SubjectsViewSource");
+                                       SelectedSubject = null;
+                                       OnPropertyChanged("SelectedSubject");
+                                   }
+                               }
                            }));
             }
         }
 
         #endregion
 
-        void CreateList(string subject)
+        private void CreateDict(string subject)
         {
-            List<Student> l = StationManager.DataStorage.GetStudents(StationManager.CurrentClass);
-            Marks = new List<Mark>();
             string curClassId = StationManager.CurrentClass.ClassId;
 
-            for (int i = 0; i < l.Count; i++)
+            foreach (var stud in StudentsDict.Values)
             {
                 Mark cur = new Mark();
                 cur.ClassId = curClassId;
                 cur.MarkType = SelectedType;
-                cur.StudentId = l[i].Id;
-                cur.StudentName = l[i].StName;
-                cur.StudentSurname = l[i].Surname;
+                cur.StudentId = stud.Id;
+                cur.StudentName = stud.StName;
+                cur.StudentSurname = stud.Surname;
                 cur.Subject = subject;
-                Marks.Add(cur);
+                int t = MarksDict.FindIndex(m => m.StudentId == stud.Id);
+                if (t == -1)
+                    MarksDict.Add(cur);
+                else
+                    MarksDict[t] = cur;
+            }
+        }
+
+        private void RefreshDict()
+        {
+            CreateDict(SelectedSubject);
+
+            var marks = StationManager.DataStorage.GetMarks(StationManager.CurrentClass, SelectedSubject, SelectedType);
+            for (int i = 0; i < marks.Count; i++)
+            {
+                int t = MarksDict.FindIndex(m => m.StudentId == marks[i].StudentId);
+                if (t != -1)
+                    MarksDict[t] = marks[i];
             }
 
-            OnPropertyChanged("Marks");
+            ViewSource.View.Refresh();
+            OnPropertyChanged("MarksDict");
+            OnPropertyChanged("ViewSource");
         }
     }
 }

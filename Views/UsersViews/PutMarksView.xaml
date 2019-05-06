@@ -24,8 +24,8 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="35"></RowDefinition>
         </Grid.RowDefinitions>
-      
-        <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding Subjects}" 
+
+        <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding SubjectsViewSource.View}" 
                   SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
         <ComboBox Grid.Column="5" Margin="5" ItemsSource="{Binding Types}" 
                   SelectedItem="{Binding SelectedType, Mode=TwoWay}"/>
@@ -37,22 +37,22 @@
                 Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=SearchParentWindow}"
                 Content="Выбрать"
                 FontSize="16"/>-->
-        <controls:DataGrid ItemsSource="{Binding Marks}"
+        <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
                            Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="7"
                            Margin="5 20" Width="300"
                            HorizontalAlignment="Left"
-                           AutoGenerateColumns="False" Background="White"
+                           Background="White" AutoGenerateColumns="False"
                            CanUserAddRows="False">
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Имя" IsReadOnly="True"
-                                             Width="100"
-                                             Binding="{Binding StudentName}" />
-                <controls:DataGridTextColumn Header="Фамилия" IsReadOnly="True"
+                <controls:DataGridTextColumn Header="Фамилия" IsReadOnly="True" FontSize="14"
                                              Width="100"
                                              Binding="{Binding StudentSurname}" />
-                <controls:DataGridTextColumn Header="Оценка" FontWeight="SemiBold"
-                                             Binding="{Binding Grade}" />
-              
+                <controls:DataGridTextColumn Header="Имя" IsReadOnly="True" FontSize="14"
+                                             Width="100"
+                                             Binding="{Binding StudentName}" />
+                <controls:DataGridTextColumn Header="Оценка" FontWeight="SemiBold" FontSize="16"
+                                             Binding="{Binding Grade, Mode=TwoWay}" />
+
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <Button Command="{Binding SaveCommand}"
