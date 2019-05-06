@@ -8,10 +8,6 @@ namespace BD_oneLove.Models
 {
     internal class Mark : BaseViewModel
     {
-        public Mark()
-        {
-            
-        }
 
         #region Props
 
