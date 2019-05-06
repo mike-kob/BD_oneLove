@@ -29,9 +29,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.UsersView:
                     ViewsDictionary.Add(viewType, new UsersView());
                     break;
-                //case ViewType.MainView:
-                //    ViewsDictionary.Add(viewType, new TemplateControlView());
-                //    break;
+                case ViewType.PutMarksView:
+                    ViewsDictionary.Add(viewType, new PutMarksView());
+                    break;
                 //case ViewType.AddPersonView:
                 //    ViewsDictionary.Add(viewType, new AddPersonView());
                 //    break;

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using BD_oneLove.Tools;
 
 namespace BD_oneLove.Models
 {
-    internal class Parent
+    internal class Parent : BaseViewModel
     {
         #region Props
 
@@ -17,6 +18,10 @@ namespace BD_oneLove.Models
 
         public string Sex { get; set; }
         public DateTime Birthday { get; set; }
+        public string BirthdayString
+        {
+            get { return Birthday.Year < 1800 ? "" : Birthday.ToString("d-M-yyyy"); }
+        }
 
         public string Index { get; set; }
         public string City { get; set; }
@@ -29,6 +34,8 @@ namespace BD_oneLove.Models
         public string Work { get; set; }
         public string Commentary { get; set; }
 
+        public bool Trustee { get; set; }
+        public string Relation { get; set; }
         #endregion
     }
 }

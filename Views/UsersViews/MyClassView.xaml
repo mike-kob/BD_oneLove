@@ -37,7 +37,7 @@
             <Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>
         </Grid>
         <!--  -->
-        <controls:DataGrid ItemsSource="{Binding ClassStudents}" 
+        <controls:DataGrid ItemsSource="{Binding ClassStudents}"
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
                            AutoGenerateColumns="False"

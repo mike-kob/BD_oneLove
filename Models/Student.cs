@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+using BD_oneLove.Tools;
 
 namespace BD_oneLove.Models
 {
-    internal class Student
+    internal class Student : BaseViewModel
     {
         public string Id { get; set; }
         public string TypeDoc { get; set; }
@@ -34,6 +36,6 @@ namespace BD_oneLove.Models
 
         public Parent Father { get; set; }
         public Parent Mother { get; set; }
-        public ResponPerson[] Trustees { get; set; }
+        public Parent[] Trustees { get; set; }
     }
 }

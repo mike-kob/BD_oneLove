@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
-using MessageBox = System.Windows.MessageBox;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
     internal class ParentsViewModel : BaseViewModel
     {
+
         public ParentsViewModel()
         {
-            
+            MyClass = StationManager.CurrentClass;
+            ClassParents = StationManager.DataStorage.GetParentsInClass(MyClass);
         }
 
         #region Fields
@@ -40,11 +37,16 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _editCommand;
         private ICommand _cancelCommand;
         private ICommand _addCommand;
+        private ICommand _searchCommand;
         private Parent _selectedParent;
 
         #endregion
 
         #region Props
+
+        public Class MyClass { get; set; }
+
+        public List<Parent> ClassParents { get; set; }
 
         public ICommand EditCommand
         {
@@ -55,6 +57,19 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                            {
                               
                            }, IsSelected));
+            }
+        }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               Window w = new SearchParentDialog();
+                               w.ShowDialog();
+                           }));
             }
         }
 
