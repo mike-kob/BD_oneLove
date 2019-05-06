@@ -24,7 +24,7 @@ namespace BD_oneLove.Tools.DataStorage
         List<string> GetYears();
         List<Teacher> GetTeachers(string year);
         List<Teacher> GetTeachers();
-        Teacher UpdateTeacher(Teacher t);
+        Teacher UpdateTeacher(Teacher t, Teacher oldT);
         Teacher AddTeacher(Teacher t);
         bool DeleteTeacher(Teacher t);
 

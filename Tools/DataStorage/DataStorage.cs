@@ -613,19 +613,21 @@ namespace BD_oneLove.Tools.DataStorage
             return s;
         }
 
-       public Teacher UpdateTeacher(Teacher t)
+       public Teacher UpdateTeacher(Teacher t, Teacher oldT)
         {
 
             //to make with parameters
             string sql1 = "UPDATE [user] " +
-                $"SET password = '{t.User.Password}' " +
-                $"WHERE login='{t.User.Username}'";
+                $"SET login='{t.User.Username}', " +
+                $" password = '{t.User.Password}' " +
+                $"WHERE login='{oldT.User.Username}'";
 
 
             string sql2 = "UPDATE  head_teachers " +
            $"SET h_name = '{t.HName}', " + 
            $"surname = '{t.Surname}', " +
-           $"patronymic = '{t.Patronymiс}' " +
+           $"patronymic = '{t.Patronymiс}', " +
+           $"login = '{t.User.Username}' " +
            $"WHERE tab_number='{t.TabNumber}'";
 
        
@@ -648,12 +650,13 @@ namespace BD_oneLove.Tools.DataStorage
                     command.ExecuteNonQuery();
                 }
 
-               
+                if (!UserExistsUseless(t.User.Username))
+                {
                     using (SqlCommand command = new SqlCommand(sql1, myConn))
                     {
                         res = command.ExecuteNonQuery();
                     }
-                
+                }
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
