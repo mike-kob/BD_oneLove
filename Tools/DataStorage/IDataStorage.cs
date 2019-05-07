@@ -54,7 +54,11 @@ namespace BD_oneLove.Tools.DataStorage
         List<Mark> SaveMarks(List<Mark> l);
         bool RemoveMarks(List<Mark> l);
 
-
+        //-------------Comments--------------
+        List<Comment> GetComments(Student s);
+        List<string> GetAllComments();
+        List<Comment> SaveComments(Student s);
+        bool RemoveComments(Comment c);
 
     }
 }
