@@ -15,6 +15,7 @@ namespace BD_oneLove.Tools.Managers
         public static Class CurrentClass { get; set; }
         public static Student CurrentStudent { get; set; }
         public static Teacher CurrentTeacher { get; set; }
+        public static Plan CurrentPlan { get; set; }
         public static UsersViewModel usersView { get; set; }
 
         public static Window MyMain { get; set; }

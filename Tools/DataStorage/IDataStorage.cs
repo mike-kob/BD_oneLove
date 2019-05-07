@@ -5,6 +5,12 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal interface IDataStorage
     {
+        //--------------Plans-----------------
+
+        List<Plan> GetPlans();
+        bool AddPlan(Plan p);
+        bool UpdatePlan(Plan p, Plan oldP);
+        bool DeletePlan(Plan p);
 
         //--------------Users-----------------
 

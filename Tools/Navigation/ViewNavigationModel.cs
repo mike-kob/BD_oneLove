@@ -32,6 +32,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.PutMarksView:
                     ViewsDictionary.Add(viewType, new PutMarksView());
                     break;
+                case ViewType.PlanView:
+                    ViewsDictionary.Add(viewType, new PlanView());
+                    break;
                 //case ViewType.AddPersonView:
                 //    ViewsDictionary.Add(viewType, new AddPersonView());
                 //    break;

@@ -35,7 +35,7 @@ namespace BD_oneLove.ViewModels
                 case "Директор":
                     Items.Add("Учителя", ViewType.TeachersView);
                     Items.Add("Пользователи", ViewType.UsersView);
-                    Items.Add("Табель", ViewType.MarkGrid);
+                    Items.Add("Учебный план", ViewType.PlanView);
                     Items.Add("Классы", ViewType.ClassesView);
                     break;
                 case "Классный руководитель":
