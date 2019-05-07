@@ -35,9 +35,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.SocialPassportView:
                     ViewsDictionary.Add(viewType, new SocialPassportView());
                     break;
-                //case ViewType.EditPersonView:
-                //    ViewsDictionary.Add(viewType, new EditPersonView());
-                //    break;
+                case ViewType.MovementView:
+                    ViewsDictionary.Add(viewType, new MovementView());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
             }
