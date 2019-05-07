@@ -14,12 +14,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         #region Props
         public Teacher Teacher { get; set; }
+        public Teacher OldTeacher { get; set; }
         public bool AddWindow { get; set; }
 
         #endregion
 
         public TeacherAddWindowViewModel()
         {
+            OldTeacher = new Teacher(StationManager.CurrentTeacher.TabNumber);
+            OldTeacher.User.Username = StationManager.CurrentTeacher.User.Username;
             Teacher = StationManager.CurrentTeacher;
             AddWindow = Teacher.TabNumber == null;
         }
@@ -56,7 +59,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
         
                 Teacher t = AddWindow ? StationManager.DataStorage.AddTeacher(Teacher): 
-                    StationManager.DataStorage.UpdateTeacher(Teacher);
+                    StationManager.DataStorage.UpdateTeacher(Teacher, OldTeacher);
   
             if (t != null) win?.Close();
 

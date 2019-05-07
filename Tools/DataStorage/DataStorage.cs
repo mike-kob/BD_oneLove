@@ -10,6 +10,176 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+
+        public bool AddPlan(Plan p)
+        {
+            string sql = $"INSERT INTO [plan] (st_year, date_term1, date_term2, date_year) VALUES ('{p.StYear}', " +
+                        $"@dateterm1, @dateterm2, @dateyear); ";
+     
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.Parameters.Add("@dateterm1", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateterm2", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateyear", SqlDbType.DateTime);
+
+                    command.Parameters["@dateterm1"].Value = (object)p.DateTerm1 ?? DBNull.Value;
+                    command.Parameters["@dateterm2"].Value = (object)p.DateTerm2 ?? DBNull.Value;
+                    command.Parameters["@dateyear"].Value = (object)p.DateYear ?? DBNull.Value;
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
+
+        public bool DeletePlan(Plan p)
+        {
+            string sql = $"DELETE FROM [plan] WHERE st_year = '{p.StYear}'; ";
+    
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+
+            try
+            {
+
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return true;
+
+        }
+
+        public bool UpdatePlan(Plan p, Plan oldP)
+        {
+  
+            string sql1 = "UPDATE [plan] " +
+                $"SET st_year='{p.StYear}', " +
+                $" date_term1=@dateterm1, " +
+                $" date_term2=@dateterm2," +
+                $" date_year=@dateyear " +
+                $"WHERE st_year='{oldP.StYear}';";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                   
+                    command.Parameters.Add("@dateterm1", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateterm2", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateyear", SqlDbType.DateTime);
+
+                    command.Parameters["@dateterm1"].Value = (object)p.DateTerm1 ?? DBNull.Value;
+                    command.Parameters["@dateterm2"].Value = (object)p.DateTerm2 ?? DBNull.Value;
+                    command.Parameters["@dateyear"].Value = (object)p.DateYear ?? DBNull.Value;
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
+
+
+        public List<Plan> GetPlans()
+        {
+            string sql = "SELECT st_year, date_term1, date_term2, date_year" +
+                       " FROM [plan] ";
+
+            List<Plan> res = new List<Plan>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Plan cur = new Plan();
+                        cur.StYear = reader.GetString(0);
+                        cur.DateTerm1 = reader.GetDateTime(1);
+                        cur.DateTerm2 = reader.GetDateTime(2);
+                        cur.DateYear = reader.GetDateTime(3);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
         public void AddUser(User t)
         {
             string sql = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.Password}', " +
@@ -824,19 +994,22 @@ namespace BD_oneLove.Tools.DataStorage
             return s;
         }
 
-        public Teacher UpdateTeacher(Teacher t)
+
+       public Teacher UpdateTeacher(Teacher t, Teacher oldT)
         {
             //to make with parameters
             string sql1 = "UPDATE [user] " +
-                          $"SET password = '{t.User.Password}' " +
-                          $"WHERE login='{t.User.Username}'";
+                $"SET login='{t.User.Username}', " +
+                $" password = '{t.User.Password}' " +
+                $"WHERE login='{oldT.User.Username}'";
 
 
             string sql2 = "UPDATE  head_teachers " +
-                          $"SET h_name = '{t.HName}', " +
-                          $"surname = '{t.Surname}', " +
-                          $"patronymic = '{t.Patronymiс}' " +
-                          $"WHERE tab_number='{t.TabNumber}'";
+           $"SET h_name = '{t.HName}', " + 
+           $"surname = '{t.Surname}', " +
+           $"patronymic = '{t.Patronymiс}', " +
+           $"login = '{t.User.Username}' " +
+           $"WHERE tab_number='{t.TabNumber}'";
 
 
             string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
@@ -856,11 +1029,13 @@ namespace BD_oneLove.Tools.DataStorage
                 }
 
 
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                if (!UserExistsUseless(t.User.Username))
                 {
-                    res = command.ExecuteNonQuery();
+                    using (SqlCommand command = new SqlCommand(sql1, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
                 }
-
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {

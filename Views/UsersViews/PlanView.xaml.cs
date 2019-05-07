@@ -1,4 +1,4 @@
-﻿using BD_oneLove.Tools.Managers;
+﻿using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
@@ -11,20 +11,21 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace BD_oneLove.Views.UsersViews
 {
     /// <summary>
-    /// Логика взаимодействия для TeachersWindowView.xaml
+    /// Логика взаимодействия для PlanView.xaml
     /// </summary>
-    public partial class TeachersAddWindowView : Window
+    public partial class PlanView : UserControl, INavigatable
     {
-        public TeachersAddWindowView()
+        public PlanView()
         {
             InitializeComponent();
-            StationManager.MySettings = this;
-            DataContext = new TeacherAddWindowViewModel();
+            DataContext = new PlanViewModel();
         }
+
     }
 }
