@@ -2,9 +2,15 @@
 {
     internal enum ViewType
     {
+        //основные
+        SignInView,
+        MainView,
 
-        SignInView, MainView, TeachersView, MarkGrid, ClassesView, UsersView,
-
+        //директор
+        TeachersView,
+        UsersView,
+        PlanView,
+        ClassesView,
 
         //классный рук-ль
         MyClassView,
