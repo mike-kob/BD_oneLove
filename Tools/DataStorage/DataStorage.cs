@@ -14,7 +14,7 @@ namespace BD_oneLove.Tools.DataStorage
         public bool AddPlan(Plan p)
         {
             string sql = $"INSERT INTO [plan] (st_year, date_term1, date_term2, date_year) VALUES ('{p.StYear}', " +
-                        $"'{p.DateTerm1}', '{p.DateTerm2}', '{p.DateYear}'); ";
+                        $"@dateterm1, @dateterm2, @dateyear); ";
      
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
@@ -29,6 +29,13 @@ namespace BD_oneLove.Tools.DataStorage
 
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
+                    command.Parameters.Add("@dateterm1", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateterm2", SqlDbType.DateTime);
+                    command.Parameters.Add("@dateyear", SqlDbType.DateTime);
+
+                    command.Parameters["@dateterm1"].Value = (object)p.DateTerm1 ?? DBNull.Value;
+                    command.Parameters["@dateterm2"].Value = (object)p.DateTerm2 ?? DBNull.Value;
+                    command.Parameters["@dateyear"].Value = (object)p.DateYear ?? DBNull.Value;
                     res = command.ExecuteNonQuery();
                 }
             }
