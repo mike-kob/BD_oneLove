@@ -39,24 +39,21 @@ namespace BD_oneLove.Tools.DataStorage
                 myConn?.Close();
             }
         }
-        
+
         public bool DeleteTeacher(Teacher t)
         {
-         
-             string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
+            string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
             string sql2 = $"DELETE FROM [user] WHERE login = '{t.User.Username}'; ";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
 
             try
             {
-
                 myConn.Open();
 
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
-
                     command.ExecuteNonQuery();
                 }
 
@@ -73,20 +70,20 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-               // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
                 return false;
             }
             finally
             {
                 myConn?.Close();
             }
-           return true;
+
+            return true;
         }
 
         public Teacher AddTeacher(Teacher t)
 
         {
-
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                           $"'{t.User.Username}', 'Классный руководитель'); ";
 
@@ -100,10 +97,12 @@ namespace BD_oneLove.Tools.DataStorage
             int res = 0;
             Teacher temp = null;
 
-            if(TeacherExists(t.TabNumber)) {
+            if (TeacherExists(t.TabNumber))
+            {
                 MessageBox.Show("Классный руководитель с таким номером уже существует!");
                 return null;
             }
+
             try
             {
                 myConn.Open();
@@ -129,10 +128,10 @@ namespace BD_oneLove.Tools.DataStorage
                 using (SqlCommand command = new SqlCommand(sql3, myConn))
                 {
                     var reader = command.ExecuteReader();
-                   
+
                     while (reader.Read())
                     {
-                        temp = new Teacher(reader.GetString(0));  
+                        temp = new Teacher(reader.GetString(0));
                     }
 
                     reader.Close();
@@ -146,6 +145,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return temp;
         }
 
@@ -193,7 +193,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int count = 0;
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
-                    count = (int)command.ExecuteScalar();
+                    count = (int) command.ExecuteScalar();
                 }
 
                 myConn.Close();
@@ -824,22 +824,20 @@ namespace BD_oneLove.Tools.DataStorage
             return s;
         }
 
-       public Teacher UpdateTeacher(Teacher t)
+        public Teacher UpdateTeacher(Teacher t)
         {
-
             //to make with parameters
             string sql1 = "UPDATE [user] " +
-                $"SET password = '{t.User.Password}' " +
-                $"WHERE login='{t.User.Username}'";
+                          $"SET password = '{t.User.Password}' " +
+                          $"WHERE login='{t.User.Username}'";
 
 
             string sql2 = "UPDATE  head_teachers " +
-           $"SET h_name = '{t.HName}', " + 
-           $"surname = '{t.Surname}', " +
-           $"patronymic = '{t.Patronymiс}' " +
-           $"WHERE tab_number='{t.TabNumber}'";
+                          $"SET h_name = '{t.HName}', " +
+                          $"surname = '{t.Surname}', " +
+                          $"patronymic = '{t.Patronymiс}' " +
+                          $"WHERE tab_number='{t.TabNumber}'";
 
-       
 
             string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
 
@@ -849,22 +847,20 @@ namespace BD_oneLove.Tools.DataStorage
 
             try
             {
-
                 myConn.Open();
 
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
-
                     command.ExecuteNonQuery();
                 }
 
-               
-                    using (SqlCommand command = new SqlCommand(sql1, myConn))
-                    {
-                        res = command.ExecuteNonQuery();
-                    }
-                
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
@@ -891,6 +887,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return temp;
         }
 
@@ -1193,7 +1190,6 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
-
         }
 
         public List<Mark> GetMarks(Class c, string subject, string type)
@@ -1266,7 +1262,7 @@ namespace BD_oneLove.Tools.DataStorage
                             var res = command.ExecuteNonQuery();
                         }
                     }
-                    else if(!String.IsNullOrEmpty(l[i].Grade))
+                    else if (!String.IsNullOrEmpty(l[i].Grade))
                     {
                         sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
                               " OUTPUT INSERTED.mark_id " +
@@ -1290,8 +1286,8 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
-            return l;
 
+            return l;
         }
 
         public bool RemoveMarks(List<Mark> l)
@@ -1305,7 +1301,7 @@ namespace BD_oneLove.Tools.DataStorage
                     if (!String.IsNullOrEmpty(l[i].Id))
                     {
                         string sql = "DELETE FROM marks " +
-                              $"WHERE mark_id={l[i].Id};";
+                                     $"WHERE mark_id={l[i].Id};";
 
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
@@ -1313,6 +1309,148 @@ namespace BD_oneLove.Tools.DataStorage
                         }
                     }
                 }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+
+        //-----------------Comments----------------
+        public List<Comment> GetComments(Student s)
+        {
+            string sql =
+                "SELECT comment_id, descr " +
+                " FROM Comments " +
+                $"WHERE student_id={s.Id};";
+
+            List<Comment> res = new List<Comment>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Comment cur = new Comment();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.Descr = reader.GetString(1);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<string> GetAllComments()
+        {
+            string sql =
+                "SELECT comment " +
+                " FROM helping_comments; ";
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<Comment> SaveComments(Student s)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                foreach (Comment c in s.Comments)
+                {
+                    if (String.IsNullOrEmpty(c.Id))
+                    {
+                        string sql = "INSERT INTO comments (student_id, descr) " +
+                                     "OUTPUT INSERTED.comment_id " +
+                                     $" VALUES ({s.Id},  '{c}');";
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            var res = (long) command.ExecuteScalar();
+                            c.Id = res.ToString();
+                        }
+                    }
+                }
+
+                return s.Comments;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return s.Comments;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool RemoveComments(Comment c)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                if (!String.IsNullOrEmpty(c.Id))
+                {
+                    string sql = "DELETE FROM comments " +
+                                 $"WHERE comment_id={c.Id};";
+                    using (SqlCommand command = new SqlCommand(sql, myConn))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
                 return true;
             }
             catch (Exception ex)
