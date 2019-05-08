@@ -13,7 +13,13 @@ namespace BD_oneLove.Models
         public string Number { get; set; }
         public string Letter { get; set; }
         public string StYear { get; set; }
-      
+        public string NumOfStudents { get; set; }
+        public string NumberLetter {
+            get
+            {
+                return  Number + "-" + Letter;
+            }
+        }
 
         public Class(string id)
         {

@@ -10,6 +10,50 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+
+        public List<Class> GetClasses(string year)
+        {
+            string sql = "SELECT c.class_id, c.number, c.letter, COUNT(cs.student_id) " +
+                $"FROM (classes c LEFT OUTER JOIN classes_students cs ON c.class_id=cs.class_id) " +
+                $"WHERE c.st_year = '{year}' " +
+                $"GROUP BY c.class_id, c.number, c.letter; ";
+
+            List<Class> res = new List<Class>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Class cur = new Class(reader.GetInt64(0).ToString());
+                        cur.Number = reader.GetString(1);
+                        cur.Letter = reader.GetString(2);
+                        cur.NumOfStudents = reader.GetInt32(3).ToString();
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
         public bool DeleteUser(User u)
         {
             string sql = $"DELETE FROM [user] WHERE login = '{u.Username}'; ";
@@ -533,7 +577,7 @@ namespace BD_oneLove.Tools.DataStorage
 
         public List<string> GetYears()
         {
-            string sql = "SELECT st_year FROM Classes";
+            string sql = "SELECT DISTINCT st_year FROM Classes";
             List<string> list = new List<string>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try

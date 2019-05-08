@@ -21,18 +21,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public List<Teacher> SchoolTeachers { get; set; }
         public List<string> SchoolYears { get; set; }
         public Teacher SelectedTeacher { get; set; }
-        /*   public string SelectedYear
-           {
-               get { return _selYear; }
-               set
-               {
-                   _selYear = value;
-                   SchoolTeachers = StationManager.DataStorage.GetTeachers(SelectedYear);
-                   OnPropertyChanged("SelectedYear");
-                   OnPropertyChanged("SchoolTeachers");
-               }
-           }*/
-
+   
 
         #endregion
 
