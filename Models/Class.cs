@@ -14,6 +14,7 @@ namespace BD_oneLove.Models
         public string Letter { get; set; }
         public string StYear { get; set; }
         public string NumOfStudents { get; set; }
+
         public string NumberLetter {
             get
             {
@@ -24,6 +25,10 @@ namespace BD_oneLove.Models
         public Class(string id)
         {
             ClassId = id;
+        }
+
+        public Class()
+        {
         }
     }
 }

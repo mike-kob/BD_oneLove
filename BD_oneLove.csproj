@@ -100,6 +100,7 @@
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\AddClassDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddStudentDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ParentCardViewModel.cs" />
@@ -113,6 +114,9 @@
     <Compile Include="ViewModels\UsersViewModels\TeachersViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\UsersAddWindowViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\UsersViewModel.cs" />
+    <Compile Include="Views\UserDialogs\AddClassDialogView.xaml.cs">
+      <DependentUpon>AddClassDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserDialogs\AddPlanDialogView.xaml.cs">
       <DependentUpon>AddPlanDialogView.xaml</DependentUpon>
     </Compile>
@@ -192,6 +196,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\UserDialogs\AddClassDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserDialogs\AddPlanDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

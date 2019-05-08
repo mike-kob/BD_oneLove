@@ -10,6 +10,149 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+        public bool DeleteClass(Class c)
+        {
+            string sql = $"DELETE FROM classes WHERE class_id = '{c.ClassId}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
+
+        public bool AddClass(Class c)
+        {
+            string sql = $"INSERT INTO classes (number, letter, st_year) VALUES ('{c.Number}', " +
+                          $"'{c.Letter}', '{c.StYear}'); ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return true;
+        }
+
+        public bool UpdateClass(Class c)
+        {
+            string sql = "UPDATE classes " +
+                  $"SET number='{c.Number}', " +
+                  $" letter = '{c.Letter}', " +
+                  $" st_year = '{c.StYear}' "  +
+                  $"WHERE class_id ='{c.ClassId}';";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+
+
+        }
+
+
+
+        public List<Teacher> GetTeachers(Class c)
+        {
+            string sql =
+               "SELECT ht.tab_number, ht.h_name, ht.patronymic, ht.surname" +
+               " FROM (head_teachers ht INNER JOIN head_teachers_classes htc ON ht.tab_number=htc.tab_number) " +
+               $"WHERE htc.class_id='{c.ClassId}'";
+
+            List<Teacher> res = new List<Teacher>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Teacher cur = new Teacher(reader.GetString(0));
+                        cur.HName = reader.GetString(1);
+                        cur.Patronymiс = reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
 
         public List<Class> GetClasses(string year)
         {
@@ -32,6 +175,7 @@ namespace BD_oneLove.Tools.DataStorage
                         Class cur = new Class(reader.GetInt64(0).ToString());
                         cur.Number = reader.GetString(1);
                         cur.Letter = reader.GetString(2);
+                        cur.StYear = year;
                         cur.NumOfStudents = reader.GetInt32(3).ToString();
 
                         res.Add(cur);

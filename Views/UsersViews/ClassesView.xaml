@@ -20,7 +20,7 @@
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="209*"></ColumnDefinition>
-                <ColumnDefinition Width="140*"/>
+                <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
@@ -28,41 +28,27 @@
             </Grid.RowDefinitions>
 
 
-            <Button Command="{Binding AddTeacherCommand}" Margin="15 5" >Добавить</Button>
-            <Button Command="{Binding EditTeacherCommand}" Margin="15 5" Grid.Column="1" >Редак-ть</Button>
-            <Button Command="{Binding DeleteTeacherCommand}" Margin="15 5" Grid.Column="2" >Удалить</Button>
-            <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Years}"
-                      SelectedItem="{Binding SelectedYear}"></ComboBox> 
+            <Button Command="{Binding AddClassCommand}" Grid.Row="1" Margin="15 5" >Добавить класс</Button>
+            <Button Command="{Binding EditClassCommand}" Grid.Row="1" Margin="15 5" Grid.Column="1" >Редак-ть класс</Button>
+            <Button Command="{Binding DeleteClassCommand}" Grid.Row="1" Margin="15 5" Grid.Column="2" >Удалить класс</Button>
+            <Button Command="{Binding AddTeacherCommand}" Grid.Row="0" Margin="15 5" Grid.Column="4" >Добавить учителя</Button>
+            <Button Command="{Binding DeleteTeacherCommand}" Grid.Row="1" Margin="15 5" Grid.Column="4" >Удалить учителя</Button>
+            <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Years}"
+                      SelectedItem="{Binding SelectedYear}"></ComboBox>
         </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"></ColumnDefinition>
+                <ColumnDefinition Width="500"/>
+                <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-      
-        <controls:DataGrid ItemsSource="{Binding Classes}" 
+
+            <controls:DataGrid ItemsSource="{Binding Classes}" 
                            SelectedItem="{Binding SelectedClass}"
                            Grid.Column="0" 
                            Margin="20"
-                           AutoGenerateColumns="False">
-            <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Номер"
-                                             Binding="{Binding ClassId, Mode=OneWay}"/>
-                <controls:DataGridTextColumn Header="Класс"
-                                             Binding="{Binding NumberLetter, Mode=OneWay}"/>
-                <controls:DataGridTextColumn Header="Количество учеников"
-                                             Binding="{Binding NumOfStudents, Mode=OneWay}"/>
-
-            </controls:DataGrid.Columns>
-
-           </controls:DataGrid>
-
-            <controls:DataGrid  ItemsSource="{Binding Classes}" 
-                           SelectedItem="{Binding SelectedClass}"
-                           Grid.Column="1"
-                           Margin="20"
-                           AutoGenerateColumns="False">
+                           AutoGenerateColumns="False" Grid.ColumnSpan="2">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Номер"
                                              Binding="{Binding ClassId, Mode=OneWay}"/>
@@ -75,9 +61,28 @@
 
             </controls:DataGrid>
 
+            <controls:DataGrid  ItemsSource="{Binding Teachers}" 
+                           SelectedItem="{Binding SelectedTeacher}"
+                           Grid.Column="2"
+                           Margin="20"
+                           AutoGenerateColumns="False">
+                <controls:DataGrid.Columns>
+                    <controls:DataGridTextColumn Header="Таб. номер"
+                                             Binding="{Binding TabNumber, Mode=OneWay}"/>
+                    <controls:DataGridTextColumn Header="Фамилия"
+                                             Binding="{Binding Surname, Mode=OneWay}"/>
+                    <controls:DataGridTextColumn Header="Имя"
+                                             Binding="{Binding HName, Mode=OneWay}"/>
+                    <controls:DataGridTextColumn Header="Отчество"
+                                             Binding="{Binding Patronymic, Mode=OneWay}"/>
+
+                </controls:DataGrid.Columns>
+
+            </controls:DataGrid>
+
 
         </Grid>
 
     </Grid>
-   
+
 </UserControl>

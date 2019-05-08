@@ -39,10 +39,16 @@ namespace BD_oneLove.Tools.DataStorage
         List<Class> GetClasses(string year);
         List<Student> GetStudents(Class c);
         List<Parent> GetParentsInClass(Class c);
+        bool AddClass(Class c);
+        bool UpdateClass(Class c);
+        bool DeleteClass(Class c);
+
+
 
         //--------------Teachers--------------
         List<string> GetYears();
         List<Teacher> GetTeachers(string year);
+        List<Teacher> GetTeachers(Class c);
         List<Teacher> GetTeachers();
         Teacher UpdateTeacher(Teacher t, Teacher oldT);
         Teacher AddTeacher(Teacher t);
