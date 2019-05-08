@@ -14,6 +14,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         #region Props
         public User User { get; set; }
+        public User OldUser { get; set; }
+        public bool AddWindow { get; set; }
+
 
         public string[] Positions
         {
@@ -34,7 +37,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         public UsersAddWindowViewModel()
         {
-            User = new User();
+            User = StationManager.CurrentUser;
+            OldUser = new User();
+            OldUser.Username = User.Username;
+            AddWindow = User.Username == null;
+
         }
 
         public ICommand CancelCommand
@@ -58,7 +65,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void SaveImplementation(Window win)
         {
-            StationManager.DataStorage.AddUser(User);
+            bool res = AddWindow ? StationManager.DataStorage.AddUser(User) :
+                StationManager.DataStorage.UpdateUser(User, OldUser);
             win?.Close();
         }
 

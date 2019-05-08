@@ -1,4 +1,5 @@
-﻿using BD_oneLove.Tools.Navigation;
+﻿using BD_oneLove.Tools.Managers;
+using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace BD_oneLove.Views.UsersViews
         public TeachersView()
         {
             InitializeComponent();
-            DataContext = new TeachersViewModel();
+            StationManager.TeachersView = new TeachersViewModel();
+            DataContext = StationManager.TeachersView;
 
         }
     }

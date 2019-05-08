@@ -109,11 +109,17 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             SchoolTeachers = StationManager.DataStorage.GetTeachers();
         }
 
+        public void PublicRefreshList()
+        {
+            SchoolTeachers = StationManager.DataStorage.GetTeachers();
+            OnPropertyChanged("SchoolTeachers");
+        }
+
         private void RefreshList()
         {
             SchoolTeachers = StationManager.DataStorage.GetTeachers();
             OnPropertyChanged("SchoolTeachers");
-            StationManager.usersView?.RefreshList();
+            StationManager.usersView?.PublicRefreshList();
         }
     }
 }

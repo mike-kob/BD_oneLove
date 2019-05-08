@@ -10,6 +10,71 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+        public bool DeleteUser(User u)
+        {
+            string sql = $"DELETE FROM [user] WHERE login = '{u.Username}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
+
+        public bool UpdateUser(User u, User oldU)
+        {
+            string sql = "UPDATE [user] " +
+               $"SET login='{u.Username}', " +
+               $" password = '{u.Password}' " +
+               $"WHERE login='{oldU.Username}'";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                MessageBox.Show("Пользователь с таким логином уже существует", "Warning");
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
 
         public bool AddPlan(Plan p)
         {
@@ -180,7 +245,7 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        public void AddUser(User t)
+        public bool AddUser(User t)
         {
             string sql = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.Password}', " +
                          $"'{t.Username}', '{t.AccessType}'); ";
@@ -203,18 +268,20 @@ namespace BD_oneLove.Tools.DataStorage
             catch (Exception ex)
             {
                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
             }
             finally
             {
                 myConn?.Close();
             }
+            return true;
         }
         
         public bool DeleteTeacher(Teacher t)
         {
          
              string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
-            string sql2 = $"DELETE FROM [user] WHERE login = '{t.User.Username}'; ";
+          
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
 
@@ -236,10 +303,7 @@ namespace BD_oneLove.Tools.DataStorage
                     res = command.ExecuteNonQuery();
                 }
 
-                using (SqlCommand command = new SqlCommand(sql2, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
+                DeleteUser(t.User);
             }
             catch (Exception ex)
             {
@@ -998,11 +1062,7 @@ namespace BD_oneLove.Tools.DataStorage
         {
 
             //to make with parameters
-            string sql1 = "UPDATE [user] " +
-                $"SET login='{t.User.Username}', " +
-                $" password = '{t.User.Password}' " +
-                $"WHERE login='{oldT.User.Username}'";
-
+      
 
             string sql2 = "UPDATE  head_teachers " +
            $"SET h_name = '{t.HName}', " + 
@@ -1023,7 +1083,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
 
                 myConn.Open();
-
+               
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
@@ -1031,12 +1091,12 @@ namespace BD_oneLove.Tools.DataStorage
                     command.ExecuteNonQuery();
                 }
 
+                //maybe it is possible just to use (!UserExists(...)) if login is AK in head_teachers
                 if (!UserExistsUseless(t.User.Username))
                 {
-                    using (SqlCommand command = new SqlCommand(sql1, myConn))
-                    {
-                        res = command.ExecuteNonQuery();
-                    }
+                    bool flag = UpdateUser(t.User, oldT.User);
+                    if (!flag) return temp;
+                    
                 }
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
