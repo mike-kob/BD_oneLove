@@ -54,6 +54,9 @@ namespace BD_oneLove.Tools.DataStorage
         Teacher AddTeacher(Teacher t);
         bool DeleteTeacher(Teacher t);
         bool TeacherExists(string tabNum);
+        Teacher GetTeacher(string id);
+        bool AddTeacherClass(Teacher t, Class c);
+        bool DeleteTeacherClass(Teacher t, Class c);
 
 
         //-------------Marks-------------------

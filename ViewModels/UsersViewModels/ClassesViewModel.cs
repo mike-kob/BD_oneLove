@@ -45,8 +45,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             set
             {
                 _selClass = value;
-                Teachers = StationManager.DataStorage.GetTeachers(SelectedClass);
-                OnPropertyChanged("Teachers");
+                RefreshTeachersList();
             }
         }
 
@@ -77,7 +76,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void AddTeacherImplementation()
         {
-            throw new NotImplementedException();
+            StationManager.CurrentClass = SelectedClass;
+            AddTeacherClassView win = new AddTeacherClassView();
+            win.Owner = StationManager.MyMain;
+            win.ShowDialog();
+            RefreshTeachersList();
         }
 
         public ICommand DeleteTeacherCommand
@@ -91,7 +94,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void DeleteTeacherImplementation()
         {
-            throw new NotImplementedException();
+            StationManager.DataStorage.DeleteTeacherClass(SelectedTeacher,  SelectedClass);
+            RefreshTeachersList();
         }
 
         public ICommand AddClassCommand
@@ -145,6 +149,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             StationManager.DataStorage.DeleteClass(SelectedClass);
             RefreshList();
+        }
+
+        private void RefreshTeachersList()
+        {
+            if (SelectedClass!=null) Teachers = StationManager.DataStorage.GetTeachers(SelectedClass);
+            OnPropertyChanged("Teachers");
         }
 
         private void RefreshList()

@@ -10,6 +10,102 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+        public bool DeleteTeacherClass(Teacher t,Class c)
+        {
+            string sql = $"DELETE FROM head_teachers_classes WHERE class_id = '{c.ClassId}' AND tab_number='{t.TabNumber}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+            return true;
+        }
+
+        public bool AddTeacherClass(Teacher t, Class c)
+        {
+            string sql = $"INSERT INTO head_teachers_classes (class_id,tab_number) VALUES ('{c.ClassId}', " +
+                         $"'{t.TabNumber}'); ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return true;
+        }
+
+        public Teacher GetTeacher(string id)
+        {
+            string sql = $"SELECT h_name, patronymic, surname FROM head_teachers WHERE tab_number='{id}'";
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+                myConn.Open();
+                Teacher t = null;
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        t = new Teacher(id);
+                        t.HName = reader.GetString(0);
+                        t.Patronymiс = reader.GetString(1);
+                        t.Surname = reader.GetString(2);
+                    }
+
+                    reader.Close();
+                }
+
+                myConn.Close();
+                return t;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return null;
+        }
+
         public bool DeleteClass(Class c)
         {
             string sql = $"DELETE FROM classes WHERE class_id = '{c.ClassId}'; ";
@@ -757,10 +853,12 @@ namespace BD_oneLove.Tools.DataStorage
         public List<Teacher> GetTeachers(string year)
         {
             string sql =
-                "SELECT ht.tab_number, ht.h_name, ht.patronymic, c.class_id, c.number, c.letter, c.st_year, ht.surname" +
-                " FROM (head_teachers ht INNER JOIN head_teachers_classes htc ON ht.tab_number=htc.tab_number) " +
-                "INNER JOIN classes c ON c.class_id = htc.class_id " +
-                $"WHERE c.st_year='{year}'";
+                "SELECT x.tab_number, x.h_name, x.patronymic, x.surname " +
+                "FROM head_teachers x " +
+                "WHERE x.tab_number NOT IN (SELECT ht.tab_number " +
+                "FROM (head_teachers ht INNER JOIN head_teachers_classes htc ON ht.tab_number=htc.tab_number) " +
+                "INNER JOIN classes c ON htc.class_id = c.class_id " +
+                $"WHERE c.st_year='{year}' ); ";
 
             List<Teacher> res = new List<Teacher>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -776,13 +874,7 @@ namespace BD_oneLove.Tools.DataStorage
                         Teacher cur = new Teacher(reader.GetString(0));
                         cur.HName = reader.GetString(1);
                         cur.Patronymiс = reader.GetString(2);
-                        cur.Surname = reader.GetString(7);
-                        Class c = new Class(reader.GetInt64(3).ToString());
-                        c.Number = reader.GetString(4);
-                        c.Letter = reader.GetString(5);
-                        c.StYear = reader.GetString(6);
-                        cur.Class = c;
-
+                        cur.Surname = reader.GetString(3);
                         res.Add(cur);
                     }
 
