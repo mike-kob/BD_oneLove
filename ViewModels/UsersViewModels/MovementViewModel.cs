@@ -1,10 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using BD_oneLove.Views.UserDialogs;
+using MessageBox = System.Windows.MessageBox;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -52,7 +56,20 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _addIncomeCommand ?? (_addIncomeCommand =
                            new RelayCommand<object>(o =>
                            {
-                              
+                              Window w = new ChooseStudentDialog();
+                              bool? r = w.ShowDialog();
+                              if (r == true)
+                              {
+                                  Movement m = new Movement();
+                                  m.Income = true;
+                                  m.StudentId = StationManager.CurrentStudent.Id;
+                                  m.StudentFIO = StationManager.CurrentStudent.SurnameNamePatr;
+                                   Incomes.Add(m);
+                                   IncomeViewSource.View.Refresh();
+                                   OnPropertyChanged("IncomeViewSource");
+                                   SelectedIncome = m;
+                                   OnPropertyChanged("SelectedIncome");
+                               }
                            }));
             }
         }
@@ -64,7 +81,20 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _addOutcomeCommand ?? (_addOutcomeCommand =
                            new RelayCommand<object>(o =>
                            {
-
+                               Window w = new ChooseStudentDialog();
+                               bool? r = w.ShowDialog();
+                               if (r == true)
+                               {
+                                   Movement m = new Movement();
+                                   m.Income = false;
+                                   m.StudentId = StationManager.CurrentStudent.Id;
+                                   m.StudentFIO = StationManager.CurrentStudent.SurnameNamePatr;
+                                   Outcomes.Add(m);
+                                   OutcomeViewSource.View.Refresh();
+                                   OnPropertyChanged("OutcomeViewSource");
+                                   SelectedOutcome = m;
+                                   OnPropertyChanged("SelectedOutcome");
+                               }
                            }));
             }
         }
@@ -76,7 +106,17 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _removeIncomeCommand ?? (_removeIncomeCommand =
                            new RelayCommand<object>(o =>
                            {
-
+                               var res = MessageBox.Show($"Вы действительно хотите удалить прибытие ученка {SelectedIncome.StudentFIO}?", "Удаление",
+                                   MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                               if (res == MessageBoxResult.Yes)
+                               {
+                                   StationManager.DataStorage.RemoveMovement(SelectedIncome);
+                                   Incomes.Remove(SelectedIncome);
+                                   IncomeViewSource.View.Refresh();
+                                   OnPropertyChanged("IncomeViewSource");
+                                   SelectedIncome = null;
+                                   OnPropertyChanged("SelectedIncome");
+                               }
                            }));
             }
         }
@@ -88,7 +128,17 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _removeOutcomeCommand ?? (_removeOutcomeCommand =
                            new RelayCommand<object>(o =>
                            {
-
+                               var res = MessageBox.Show($"Вы действительно хотите удалить выбытие ученка {SelectedOutcome.StudentFIO}?", "Удаление",
+                                   MessageBoxButton.YesNoCancel, MessageBoxImage.Warning);
+                               if (res == MessageBoxResult.Yes)
+                               {
+                                   StationManager.DataStorage.RemoveMovement(SelectedOutcome);
+                                   Outcomes.Remove(SelectedOutcome);
+                                   OutcomeViewSource.View.Refresh();
+                                   OnPropertyChanged("OutcomeViewSource");
+                                   SelectedOutcome = null;
+                                   OnPropertyChanged("SelectedOutcome");
+                               }
                            }));
             }
         }
@@ -100,7 +150,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _saveCommand ?? (_saveCommand =
                            new RelayCommand<object>(o =>
                            {
-
+                               StationManager.DataStorage.SaveMovements(Incomes);
+                               StationManager.DataStorage.SaveMovements(Outcomes);
                            }));
             }
         }

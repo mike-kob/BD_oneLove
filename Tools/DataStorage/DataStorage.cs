@@ -1728,7 +1728,7 @@ namespace BD_oneLove.Tools.DataStorage
                 {
                     if (!String.IsNullOrEmpty(mov.Id))
                     {
-                        string sql = "UPDATE Motion" +
+                        string sql = "UPDATE Motion " +
                                      "SET sch_city=@city, sch_region=@region, sch_country=@country, motion_date=@date " +
                                      $"WHERE motion_id='{mov.Id}'";
                         using (SqlCommand command = new SqlCommand(sql, myConn))
@@ -1755,12 +1755,13 @@ namespace BD_oneLove.Tools.DataStorage
                     else
                     {
                         string sql =
-                            "INSERT INTO Motion (income_st_id, outcome_st_id, sch_city, sch_region, sch_country, motion_date) " +
+                            "INSERT INTO Motion (income_st_id, outsome_st_id, sch_city, sch_region, sch_country, motion_date) " +
                             "OUTPUT INSERTED.motion_id " +
-                            "VALUES (@in_id, @out_id  @city, @region, @country, @date);";
+                            "VALUES (@in_id, @out_id,  @city, @region, @country, @date);";
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
                             command.Parameters.Add("@in_id", SqlDbType.BigInt);
+                            command.Parameters.Add("@out_id", SqlDbType.BigInt);
                             command.Parameters["@in_id"].Value = mov.Income ? (object) mov.StudentId : DBNull.Value;
                             command.Parameters["@out_id"].Value = !mov.Income ? (object) mov.StudentId : DBNull.Value;
 

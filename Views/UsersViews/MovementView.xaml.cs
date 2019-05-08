@@ -1,6 +1,8 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media;
 using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels.UsersViewModels;
+using Microsoft.Windows.Controls;
 
 namespace BD_oneLove.Views.UsersViews
 {
@@ -14,5 +16,6 @@ namespace BD_oneLove.Views.UsersViews
             InitializeComponent();
             DataContext = new MovementViewModel();
         }
+
     }
 }

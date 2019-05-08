@@ -36,24 +36,27 @@
                            Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
                            Margin="5 20" Width="800"
                            HorizontalAlignment="Left"
-                           Background="White" AutoGenerateColumns="True"
-                           CanUserAddRows="False">
+                           Background="White" AutoGenerateColumns="False"
+                           CanUserAddRows="False"
+                           >
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="ФИО" IsReadOnly="True" FontSize="14"
-                                             Width="100"
+                                             Width="3*"
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
-                                             Width="100"
+                                             Width="*"
                                              Binding="{Binding MovementDate}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
-                                             Width="100"
-                                             Binding="{Binding SchCity}" />
+                                             Width="*"
+                                             Binding="{Binding SchCity}" >
+
+                </controls:DataGridTextColumn>
                 <controls:DataGridTextColumn Header="Область" IsReadOnly="False" FontSize="14"
-                                             Width="100"
+                                             Width="*"
                                              Binding="{Binding SchRegion}" />
                 <controls:DataGridTextColumn Header="Страна" IsReadOnly="False" FontSize="14"
-                                             Width="100"
-                                             Binding="{Binding MovementDate}" />
+                                             Width="*"
+                                             Binding="{Binding SchCountry}" />
 
             </controls:DataGrid.Columns>
         </controls:DataGrid>
@@ -75,24 +78,24 @@
                            Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"
                            Margin="5 20" Width="800"
                            HorizontalAlignment="Left"
-                           Background="White" AutoGenerateColumns="True"
+                           Background="White" AutoGenerateColumns="False"
                            CanUserAddRows="False">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="ФИО" IsReadOnly="True" FontSize="14"
-                                             Width="100"
+                                             Width="3*"
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
-                                             Width="100"
+                                             Width="*"
                                              Binding="{Binding MovementDate}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
-                                             Width="100"
+                                             Width="*"
                                              Binding="{Binding SchCity}" />
                 <controls:DataGridTextColumn Header="Область" IsReadOnly="False" FontSize="14"
-                                             Width="100"
+                                             Width="*"
                                              Binding="{Binding SchRegion}" />
                 <controls:DataGridTextColumn Header="Страна" IsReadOnly="False" FontSize="14"
-                                             Width="100"
-                                             Binding="{Binding MovementDate}" />
+                                             Width="*"
+                                             Binding="{Binding SchCountry}" />
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
