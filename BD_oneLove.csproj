@@ -95,12 +95,15 @@
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Comment.cs" />
     <Compile Include="Models\Mark.cs" />
+    <Compile Include="Models\Movement.cs" />
     <Compile Include="Models\Parent.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\ChooseStudentDialogViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\MovementViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
     <Compile Include="Views\UserDialogs\AddCommentDialog.xaml.cs">
       <DependentUpon>AddCommentDialog.xaml</DependentUpon>
@@ -121,8 +124,14 @@
     <Compile Include="Views\UserDialogs\AddPlanDialogView.xaml.cs">
       <DependentUpon>AddPlanDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UserDialogs\ChooseStudentDialog.xaml.cs">
+      <DependentUpon>ChooseStudentDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserDialogs\SearchParentDialog.xaml.cs">
       <DependentUpon>SearchParentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\MovementView.xaml.cs">
+      <DependentUpon>MovementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\PlanView.xaml.cs">
       <DependentUpon>PlanView.xaml</DependentUpon>
@@ -197,7 +206,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-
     <Page Include="Views\UserDialogs\AddPlanDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -206,7 +214,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserDialogs\ChooseStudentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserDialogs\SearchParentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\MovementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

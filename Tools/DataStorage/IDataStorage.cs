@@ -60,5 +60,9 @@ namespace BD_oneLove.Tools.DataStorage
         List<Comment> SaveComments(Student s);
         bool RemoveComments(Comment c);
 
+        //------------Movement---------------
+        List<Movement> GetMovements(Class c);
+        List<Movement> SaveMovements(List<Movement> l);
+        bool RemoveMovement(Movement m);
     }
 }
