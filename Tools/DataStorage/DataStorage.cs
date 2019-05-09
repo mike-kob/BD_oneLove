@@ -560,24 +560,24 @@ namespace BD_oneLove.Tools.DataStorage
             }
             return true;
         }
-        
+
         public bool DeleteTeacher(Teacher t)
         {
+
          
              string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
           
+
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
 
             try
             {
-
                 myConn.Open();
 
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
-
                     command.ExecuteNonQuery();
                 }
 
@@ -591,20 +591,20 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-               // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
                 return false;
             }
             finally
             {
                 myConn?.Close();
             }
-           return true;
+
+            return true;
         }
 
         public Teacher AddTeacher(Teacher t)
 
         {
-
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
                           $"'{t.User.Username}', 'Классный руководитель'); ";
 
@@ -618,10 +618,12 @@ namespace BD_oneLove.Tools.DataStorage
             int res = 0;
             Teacher temp = null;
 
-            if(TeacherExists(t.TabNumber)) {
+            if (TeacherExists(t.TabNumber))
+            {
                 MessageBox.Show("Классный руководитель с таким номером уже существует!");
                 return null;
             }
+
             try
             {
                 myConn.Open();
@@ -647,10 +649,10 @@ namespace BD_oneLove.Tools.DataStorage
                 using (SqlCommand command = new SqlCommand(sql3, myConn))
                 {
                     var reader = command.ExecuteReader();
-                   
+
                     while (reader.Read())
                     {
-                        temp = new Teacher(reader.GetString(0));  
+                        temp = new Teacher(reader.GetString(0));
                     }
 
                     reader.Close();
@@ -664,6 +666,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return temp;
         }
 
@@ -711,7 +714,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int count = 0;
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
-                    count = (int)command.ExecuteScalar();
+                    count = (int) command.ExecuteScalar();
                 }
 
                 myConn.Close();
@@ -1338,9 +1341,9 @@ namespace BD_oneLove.Tools.DataStorage
             return s;
         }
 
+
        public Teacher UpdateTeacher(Teacher t, Teacher oldT)
         {
-
             //to make with parameters
       
 
@@ -1351,7 +1354,6 @@ namespace BD_oneLove.Tools.DataStorage
            $"login = '{t.User.Username}' " +
            $"WHERE tab_number='{t.TabNumber}'";
 
-       
 
             string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
 
@@ -1361,17 +1363,17 @@ namespace BD_oneLove.Tools.DataStorage
 
             try
             {
-
                 myConn.Open();
                
 
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
-
                     command.ExecuteNonQuery();
                 }
 
+
                 //maybe it is possible just to use (!UserExists(...)) if login is AK in head_teachers
+
                 if (!UserExistsUseless(t.User.Username))
                 {
                     bool flag = UpdateUser(t.User, oldT.User);
@@ -1404,6 +1406,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return temp;
         }
 
@@ -1706,7 +1709,6 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
-
         }
 
         public List<Mark> GetMarks(Class c, string subject, string type)
@@ -1779,7 +1781,7 @@ namespace BD_oneLove.Tools.DataStorage
                             var res = command.ExecuteNonQuery();
                         }
                     }
-                    else if(!String.IsNullOrEmpty(l[i].Grade))
+                    else if (!String.IsNullOrEmpty(l[i].Grade))
                     {
                         sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
                               " OUTPUT INSERTED.mark_id " +
@@ -1803,8 +1805,8 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
-            return l;
 
+            return l;
         }
 
         public bool RemoveMarks(List<Mark> l)
@@ -1818,7 +1820,7 @@ namespace BD_oneLove.Tools.DataStorage
                     if (!String.IsNullOrEmpty(l[i].Id))
                     {
                         string sql = "DELETE FROM marks " +
-                              $"WHERE mark_id={l[i].Id};";
+                                     $"WHERE mark_id={l[i].Id};";
 
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
@@ -1826,6 +1828,341 @@ namespace BD_oneLove.Tools.DataStorage
                         }
                     }
                 }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+
+        //-----------------Comments----------------
+        public List<Comment> GetComments(Student s)
+        {
+            string sql =
+                "SELECT comment_id, descr " +
+                " FROM Comments " +
+                $"WHERE student_id={s.Id};";
+
+            List<Comment> res = new List<Comment>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Comment cur = new Comment();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.Descr = reader.GetString(1);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<string> GetAllComments()
+        {
+            string sql =
+                "SELECT comment " +
+                " FROM helping_comments; ";
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<Comment> SaveComments(Student s)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                foreach (Comment c in s.Comments)
+                {
+                    if (String.IsNullOrEmpty(c.Id))
+                    {
+                        string sql = "INSERT INTO comments (student_id, descr) " +
+                                     "OUTPUT INSERTED.comment_id " +
+                                     $" VALUES ({s.Id},  '{c}');";
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            var res = (long) command.ExecuteScalar();
+                            c.Id = res.ToString();
+                        }
+                    }
+                }
+
+                return s.Comments;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return s.Comments;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool RemoveComments(Comment c)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                if (!String.IsNullOrEmpty(c.Id))
+                {
+                    string sql = "DELETE FROM comments " +
+                                 $"WHERE comment_id={c.Id};";
+                    using (SqlCommand command = new SqlCommand(sql, myConn))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        //----------------Movement-----------------
+        public List<Movement> GetMovements(Class c)
+        {
+            string sql1 =
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country " +
+                "FROM(motion INNER JOIN students s on motion.income_st_id = s.student_id) " +
+                " INNER JOIN classes_students cs ON s.student_id = cs.student_id " +
+                $"WHERE cs.class_id='{c.ClassId}'";
+
+            string sql2 =
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country " +
+                "FROM(motion INNER JOIN students s on motion.outsome_st_id = s.student_id) " +
+                " INNER JOIN classes_students cs ON s.student_id = cs.student_id " +
+                $"WHERE cs.class_id='{c.ClassId}'";
+
+            List<Movement> res = new List<Movement>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Movement cur = new Movement();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.StudentId = reader.GetInt64(1).ToString();
+                        string f = reader.GetString(2);
+                        string i = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                        string o = reader.GetString(4);
+                        cur.StudentFIO = f + " " + i + " " + o;
+                        cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Income = true;
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Movement cur = new Movement();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.StudentId = reader.GetInt64(1).ToString();
+                        string f = reader.GetString(2);
+                        string i = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                        string o = reader.GetString(4);
+                        cur.StudentFIO = f + " " + i + " " + o;
+                        cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Income = false;
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<Movement> SaveMovements(List<Movement> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                foreach (Movement mov in l)
+                {
+                    if (!String.IsNullOrEmpty(mov.Id))
+                    {
+                        string sql = "UPDATE Motion " +
+                                     "SET sch_city=@city, sch_region=@region, sch_country=@country, motion_date=@date " +
+                                     $"WHERE motion_id='{mov.Id}'";
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            if (String.IsNullOrEmpty(mov.SchCity))
+                                command.Parameters.AddWithValue("@city", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@city", mov.SchCity);
+
+                            if (String.IsNullOrEmpty(mov.SchRegion))
+                                command.Parameters.AddWithValue("@region", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@region", mov.SchRegion);
+
+                            if (String.IsNullOrEmpty(mov.SchCountry))
+                                command.Parameters.AddWithValue("@country", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@country", mov.SchCountry);
+
+                            command.Parameters.AddWithValue("@date", mov.MovementDate);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    else
+                    {
+                        string sql =
+                            "INSERT INTO Motion (income_st_id, outsome_st_id, sch_city, sch_region, sch_country, motion_date) " +
+                            "OUTPUT INSERTED.motion_id " +
+                            "VALUES (@in_id, @out_id,  @city, @region, @country, @date);";
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            command.Parameters.Add("@in_id", SqlDbType.BigInt);
+                            command.Parameters.Add("@out_id", SqlDbType.BigInt);
+                            command.Parameters["@in_id"].Value = mov.Income ? (object) mov.StudentId : DBNull.Value;
+                            command.Parameters["@out_id"].Value = !mov.Income ? (object) mov.StudentId : DBNull.Value;
+
+                            if (String.IsNullOrEmpty(mov.SchCity))
+                                command.Parameters.AddWithValue("@city", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@city", mov.SchCity);
+
+                            if (String.IsNullOrEmpty(mov.SchRegion))
+                                command.Parameters.AddWithValue("@region", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@region", mov.SchRegion);
+
+                            if (String.IsNullOrEmpty(mov.SchCountry))
+                                command.Parameters.AddWithValue("@country", DBNull.Value);
+                            else
+                                command.Parameters.AddWithValue("@country", mov.SchCountry);
+                   
+                            command.Parameters.AddWithValue("@date", mov.MovementDate);
+
+                            var t = (long) command.ExecuteScalar();
+                            mov.Id = t.ToString();
+                        }
+                    }
+                }
+
+
+                return l;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return l;
+        }
+
+        public bool RemoveMovement(Movement m)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                if (!String.IsNullOrEmpty(m.Id))
+                {
+                    string sql = "DELETE FROM motion " +
+                                 $"WHERE motion_id={m.Id};";
+                    using (SqlCommand command = new SqlCommand(sql, myConn))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                }
+
                 return true;
             }
             catch (Exception ex)
