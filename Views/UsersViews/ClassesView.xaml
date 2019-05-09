@@ -48,6 +48,7 @@
                            SelectedItem="{Binding SelectedClass}"
                            Grid.Column="0" 
                            Margin="20"
+                           CanUserAddRows="False"
                            AutoGenerateColumns="False" Grid.ColumnSpan="2">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Номер"
@@ -65,6 +66,7 @@
                            SelectedItem="{Binding SelectedTeacher}"
                            Grid.Column="2"
                            Margin="20"
+                           CanUserAddRows="False"
                            AutoGenerateColumns="False">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Таб. номер"
@@ -74,7 +76,7 @@
                     <controls:DataGridTextColumn Header="Имя"
                                              Binding="{Binding HName, Mode=OneWay}"/>
                     <controls:DataGridTextColumn Header="Отчество"
-                                             Binding="{Binding Patronymic, Mode=OneWay}"/>
+                                             Binding="{Binding Patronymiс, Mode=OneWay}"/>
 
                 </controls:DataGrid.Columns>
 

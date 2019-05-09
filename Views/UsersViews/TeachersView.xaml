@@ -10,7 +10,7 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -23,20 +23,17 @@
                 <ColumnDefinition Width="209*"></ColumnDefinition>
                 <ColumnDefinition Width="140*"/>
             </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
+       
 
-
-            <Button Command="{Binding AddTeacherCommand}" Margin="15 5" Grid.Row="1">Добавить</Button>
-            <Button Command="{Binding EditTeacherCommand}" Margin="15 5" Grid.Column="1" Grid.Row="1">Редак-ть</Button>
-            <Button Command="{Binding DeleteTeacherCommand}" Margin="15 5" Grid.Column="2" Grid.Row="1">Удалить</Button>
+            <Button Command="{Binding AddTeacherCommand}" Margin="15 5">Добавить</Button>
+            <Button Command="{Binding EditTeacherCommand}" Margin="15 5" Grid.Column="1" >Редак-ть</Button>
+            <Button Command="{Binding DeleteTeacherCommand}" Margin="15 5" Grid.Column="2">Удалить</Button>
             
         </Grid>
 
         <controls:DataGrid ItemsSource="{Binding SchoolTeachers}" 
                            SelectedItem="{Binding SelectedTeacher}"
+                           CanUserAddRows="False"
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
                            AutoGenerateColumns="False">
