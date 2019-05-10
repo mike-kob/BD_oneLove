@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BD_oneLove.Views.UsersViews"
+        Name="AddUserWindow"
         mc:Ignorable="d"
         Title="UsersAddWindowView" Height="200" Width="400">
     <Grid>
@@ -34,7 +35,7 @@
         </ComboBox>
 
 
-        <Button Content="Cancel" Grid.Row="11" Grid.Column="0" Margin="5" Width="100" Command="{Binding CancelCommand}"></Button>
-        <Button Content="Save" Grid.Row="11" Grid.Column="1" Margin="5" Width="100" Command="{Binding SaveCommand}"></Button>
+        <Button CommandParameter="{Binding ElementName=AddUserWindow}" Content="Cancel" Grid.Row="11" Grid.Column="0" Margin="5" Width="100" Command="{Binding CancelCommand}"></Button>
+        <Button CommandParameter="{Binding ElementName=AddUserWindow}" Content="Save" Grid.Row="11" Grid.Column="1" Margin="5" Width="100" Command="{Binding SaveCommand}"></Button>
     </Grid>
 </Window>

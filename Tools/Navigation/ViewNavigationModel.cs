@@ -35,12 +35,16 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.PlanView:
                     ViewsDictionary.Add(viewType, new PlanView());
                     break;
+                case ViewType.ClassesView:
+                    ViewsDictionary.Add(viewType, new ClassesView());
+                    break;
                 case ViewType.SocialPassportView:
                     ViewsDictionary.Add(viewType, new SocialPassportView());
                     break;
                 case ViewType.MovementView:
                     ViewsDictionary.Add(viewType, new MovementView());
                     break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
             }

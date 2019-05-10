@@ -11,7 +11,7 @@
         <Grid>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="100"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
@@ -24,22 +24,20 @@
                     <ColumnDefinition Width="209*"></ColumnDefinition>
                     <ColumnDefinition Width="140*"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
+             
 
-
-                <Button Command="{Binding AddUserCommand}" Margin="15 5" Grid.Row="1">Добавить</Button>
-                <Button Margin="15 5" Grid.Column="1" Grid.Row="1">Редак-ть</Button>
-                <Button Margin="15 5" Grid.Column="2" Grid.Row="1">Удалить</Button>
+                <Button Command="{Binding AddUserCommand}" Margin="15 5" >Добавить</Button>
+                <Button Command="{Binding EditUserCommand}" Margin="15 5" Grid.Column="1">Редак-ть</Button>
+                <Button Command="{Binding DeleteUserCommand}" Margin="15 5" Grid.Column="2">Удалить</Button>
                 <!--    <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SchoolYears}"
                       SelectedItem="{Binding SelectedYear}"></ComboBox> !-->
             </Grid>
 
             <controls:DataGrid ItemsSource="{Binding Users}" 
+                               SelectedItem="{Binding SelUser}"
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
+                           CanUserAddRows="False"
                            AutoGenerateColumns="False">
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Логин"

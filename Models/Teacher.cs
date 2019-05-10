@@ -24,14 +24,17 @@ namespace BD_oneLove.Models
         public string HName { get; set; }
         public string Surname { get; set; }
         public string Patronymiс { get; set; }
-
-        public Class Class { get; set; }
-        /*
-        public string ClassName
+        public string FullName
         {
-            get { return Class.Number +"-"+ Class.Letter; }
+            get
+            {
+                return TabNumber+" "+Surname + " " + HName + " " + Patronymiс;
+            }
         }
-        */
+
+       // public Class Class { get; set; }
+       
+   
         public User User { get; set; }
 
         #endregion

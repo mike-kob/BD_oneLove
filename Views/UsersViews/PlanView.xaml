@@ -32,6 +32,7 @@
                            SelectedItem="{Binding SelPlan}"
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
+                           CanUserAddRows="False"
                            AutoGenerateColumns="False">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Учебный год"

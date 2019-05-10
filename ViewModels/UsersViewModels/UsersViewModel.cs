@@ -6,12 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
     class UsersViewModel:BaseViewModel
     {
         public List<User> Users { get; set; }
+        public User SelUser { get; set; }
 
         #region Commands
 
@@ -21,7 +23,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         #endregion
 
-        public RelayCommand<object> AddUserCommand
+        public ICommand AddUserCommand
         {
             get
             {
@@ -30,11 +32,45 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
+        public ICommand EditUserCommand
+        {
+            get
+            {
+                return _editUserCommand ?? (_editUserCommand = new RelayCommand<object>(
+                         o => EditUserImplementation(), o=>SelUser != null));
+            }
+        }
+
+        public ICommand DeleteUserCommand
+        {
+            get
+            {
+                return _deleteUserCommand ?? (_deleteUserCommand = new RelayCommand<object>(
+                         o => DeleteUserImplementation(), o => SelUser != null));
+            }
+        }
+
         public void AddUserImplementation()
         {
+            StationManager.CurrentUser = new User();
             UsersAddWindowView win = new UsersAddWindowView();
             win.Owner = StationManager.MyMain;
             win.ShowDialog();
+            RefreshList();
+        }
+
+        public void EditUserImplementation()
+        {
+            StationManager.CurrentUser = SelUser;
+            UsersAddWindowView win = new UsersAddWindowView();
+            win.Owner = StationManager.MyMain;
+            win.ShowDialog();
+            RefreshList();
+        }
+
+        public void DeleteUserImplementation()
+        {
+            StationManager.DataStorage.DeleteUser(SelUser);
             RefreshList();
         }
 
@@ -44,10 +80,18 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             Users = StationManager.DataStorage.GetUsers();
         }
 
-        public void RefreshList()
+        public void PublicRefreshList()
         {
             Users = StationManager.DataStorage.GetUsers();
             OnPropertyChanged("Users");
+        }
+
+
+        private void RefreshList()
+        {
+            Users = StationManager.DataStorage.GetUsers();
+            OnPropertyChanged("Users");
+            StationManager.TeachersView?.PublicRefreshList();
         }
 
     }

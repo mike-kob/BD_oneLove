@@ -1,5 +1,4 @@
-﻿using BD_oneLove.Tools.Managers;
-using BD_oneLove.Tools.Navigation;
+﻿using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
@@ -18,16 +17,14 @@ using System.Windows.Shapes;
 namespace BD_oneLove.Views.UsersViews
 {
     /// <summary>
-    /// Логика взаимодействия для TeachersView.xaml
+    /// Логика взаимодействия для ClassesView.xaml
     /// </summary>
-    public partial class TeachersView : UserControl, INavigatable
+    public partial class ClassesView : UserControl, INavigatable
     {
-        public TeachersView()
+        public ClassesView()
         {
             InitializeComponent();
-            StationManager.TeachersView = new TeachersViewModel();
-            DataContext = StationManager.TeachersView;
-
+            DataContext = new ClassesViewModel();
         }
     }
 }
