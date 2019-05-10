@@ -38,13 +38,6 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.ClassesView:
                     ViewsDictionary.Add(viewType, new ClassesView());
                     break;
-                //case ViewType.AddPersonView:
-                //    ViewsDictionary.Add(viewType, new AddPersonView());
-                //    break;
-                //case ViewType.EditPersonView:
-                //    ViewsDictionary.Add(viewType, new EditPersonView());
-                //    break;
-
                 case ViewType.SocialPassportView:
                     ViewsDictionary.Add(viewType, new SocialPassportView());
                     break;
