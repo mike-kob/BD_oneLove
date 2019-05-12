@@ -30,6 +30,12 @@ namespace BD_oneLove.Tools.Navigation
             ContentOwner.ContentControl.Content = ViewsDictionary[viewType];
         }
 
+        public void DeleteView(ViewType viewType)
+        {
+            if (ViewsDictionary.ContainsKey(viewType))
+                ViewsDictionary.Remove(viewType);
+        }
+
         protected abstract void InitializeView(ViewType viewType);
 
     }

@@ -11,6 +11,8 @@ namespace BD_oneLove.Tools.DataStorage
         bool AddPlan(Plan p);
         bool UpdatePlan(Plan p, Plan oldP);
         bool DeletePlan(Plan p);
+        string GetCurYear();
+        bool UpdateCurYear(string year);
 
         //--------------Users-----------------
 
@@ -36,6 +38,7 @@ namespace BD_oneLove.Tools.DataStorage
 
         //--------------Classes---------------
         Class GetClass(string classId);
+        Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
         List<Student> GetStudents(Class c);
         List<Parent> GetParentsInClass(Class c);

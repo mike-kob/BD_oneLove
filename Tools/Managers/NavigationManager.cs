@@ -38,5 +38,11 @@ namespace BD_oneLove.Tools.Managers
 
         }
 
+        internal void DeleteView(ViewType viewType)
+        {
+            _navigationModel.DeleteView(viewType);
+
+        }
+
     }
 }

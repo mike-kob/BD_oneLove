@@ -106,6 +106,8 @@ namespace BD_oneLove.Tools.DataStorage
             return null;
         }
 
+        //------------------Classes----------------
+
         public bool DeleteClass(Class c)
         {
             string sql = $"DELETE FROM classes WHERE class_id = '{c.ClassId}'; ";
@@ -206,6 +208,47 @@ namespace BD_oneLove.Tools.DataStorage
 
         }
 
+        public Class GetCurrentClass(User u)
+        {
+            string sql1 = "SELECT c.class_id, c.number, c.letter, c.st_year " +
+                          "FROM classes c INNER JOIN head_teachers_classes htc on c.class_id = htc.class_id " +
+                          "WHERE htc.tab_number IN(SELECT tab_number" +
+                          "                         FROM head_teachers" +
+                          $"                        WHERE login='{u.Username}') " +
+                          "AND c.st_year = (SELECT cur_st_year" +
+                          "                 FROM helping_st_year);";
+
+            Class res = new Class();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.ClassId = reader.GetInt64(0).ToString();
+                        res.Number = reader.GetString(1);
+                        res.Letter = reader.GetString(2);
+                        res.StYear = reader.GetString(3);
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
 
 
         public List<Teacher> GetTeachers(Class c)
@@ -360,6 +403,8 @@ namespace BD_oneLove.Tools.DataStorage
             return true;
         }
 
+        //------------------Plans----------------------
+
         public bool AddPlan(Plan p)
         {
             string sql = $"INSERT INTO [plan] (st_year, date_term1, date_term2, date_year) VALUES ('{p.StYear}', " +
@@ -485,6 +530,90 @@ namespace BD_oneLove.Tools.DataStorage
 
             }
             return true;
+        }
+
+        public bool UpdateCurYear(string year)
+        {
+            string sql1 = "SELECT COUNT(*) FROM helping_st_year; ";
+
+            string sql2 = "UPDATE helping_st_year " +
+                         $"SET cur_st_year='{year}'; ";
+
+            string sql3 = "INSERT INTO helping_st_year (cur_st_year) " +
+                          $"VALUES ('{year}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int count = 0;
+                int res = 0;
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    count = (int)command.ExecuteScalar();
+                }
+
+                if (count == 0)
+                {
+                    using (SqlCommand command = new SqlCommand(sql3, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
+                }
+                else
+                {
+                    using (SqlCommand command = new SqlCommand(sql2, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
+                }
+
+                return res != 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+
+            }
+        }
+
+        public string GetCurYear()
+        {
+            string sql1 = "SELECT cur_st_year " +
+                          "FROM helping_st_year; ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                string res = null;
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res = reader.GetString(0);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return null;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
         }
 
 
@@ -820,7 +949,7 @@ namespace BD_oneLove.Tools.DataStorage
 
         public List<string> GetYears()
         {
-            string sql = "SELECT DISTINCT st_year FROM Classes";
+            string sql = "SELECT DISTINCT st_year FROM [plan];";
             List<string> list = new List<string>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try

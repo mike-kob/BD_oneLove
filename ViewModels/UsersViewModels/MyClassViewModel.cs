@@ -20,9 +20,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         public MyClassViewModel()
         {
-            string classId = "3";
-
-            _myClass = StationManager.DataStorage.GetClass(classId);
+            _myClass = StationManager.CurrentClass;
+            
             ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
         }
 

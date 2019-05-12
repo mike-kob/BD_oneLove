@@ -24,5 +24,6 @@
     interface INavigationModel
     {
         void Navigate(ViewType viewType);
+        void DeleteView(ViewType viewType);
     }
 }

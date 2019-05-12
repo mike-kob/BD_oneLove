@@ -3,6 +3,7 @@ using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 
 namespace BD_oneLove.ViewModels
@@ -15,6 +16,25 @@ namespace BD_oneLove.ViewModels
 
         private string _selectedView;
 
+        private ICommand _logoutCommand;
+
+        public ICommand LogoutCommand
+        {
+            get { return _logoutCommand ?? (_logoutCommand = new RelayCommand<object>(o =>
+                             {
+                                 StationManager.CurrentUser = null;
+                                 StationManager.CurrentTeacher = null;
+                                 StationManager.CurrentClass = null;
+                                 StationManager.CurrentParent = null;
+                                 StationManager.CurrentPlan = null;
+                                 StationManager.CurrentStudent = null;
+                                 
+                                 NavigationManager.Instance.Navigate(ViewType.SignInView);
+                                 NavigationManager.Instance.DeleteView(ViewType.MainView);
+                             }));
+            }
+        }
+
 
         public TemplateViewModel()
         {
@@ -25,7 +45,6 @@ namespace BD_oneLove.ViewModels
 
             Items = new Dictionary<string, ViewType>();
             addItems();
-            StationManager.CurrentClass = StationManager.DataStorage.GetClass("3");
         }
 
         private void addItems()

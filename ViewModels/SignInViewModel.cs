@@ -79,11 +79,18 @@ namespace BD_oneLove.ViewModels
             if (answ)
             {
                 User u = StationManager.DataStorage.GetUser(_login, StationManager.MainPassword.Password);
-
-                MessageBox.Show($"Login successful for user {_login} and {StationManager.MainPassword.Password} and your rights: {u.AccessType}");
-
                 StationManager.CurrentUser = u;
+                StationManager.CurrentYear = StationManager.DataStorage.GetCurYear();
+                if (u.AccessType == "Классный руководитель")
+                {
+                    StationManager.CurrentClass = StationManager.DataStorage.GetCurrentClass(u);
+                    if (String.IsNullOrEmpty(StationManager.CurrentClass.ClassId)) { 
+                        MessageBox.Show(
+                            "Похоже, что у вас нет доступа к классу. Обратитесь к администратору для получения доступа.");
+                        return;
+                    }
 
+                }
                 NavigationManager.Instance.Navigate(ViewType.MainView);
             }
             else
