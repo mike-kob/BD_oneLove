@@ -99,6 +99,7 @@
     <Compile Include="Models\Parent.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="ViewModels\UserDialogViewModels\ChooseStudentDialogViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MovementViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\SubjectProgressViewModel.cs" />
     <Compile Include="Views\UserDialogs\AddCommentDialog.xaml.cs">
       <DependentUpon>AddCommentDialog.xaml</DependentUpon>
     </Compile>
@@ -130,26 +132,21 @@
     <Compile Include="Views\UserDialogs\AddPlanDialogView.xaml.cs">
       <DependentUpon>AddPlanDialogView.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\UserDialogs\AddTeacherClassView.xaml.cs">
       <DependentUpon>AddTeacherClassView.xaml</DependentUpon>
     </Compile>
- 
     <Compile Include="Views\UserDialogs\ChooseStudentDialog.xaml.cs">
       <DependentUpon>ChooseStudentDialog.xaml</DependentUpon>
     </Compile>
-	
     <Compile Include="Views\UserDialogs\SearchParentDialog.xaml.cs">
       <DependentUpon>SearchParentDialog.xaml</DependentUpon>
     </Compile>
-
     <Compile Include="Views\UsersViews\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\MovementView.xaml.cs">
       <DependentUpon>MovementView.xaml</DependentUpon>
     </Compile>
-	
     <Compile Include="Views\UsersViews\PlanView.xaml.cs">
       <DependentUpon>PlanView.xaml</DependentUpon>
     </Compile>
@@ -158,6 +155,9 @@
     </Compile>
     <Compile Include="Views\UsersViews\SocialPassportView.xaml.cs">
       <DependentUpon>SocialPassportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\SubjectProgressView.xaml.cs">
+      <DependentUpon>SubjectProgressView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\TeachersView.xaml.cs">
       <DependentUpon>TeachersView.xaml</DependentUpon>
@@ -231,12 +231,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
     <Page Include="Views\UserDialogs\AddTeacherClassView.xaml">
-	 <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-  </Page>
-	
+    </Page>
     <Page Include="Views\UserDialogs\AddCommentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -249,14 +247,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-
     <Page Include="Views\UsersViews\ClassesView.xaml">
-	 <SubType>Designer</SubType>
+      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-</Page>
-	
+    </Page>
     <Page Include="Views\UsersViews\MovementView.xaml">
-
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -269,6 +264,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UsersViews\SocialPassportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\SubjectProgressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -17,7 +17,10 @@
         PutMarksView,
         SocialPassportView,
         ParentsView,
-        MovementView
+        MovementView,
+
+        //заместитель
+        SubjectProgressView
 
     }
 

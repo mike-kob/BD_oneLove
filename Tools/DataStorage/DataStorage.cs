@@ -10,6 +10,91 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+        public List<Subject> GetSubjectsStatistics(Class c, string type)
+        {
+            string sql = $"WITH Temp AS( " +
+                            $"SELECT m.grade, m.student_id, m.subject " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT subject, [1] AS CN,[2] AS BN,[3] AS MN,[4] AS GN,[5] AS HN, [1]+[2]+[3]+[4]+[5] AS Summ " +
+                         $"FROM Temp " +
+                         $"PIVOT(COUNT(student_id) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable; ";
+
+            List<Subject> res = new List<Subject>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Subject cur = new Subject();
+                        cur.Name = reader.GetString(0);
+                        cur.HighNumber = reader.GetInt32(1);
+                        cur.GoodNumber = reader.GetInt32(2);
+                        cur.MiddleNumber = reader.GetInt32(3);
+                        cur.BeginNumber = reader.GetInt32(4);
+                        cur.CriticalNumber = reader.GetInt32(5);
+                        cur.Sum = reader.GetInt32(6);
+            
+
+
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return res;
+        }
+
+        public Class GetClass(string number, string letter, string y)
+        {
+            string sql1 = $"SELECT class_id FROM classes WHERE number='{number}' AND letter='{letter}' AND st_year='{y}'";
+            Class res = new Class();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.ClassId = reader.GetInt64(0).ToString();
+                        res.Number = number;
+                        res.Letter = letter;
+                        res.StYear = y;
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
         public bool DeleteTeacherClass(Teacher t,Class c)
         {
             string sql = $"DELETE FROM head_teachers_classes WHERE class_id = '{c.ClassId}' AND tab_number='{t.TabNumber}'; ";

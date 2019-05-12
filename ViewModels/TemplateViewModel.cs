@@ -46,6 +46,7 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     break;
                 case "Заместитель директора":
+                    Items.Add("Успеваемость", ViewType.SubjectProgressView);
                     // Items.Add("Ученики");
                     // Items.Add("Классы");
                     // Items.Add("Выбывшие/прибывшие");

@@ -15,6 +15,7 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
         public List<Teacher> Teachers { get; set; }
         public List<String> TeachersString { get; set; }
         public string SelTeacherString { get; set; }
+        public List<Subject> Subjects { get; set; }
 
         public Teacher SelTeacher
         {

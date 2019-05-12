@@ -44,6 +44,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.MovementView:
                     ViewsDictionary.Add(viewType, new MovementView());
                     break;
+                case ViewType.SubjectProgressView:
+                    ViewsDictionary.Add(viewType, new SubjectProgressView());
+                    break;
 
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
