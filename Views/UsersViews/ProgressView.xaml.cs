@@ -17,13 +17,16 @@ using System.Windows.Shapes;
 namespace BD_oneLove.Views.UsersViews
 {
     /// <summary>
-    /// Логика взаимодействия для SubjectProgressView.xaml
+    /// Логика взаимодействия для ProgressView.xaml
     /// </summary>
-    public partial class SubjectProgressView : UserControl { 
-        public SubjectProgressView()
+    public partial class ProgressView : UserControl, INavigatable
+    {
+        public ProgressView()
         {
             InitializeComponent();
-            DataContext = new SubjectProgressViewModel();
+            DataContext = new ProgressViewModel();
         }
+
+     
     }
 }

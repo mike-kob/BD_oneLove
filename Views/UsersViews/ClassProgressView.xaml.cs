@@ -1,5 +1,4 @@
-﻿using BD_oneLove.Tools.Navigation;
-using BD_oneLove.ViewModels.UsersViewModels;
+﻿using BD_oneLove.ViewModels.UsersViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +16,14 @@ using System.Windows.Shapes;
 namespace BD_oneLove.Views.UsersViews
 {
     /// <summary>
-    /// Логика взаимодействия для SubjectProgressView.xaml
+    /// Логика взаимодействия для ClassProgressView.xaml
     /// </summary>
-    public partial class SubjectProgressView : UserControl { 
-        public SubjectProgressView()
+    public partial class ClassProgressView : UserControl
+    {
+        public ClassProgressView()
         {
             InitializeComponent();
-            DataContext = new SubjectProgressViewModel();
+            DataContext = new ClassProgressViewModel();
         }
     }
 }

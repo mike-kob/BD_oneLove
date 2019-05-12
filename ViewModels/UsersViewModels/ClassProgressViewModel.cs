@@ -10,41 +10,34 @@ using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
-    class SubjectProgressViewModel: BaseViewModel
+    class ClassProgressViewModel:BaseViewModel
     {
         private string _selYear;
         private List<string> _classes;
-        private readonly Thickness _bigMargin;
+        private readonly System.Windows.Thickness _bigMargin;
         private readonly Thickness _smallMargin;
 
         #region Props
 
         public string Title { get; set; } = "";
-        public string TabTitle { get { return "Предметы"; } }
-        public  Thickness SmallMargin { get { return _smallMargin; } }
+        public string TabTitle { get { return "Класс"; } }
+        public Thickness SmallMargin { get { return _smallMargin; } }
         public Thickness BigMargin { get { return _bigMargin; } }
         public Thickness Margin { get; set; }
-        public List<Subject> Subjects { get; set; }
+        public List<Student> Students { get; set; }
         public List<string> Years { get; set; } = StationManager.DataStorage.GetYears();
         public List<Class> Classes { get; set; }
         public string[] Types { get; set; } = { "семестр1", "семестр2", "годовая" };
-    
 
-        public bool IsYearSel {
+
+        public bool IsYearSel
+        {
             get
             {
                 return SelectedYear != null;
             }
         }
-     
 
-        public List<string> ClassesString {
-            get
-            {
-               _classes = new List<string>(Classes.Select(p => p.NumberLetter));
-                return _classes;
-            }
-        }
 
         public string SelectedYear
         {
@@ -59,8 +52,17 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
+        public List<string> ClassesString
+        {
+            get
+            {
+                _classes = new List<string>(Classes.Select(p => p.NumberLetter));
+                return _classes;
+            }
+        }
+
         public string SelectedClass { get; set; }
-        public string SelectedType{ get; set; }
+        public string SelectedType { get; set; }
 
         #endregion
 
@@ -72,7 +74,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             get
             {
                 return _findCommand ?? (_findCommand = new RelayCommand<object>(
-                         o => FindImplementation(), o => SelectedClass!=null && SelectedType != null));
+                         o => FindImplementation(), o => SelectedClass != null && SelectedType != null));
             }
         }
 
@@ -80,16 +82,16 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             string[] temp = SelectedClass.Split('-');
             Class t = StationManager.DataStorage.GetClass(temp[0], temp[1], SelectedYear);
-            Subjects = StationManager.DataStorage.GetSubjectsStatistics(t, SelectedType);
-            OnPropertyChanged("Subjects");
-            Margin = (Subjects!=null && Subjects.Any())?BigMargin:SmallMargin;
+            Students = StationManager.DataStorage.GetStudentsStatistics(t, SelectedType);
+            OnPropertyChanged("Students");
+            Margin = (Students != null && Students.Any()) ? BigMargin : SmallMargin;
             OnPropertyChanged("Margin");
             Title = "Сводная ведомость успеваемости " + SelectedClass + " класса за " +
                     SelectedYear + " " + SelectedType;
             OnPropertyChanged("Title");
         }
 
-        public SubjectProgressViewModel()
+        public ClassProgressViewModel()
         {
             Classes = StationManager.DataStorage.GetClasses(SelectedYear);
             SelectedYear = Years[0];
@@ -98,6 +100,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             Margin = SmallMargin;
         }
 
-       
+
     }
 }

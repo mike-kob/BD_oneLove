@@ -7,11 +7,6 @@ namespace BD_oneLove.Models
 {
     class Subject
     {
-        double _highNum;
-        double _goodNum;
-        double _middleNum;
-        double _beginNum;
-        double _criticalNum;
 
         public string Name { get; set; }
         public int HighNumber { get; set; }
@@ -19,36 +14,27 @@ namespace BD_oneLove.Models
         public int MiddleNumber { get; set; }
         public int BeginNumber { get; set; }
         public int CriticalNumber { get; set; }
+        public double HighPercent { get; set; }
+        public double GoodPercent { get; set; }
+        public double MiddlePercent { get; set; }
+        public double BeginPercent { get; set; }
+        public double CriticalPercent { get; set; }
         public int Sum { get; set; }
       
 
-
-        public double HighPercent
+        public Subject(int s, int h, int g,int m,int b,int c)
         {
-            get { return Math.Round((double)HighNumber / Sum * 100, 2);  }
-         
+            Sum = s;
+            HighNumber = h;
+            GoodNumber = g;
+            MiddleNumber = m;
+            BeginNumber = b;
+            CriticalNumber = c;
+            HighPercent = Math.Round((double)HighNumber / Sum * 100, 2);
+            GoodPercent = Math.Round((double)GoodNumber / Sum * 100, 2);
+            MiddlePercent = Math.Round((double)MiddleNumber / Sum * 100, 2);
+            BeginPercent = Math.Round((double)BeginNumber / Sum * 100, 2);
+            CriticalPercent = Math.Round((double)CriticalNumber / Sum * 100, 2);
         }
-
-        public double GoodPercent
-        {
-            get { return Math.Round((double)GoodNumber / Sum * 100, 2); }
-        }
-
-        public double MiddlePercent
-        {
-            get { return Math.Round((double)MiddleNumber / Sum * 100, 2); }
-        }
-
-        public double BeginPercent
-        {
-            get { return Math.Round((double)BeginNumber / Sum * 100, 2); }
-        }
-
-        public double CriticalPercent
-        {
-            get { return Math.Round((double)CriticalNumber / Sum * 100, 2); }
-        }
-
-
     }
 }

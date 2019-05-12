@@ -10,13 +10,101 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+
+        public List<Student> GetStudentsStatistics(Class c, string type)
+        {
+            string sql = $"WITH Temp AS( " +
+                            $"SELECT m.grade, m.student_id, m.subject " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT student_id, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ, " +
+                         $"CAST((5*[5]+4*[4]+3*[3]+2*[2]+1*[1]) AS float)/([1]+[2]+[3]+[4]+[5]) AS Middle " +
+                         $"FROM Temp " +
+                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable ORDER BY  Middle DESC; ";
+
+            List<Student> res = new List<Student>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    int i = 1;
+                    while (reader.Read())
+                    {
+                        Student cur = GetStudent(reader.GetInt64(0).ToString());
+                        cur.Sum = reader.GetInt32(6);
+                        cur.HighNumber = reader.GetInt32(1);
+                        cur.GoodNumber = reader.GetInt32(2);
+                        cur.MiddleNumber = reader.GetInt32(3);
+                        cur.BeginNumber = reader.GetInt32(4);
+                        cur.CriticalNumber = reader.GetInt32(5);
+                        cur.MiddleMark = reader.GetDouble(7);
+                        cur.Number = i;
+                        res.Add(cur);
+                        i++;
+                    }
+
+                    reader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return res;
+        }
+
+
+        public Student GetStudent(string id)
+        {
+            string sql = $"SELECT st_name,patronymic,surname FROM students WHERE student_id='{id}';";
+            Student s = null;
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+                myConn.Open();
+                
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        s = new Student();
+                        s.Id = id;
+                        s.StName = reader.GetString(0);
+                        s.Patronymic = reader.GetString(1);
+                        s.Surname = reader.GetString(2);
+                    }
+
+                    reader.Close();
+                }
+
+                myConn.Close();
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return s;
+        }
+
         public List<Subject> GetSubjectsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
                             $"SELECT m.grade, m.student_id, m.subject " +
                             $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
                             $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
-                         $"SELECT subject, [1] AS CN,[2] AS BN,[3] AS MN,[4] AS GN,[5] AS HN, [1]+[2]+[3]+[4]+[5] AS Summ " +
+                         $"SELECT subject, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ " +
                          $"FROM Temp " +
                          $"PIVOT(COUNT(student_id) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable; ";
 
@@ -31,17 +119,9 @@ namespace BD_oneLove.Tools.DataStorage
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        Subject cur = new Subject();
+                        Subject cur = new Subject(reader.GetInt32(6), reader.GetInt32(1), reader.GetInt32(2),
+                            reader.GetInt32(3), reader.GetInt32(4), reader.GetInt32(5));
                         cur.Name = reader.GetString(0);
-                        cur.HighNumber = reader.GetInt32(1);
-                        cur.GoodNumber = reader.GetInt32(2);
-                        cur.MiddleNumber = reader.GetInt32(3);
-                        cur.BeginNumber = reader.GetInt32(4);
-                        cur.CriticalNumber = reader.GetInt32(5);
-                        cur.Sum = reader.GetInt32(6);
-            
-
-
                         res.Add(cur);
                     }
 

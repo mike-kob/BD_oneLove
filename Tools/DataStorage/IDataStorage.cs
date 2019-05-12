@@ -30,8 +30,10 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Students---------------
         Student SaveStudent(Student s);
         Student UpdateStudent(Student s);
+        Student GetStudent(string id);
         bool AssignStudentToClass(Student s, Class c);
         bool ExpelStudent(Student s, Class c);
+        List<Student> GetStudentsStatistics(Class c, string type);
 
         //--------------Parents---------------
         Parent GetFather(Student s);
