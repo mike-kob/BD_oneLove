@@ -63,19 +63,19 @@
                 <ColumnDefinition Width="{Binding ElementName=CriticalPercent, Path=ActualWidth}" />
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Border Background="#ededed" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
+            <Border Background="#f3f4f6" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
                 <Label>Высокий уровень</Label>
             </Border>
-            <Border Background="#ededed" Grid.Column="3" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
+            <Border Background="#f3f4f6" Grid.Column="3" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
                 <Label>Достаточный уровень</Label>
             </Border>
-            <Border Background="#ededed" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
+            <Border Background="#f3f4f6" Grid.Column="5" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
                 <Label>Средний уровень</Label>
             </Border>
-            <Border Background="#ededed" Grid.Column="7" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
+            <Border Background="#f3f4f6" Grid.Column="7" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
                 <Label>Начальный уровень</Label>
             </Border>
-            <Border Background="#ededed" Grid.Column="9" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
+            <Border Background="#f3f4f6" Grid.Column="9" Grid.ColumnSpan="2" BorderBrush="Gray" HorizontalAlignment="Stretch" BorderThickness="1">
                 <Label>Критический уровень</Label>
             </Border>
         </Grid>
