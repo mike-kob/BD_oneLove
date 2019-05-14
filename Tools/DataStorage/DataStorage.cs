@@ -65,8 +65,12 @@ namespace BD_oneLove.Tools.DataStorage
 
         public Student GetStudent(string id)
         {
-            string sql = $"SELECT st_name,patronymic,surname FROM students WHERE student_id='{id}';";
-            Student s = null;
+            string sql = $"SELECT s.student_id, s.type_doc, s.ser_doc, s.num_doc, s.st_name, s.patronymic, " +
+                         "s.surname, s.sex, s.birthday, s.num_alph_book, [index], s.city, " +
+                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam "+
+                         "FROM students s " +
+                         $"WHERE s.student_id='{id}';";
+            Student cur = null;
             try
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -77,11 +81,27 @@ namespace BD_oneLove.Tools.DataStorage
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        s = new Student();
-                        s.Id = id;
-                        s.StName = reader.GetString(0);
-                        s.Patronymic = reader.GetString(1);
-                        s.Surname = reader.GetString(2);
+                        cur = new Student();
+                        cur.NumAlphBook = reader.GetString(9);
+                        cur.Id = reader.GetInt64(0).ToString();
+
+                        cur.TypeDoc = reader.GetString(1);
+                        cur.SerDoc = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.NumDoc = reader.GetString(3);
+                        cur.StName = reader.GetString(4);
+                        cur.Patronymic = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.Surname = reader.GetString(6);
+                        cur.Sex = reader.GetString(7);
+                        cur.Birthday = reader.GetDateTime(8);
+                        cur.Index = reader.IsDBNull(10) ? "" : reader.GetString(10);
+                        cur.City = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.Street = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.House = reader.IsDBNull(13) ? "" : reader.GetString(13);
+                        cur.Apart = reader.IsDBNull(14) ? "" : reader.GetString(14);
+                        cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
+                        cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
+                        cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
+
                     }
 
                     reader.Close();
@@ -95,7 +115,7 @@ namespace BD_oneLove.Tools.DataStorage
                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
             }
 
-            return s;
+            return cur;
         }
 
         public List<Subject> GetSubjectsStatistics(Class c, string type)
