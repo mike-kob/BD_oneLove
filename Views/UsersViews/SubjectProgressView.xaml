@@ -35,7 +35,7 @@
 
             <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Years}"
                       SelectedItem="{Binding SelectedYear}"></ComboBox>
-            <ComboBox IsEnabled="{Binding IsYearSel}" Margin="15 5" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding ClassesString}"
+            <ComboBox IsEnabled="{Binding IsYearSel}" Margin="15 5" Grid.Column="1"  DisplayMemberPath="NumberLetter" Grid.Row="1" ItemsSource="{Binding Classes}"
                       SelectedItem="{Binding SelectedClass}"></ComboBox>
             <ComboBox ItemsSource="{Binding Types}" Margin="15 5" Grid.Column="2" Grid.Row="1"
                       SelectedItem="{Binding SelectedType}">

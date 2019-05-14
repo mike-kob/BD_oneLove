@@ -13,7 +13,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     class ClassProgressViewModel:BaseViewModel
     {
         private string _selYear;
-        private List<string> _classes;
         private readonly System.Windows.Thickness _bigMargin;
         private readonly Thickness _smallMargin;
 
@@ -48,20 +47,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 Classes = StationManager.DataStorage.GetClasses(SelectedYear);
                 OnPropertyChanged("SelectedYear");
                 OnPropertyChanged("Classes");
-                OnPropertyChanged("ClassesString");
             }
         }
 
-        public List<string> ClassesString
-        {
-            get
-            {
-                _classes = new List<string>(Classes.Select(p => p.NumberLetter));
-                return _classes;
-            }
-        }
 
-        public string SelectedClass { get; set; }
+        public Class SelectedClass { get; set; }
         public string SelectedType { get; set; }
 
         #endregion
@@ -80,13 +70,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void FindImplementation()
         {
-            string[] temp = SelectedClass.Split('-');
-            Class t = StationManager.DataStorage.GetClass(temp[0], temp[1], SelectedYear);
-            Students = StationManager.DataStorage.GetStudentsStatistics(t, SelectedType);
+            Students = StationManager.DataStorage.GetStudentsStatistics(SelectedClass, SelectedType);
             OnPropertyChanged("Students");
             Margin = (Students != null && Students.Any()) ? BigMargin : SmallMargin;
             OnPropertyChanged("Margin");
-            Title = "Сводная ведомость успеваемости " + SelectedClass + " класса за " +
+            Title = "Сводная ведомость успеваемости " + SelectedClass.NumberLetter + " класса за " +
                     SelectedYear + " " + SelectedType;
             OnPropertyChanged("Title");
         }

@@ -140,40 +140,7 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        public Class GetClass(string number, string letter, string y)
-        {
-            string sql1 = $"SELECT class_id FROM classes WHERE number='{number}' AND letter='{letter}' AND st_year='{y}'";
-            Class res = new Class();
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        res.ClassId = reader.GetInt64(0).ToString();
-                        res.Number = number;
-                        res.Letter = letter;
-                        res.StYear = y;
-                    }
-
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return res;
-        }
+        
 
         public bool DeleteTeacherClass(Teacher t,Class c)
         {

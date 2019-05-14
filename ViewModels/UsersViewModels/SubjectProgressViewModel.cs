@@ -13,7 +13,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     class SubjectProgressViewModel: BaseViewModel
     {
         private string _selYear;
-        private List<string> _classes;
         private readonly Thickness _bigMargin;
         private readonly Thickness _smallMargin;
 
@@ -36,15 +35,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return SelectedYear != null;
             }
         }
-     
 
-        public List<string> ClassesString {
-            get
-            {
-               _classes = new List<string>(Classes.Select(p => p.NumberLetter));
-                return _classes;
-            }
-        }
 
         public string SelectedYear
         {
@@ -55,11 +46,10 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 Classes = StationManager.DataStorage.GetClasses(SelectedYear);
                 OnPropertyChanged("SelectedYear");
                 OnPropertyChanged("Classes");
-                OnPropertyChanged("ClassesString");
             }
         }
 
-        public string SelectedClass { get; set; }
+        public Class SelectedClass { get; set; }
         public string SelectedType{ get; set; }
 
         #endregion
@@ -78,13 +68,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void FindImplementation()
         {
-            string[] temp = SelectedClass.Split('-');
-            Class t = StationManager.DataStorage.GetClass(temp[0], temp[1], SelectedYear);
-            Subjects = StationManager.DataStorage.GetSubjectsStatistics(t, SelectedType);
+            Subjects = StationManager.DataStorage.GetSubjectsStatistics(SelectedClass, SelectedType);
             OnPropertyChanged("Subjects");
             Margin = (Subjects!=null && Subjects.Any())?BigMargin:SmallMargin;
             OnPropertyChanged("Margin");
-            Title = "Сводная ведомость успеваемости " + SelectedClass + " класса за " +
+            Title = "Сводная ведомость успеваемости " + SelectedClass.NumberLetter + " класса за " +
                     SelectedYear + " " + SelectedType;
             OnPropertyChanged("Title");
         }

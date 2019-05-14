@@ -43,7 +43,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         //--------------Classes---------------
         Class GetClass(string classId);
-        Class GetClass(string number, string letter, string y);
         List<Class> GetClasses(string year);
         List<Student> GetStudents(Class c);
         List<Parent> GetParentsInClass(Class c);
