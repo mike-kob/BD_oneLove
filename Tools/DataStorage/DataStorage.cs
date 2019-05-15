@@ -10,6 +10,158 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+
+        public List<Student> GetStudentsStatistics(Class c, string type)
+        {
+            string sql = $"WITH Temp AS( " +
+                            $"SELECT m.grade, m.student_id, m.subject " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT student_id, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ, " +
+                         $"CAST((5*[5]+4*[4]+3*[3]+2*[2]+1*[1]) AS float)/([1]+[2]+[3]+[4]+[5]) AS Middle " +
+                         $"FROM Temp " +
+                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable ORDER BY  Middle DESC; ";
+
+            List<Student> res = new List<Student>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    int i = 1;
+                    while (reader.Read())
+                    {
+                        Student cur = GetStudent(reader.GetInt64(0).ToString());
+                        cur.Sum = reader.GetInt32(6);
+                        cur.HighNumber = reader.GetInt32(1);
+                        cur.GoodNumber = reader.GetInt32(2);
+                        cur.MiddleNumber = reader.GetInt32(3);
+                        cur.BeginNumber = reader.GetInt32(4);
+                        cur.CriticalNumber = reader.GetInt32(5);
+                        cur.MiddleMark = reader.GetDouble(7);
+                        cur.Number = i;
+                        res.Add(cur);
+                        i++;
+                    }
+
+                    reader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return res;
+        }
+
+
+        public Student GetStudent(string id)
+        {
+            string sql = $"SELECT s.student_id, s.type_doc, s.ser_doc, s.num_doc, s.st_name, s.patronymic, " +
+                         "s.surname, s.sex, s.birthday, s.num_alph_book, [index], s.city, " +
+                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam "+
+                         "FROM students s " +
+                         $"WHERE s.student_id='{id}';";
+            Student cur = null;
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+                myConn.Open();
+                
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cur = new Student();
+                        cur.NumAlphBook = reader.GetString(9);
+                        cur.Id = reader.GetInt64(0).ToString();
+
+                        cur.TypeDoc = reader.GetString(1);
+                        cur.SerDoc = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.NumDoc = reader.GetString(3);
+                        cur.StName = reader.GetString(4);
+                        cur.Patronymic = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.Surname = reader.GetString(6);
+                        cur.Sex = reader.GetString(7);
+                        cur.Birthday = reader.GetDateTime(8);
+                        cur.Index = reader.IsDBNull(10) ? "" : reader.GetString(10);
+                        cur.City = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.Street = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.House = reader.IsDBNull(13) ? "" : reader.GetString(13);
+                        cur.Apart = reader.IsDBNull(14) ? "" : reader.GetString(14);
+                        cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
+                        cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
+                        cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
+
+                    }
+
+                    reader.Close();
+                }
+
+                myConn.Close();
+               
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return cur;
+        }
+
+        public List<Subject> GetSubjectsStatistics(Class c, string type)
+        {
+            string sql = $"WITH Temp AS( " +
+                            $"SELECT m.grade, m.student_id, m.subject " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT subject, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ " +
+                         $"FROM Temp " +
+                         $"PIVOT(COUNT(student_id) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable; ";
+
+            List<Subject> res = new List<Subject>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Subject cur = new Subject(reader.GetInt32(6), reader.GetInt32(1), reader.GetInt32(2),
+                            reader.GetInt32(3), reader.GetInt32(4), reader.GetInt32(5));
+                        cur.Name = reader.GetString(0);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return res;
+        }
+
+        
+
         public bool DeleteTeacherClass(Teacher t,Class c)
         {
             string sql = $"DELETE FROM head_teachers_classes WHERE class_id = '{c.ClassId}' AND tab_number='{t.TabNumber}'; ";

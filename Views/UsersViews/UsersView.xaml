@@ -29,9 +29,7 @@
                 <Button Command="{Binding AddUserCommand}" Margin="15 5" >Добавить</Button>
                 <Button Command="{Binding EditUserCommand}" Margin="15 5" Grid.Column="1">Редак-ть</Button>
                 <Button Command="{Binding DeleteUserCommand}" Margin="15 5" Grid.Column="2">Удалить</Button>
-                <!--    <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SchoolYears}"
-                      SelectedItem="{Binding SelectedYear}"></ComboBox> !-->
-            </Grid>
+        </Grid>
 
             <controls:DataGrid ItemsSource="{Binding Users}" 
                                SelectedItem="{Binding SelUser}"
