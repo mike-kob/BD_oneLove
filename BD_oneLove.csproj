@@ -260,8 +260,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\UsersViews\ClassProgressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
