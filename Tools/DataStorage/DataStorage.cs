@@ -2619,13 +2619,13 @@ namespace BD_oneLove.Tools.DataStorage
         public List<Movement> GetMovements(Class c)
         {
             string sql1 =
-                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country " +
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
                 "FROM(motion INNER JOIN students s on motion.income_st_id = s.student_id) " +
                 " INNER JOIN classes_students cs ON s.student_id = cs.student_id " +
                 $"WHERE cs.class_id='{c.ClassId}'";
 
             string sql2 =
-                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country " +
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
                 "FROM(motion INNER JOIN students s on motion.outcome_st_id = s.student_id) " +
                 " INNER JOIN classes_students cs ON s.student_id = cs.student_id " +
                 $"WHERE cs.class_id='{c.ClassId}'";
@@ -2651,6 +2651,7 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
                         cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
                         cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.MovementDate = reader.GetDateTime(8);
                         cur.Income = true;
                         res.Add(cur);
                     }
@@ -2673,6 +2674,7 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
                         cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
                         cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.MovementDate = reader.GetDateTime(8);
                         cur.Income = false;
                         res.Add(cur);
                     }
@@ -2693,6 +2695,85 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
+
+        public List<Movement> GetMovements()
+        {
+            string sql1 =
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
+                "FROM(motion INNER JOIN students s on motion.income_st_id = s.student_id) " +
+                " INNER JOIN classes_students cs ON s.student_id = cs.student_id; " ;
+
+            string sql2 =
+                "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
+                "FROM(motion INNER JOIN students s on motion.outcome_st_id = s.student_id) " +
+                " INNER JOIN classes_students cs ON s.student_id = cs.student_id; ";
+
+            List<Movement> res = new List<Movement>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Movement cur = new Movement();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.StudentId = reader.GetInt64(1).ToString();
+                        string f = reader.GetString(2);
+                        string i = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                        string o = reader.GetString(4);
+                        cur.StudentFIO = f + " " + i + " " + o;
+                        cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.MovementDate = reader.GetDateTime(8);
+                        cur.Income = true;
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Movement cur = new Movement();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.StudentId = reader.GetInt64(1).ToString();
+                        string f = reader.GetString(2);
+                        string i = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                        string o = reader.GetString(4);
+                        cur.StudentFIO = f + " " + i + " " + o;
+                        cur.SchCity = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.SchRegion = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.SchCountry = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.MovementDate = reader.GetDateTime(8);
+                        cur.Income = false;
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
 
         public List<Movement> SaveMovements(List<Movement> l)
         {
@@ -2731,7 +2812,7 @@ namespace BD_oneLove.Tools.DataStorage
                     else
                     {
                         string sql =
-                            "INSERT INTO Motion (income_st_id, outсome_st_id, sch_city, sch_region, sch_country, motion_date) " +
+                            "INSERT INTO Motion (income_st_id, outcome_st_id, sch_city, sch_region, sch_country, motion_date) " +
                             "OUTPUT INSERTED.motion_id " +
                             "VALUES (@in_id, @out_id,  @city, @region, @country, @date);";
                         using (SqlCommand command = new SqlCommand(sql, myConn))

@@ -14,10 +14,16 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
     {
         public StudentCardViewModel()
         {
+            if (!String.IsNullOrEmpty(CurStudent.Id)) { 
             List<ParentChild> pc = StationManager.DataStorage.GetParentChildren(CurStudent);
             MotherInfo = pc.Find(o => o.Role == "mother");
             FatherInfo = pc.Find(o => o.Role == "father");
             TrusteesInfo = pc.FindAll(o => o.Role == "trustee");
+            }
+            else
+            {
+                TrusteesInfo = new List<ParentChild>();
+            }
             ViewSource = new CollectionViewSource();
             ViewSource.Source = TrusteesInfo;
         }

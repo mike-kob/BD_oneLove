@@ -67,7 +67,7 @@ namespace BD_oneLove.ViewModels
                 case "Заместитель директора":
                     // Items.Add("Ученики");
                     // Items.Add("Классы");
-                    // Items.Add("Выбывшие/прибывшие");
+                    Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     // Items.Add("Учебный план");
                     // Items.Add("Успеваемость");
                     // Items.Add("Отчет по ученикам");

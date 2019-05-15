@@ -86,6 +86,7 @@ namespace BD_oneLove.Tools.DataStorage
 
         //------------Movement---------------
         List<Movement> GetMovements(Class c);
+        List<Movement> GetMovements();
         List<Movement> SaveMovements(List<Movement> l);
         bool RemoveMovement(Movement m);
 
