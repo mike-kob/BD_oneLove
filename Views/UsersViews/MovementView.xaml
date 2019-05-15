@@ -45,7 +45,7 @@
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
                                              Width="*"
-                                             Binding="{Binding MovementDate}" />
+                                             Binding="{Binding MovementDate, StringFormat=\{0:dd/MM/yyyy\}}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
                                              Width="*"
                                              Binding="{Binding SchCity}" >
@@ -86,7 +86,7 @@
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
                                              Width="*"
-                                             Binding="{Binding MovementDate}" />
+                                             Binding="{Binding MovementDate, StringFormat=\{0:dd/MMM/yyyy\}}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
                                              Width="*"
                                              Binding="{Binding SchCity}" />
