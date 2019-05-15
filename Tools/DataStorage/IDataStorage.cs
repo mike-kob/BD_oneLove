@@ -5,6 +5,11 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal interface IDataStorage
     {
+
+        //--------------Subjects-----------------
+        List<Subject> GetSubjectsStatistics(Class c, string type);
+
+
         //--------------Plans-----------------
 
         List<Plan> GetPlans();
@@ -27,8 +32,10 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Students---------------
         Student SaveStudent(Student s);
         Student UpdateStudent(Student s);
+        Student GetStudent(string id);
         bool AssignStudentToClass(Student s, Class c);
         bool ExpelStudent(Student s, Class c);
+        List<Student> GetStudentsStatistics(Class c, string type);
 
         //--------------Parents---------------
         Parent GetFather(Student s);
@@ -54,6 +61,7 @@ namespace BD_oneLove.Tools.DataStorage
         bool AddClass(Class c);
         bool UpdateClass(Class c);
         bool DeleteClass(Class c);
+
 
 
 
