@@ -65,15 +65,13 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     break;
                 case "Заместитель директора":
-                    //Items.Add("Успеваемость", ViewType.SubjectProgressView);
-                    Items.Add("Успеваемость", ViewType.ProgressView);
                     // Items.Add("Ученики");
-                    // Items.Add("Классы");
+                    Items.Add("Классы", ViewType.ClassesView);
+                    Items.Add("Учебный план", ViewType.PlanView);
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
-                    // Items.Add("Учебный план");
-                    // Items.Add("Успеваемость");
+                    Items.Add("Успеваемость", ViewType.ProgressView);
                     // Items.Add("Отчет по ученикам");
-                    // Items.Add("Выставление оценок");
+                    Items.Add("Выставление оценок", ViewType.PutMarksView);
                     break;
             }
         }

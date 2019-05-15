@@ -10,12 +10,12 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
-            public List<Student> GetStudentsStatistics(Class c, string type)
+        public List<Student> GetStudentsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
-                            $"SELECT m.grade, m.student_id, m.subject " +
-                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
-                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT m.grade, m.student_id, m.subject " +
+                         $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                         $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
                          $"SELECT student_id, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ, " +
                          $"CAST((5*[5]+4*[4]+3*[3]+2*[2]+1*[1]) AS float)/([1]+[2]+[3]+[4]+[5]) AS Middle " +
                          $"FROM Temp " +
@@ -48,7 +48,6 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
-
             }
             catch (Exception ex)
             {
@@ -58,14 +57,15 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return res;
         }
-        
-         public Student GetStudent(string id)
+
+        public Student GetStudent(string id)
         {
             string sql = $"SELECT s.student_id, s.type_doc, s.ser_doc, s.num_doc, s.st_name, s.patronymic, " +
                          "s.surname, s.sex, s.birthday, s.num_alph_book, [index], s.city, " +
-                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam "+
+                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam " +
                          "FROM students s " +
                          $"WHERE s.student_id='{id}';";
             Student cur = null;
@@ -73,7 +73,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
                 myConn.Open();
-                
+
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
                     var reader = command.ExecuteReader();
@@ -99,14 +99,12 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
                         cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-
                     }
 
                     reader.Close();
                 }
 
                 myConn.Close();
-               
             }
             catch (Exception ex)
             {
@@ -115,13 +113,13 @@ namespace BD_oneLove.Tools.DataStorage
 
             return cur;
         }
-        
-           public List<Subject> GetSubjectsStatistics(Class c, string type)
+
+        public List<Subject> GetSubjectsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
-                            $"SELECT m.grade, m.student_id, m.subject " +
-                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
-                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                         $"SELECT m.grade, m.student_id, m.subject " +
+                         $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                         $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
                          $"SELECT subject, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ " +
                          $"FROM Temp " +
                          $"PIVOT(COUNT(student_id) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable; ";
@@ -145,7 +143,6 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
-
             }
             catch (Exception ex)
             {
@@ -155,6 +152,7 @@ namespace BD_oneLove.Tools.DataStorage
             {
                 myConn?.Close();
             }
+
             return res;
         }
 
@@ -257,6 +255,8 @@ namespace BD_oneLove.Tools.DataStorage
         }
 
         //------------------Classes----------------
+
+        #region Classes
 
         public bool DeleteClass(Class c)
         {
@@ -399,7 +399,6 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-
         public List<Teacher> GetTeachers(Class c)
         {
             string sql =
@@ -485,6 +484,8 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
+
+        #endregion
 
         public bool DeleteUser(User u)
         {
@@ -2849,7 +2850,7 @@ namespace BD_oneLove.Tools.DataStorage
             string sql1 =
                 "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
                 "FROM(motion INNER JOIN students s on motion.income_st_id = s.student_id) " +
-                " INNER JOIN classes_students cs ON s.student_id = cs.student_id; " ;
+                " INNER JOIN classes_students cs ON s.student_id = cs.student_id; ";
 
             string sql2 =
                 "SELECT motion_id, s.student_id, s.surname, s.st_name, s.patronymic, sch_city, sch_region, sch_country, motion_date " +
