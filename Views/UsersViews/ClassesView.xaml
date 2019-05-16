@@ -54,7 +54,8 @@
                     <controls:DataGridTextColumn Header="Номер"
                                              Binding="{Binding ClassId, Mode=OneWay}"/>
                     <controls:DataGridTextColumn Header="Класс"
-                                             Binding="{Binding NumberLetter, Mode=OneWay}"/>
+                                             Binding="{Binding NumberLetter, Mode=OneWay}"
+                                             SortMemberPath="OrderNum"/>
                     <controls:DataGridTextColumn Header="Количество учеников"
                                              Binding="{Binding NumOfStudents, Mode=OneWay}"/>
 

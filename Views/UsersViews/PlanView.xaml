@@ -26,6 +26,13 @@
             <Button Command="{Binding AddYearCommand}" Margin="15 5" Grid.Row="1">Добавить</Button>
             <Button Command="{Binding EditYearCommand}" Margin="15 5" Grid.Column="1" >Редак-ть</Button>
             <Button Command="{Binding DeleteYearCommand}" Margin="15 5" Grid.Column="2" >Удалить</Button>
+
+            <TextBlock Text="Текущий год:" Grid.Column="3" FontSize="24" 
+                       VerticalAlignment="Center" TextAlignment="Right"/>
+            <ComboBox Grid.Column="4" Margin="15"
+                      ItemsSource="{Binding StYears}"
+                      SelectedItem="{Binding SelectedStYear, Mode=TwoWay}"/>
+
         </Grid>
 
         <controls:DataGrid ItemsSource="{Binding Plans}"

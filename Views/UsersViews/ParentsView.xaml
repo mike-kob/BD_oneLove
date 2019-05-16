@@ -33,6 +33,8 @@
             </Grid.ColumnDefinitions>
             <Button Margin="15 5" Command="{Binding AddCommand}">Добавить</Button>
             <Button Margin="15 5" Command="{Binding SearchCommand}" Grid.Column="1">Поиск в базе</Button>
+            <Button Margin="15 5" Command="{Binding RefreshCommand}" Grid.Column="3" Width="100"
+                    HorizontalAlignment="Right">Обновить</Button>
             <!--<Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>-->
         </Grid>
         <!--  -->
@@ -44,7 +46,7 @@
                            CanUserAddRows="False"
                            >
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Id"
+                <controls:DataGridTextColumn Header="Id" IsReadOnly="True"
                                              Binding="{Binding Id, Mode=OneWay}"
                                              Visibility="{Binding DataContext.IsShowId, Source={StaticResource ProxyElement}}"/>
               

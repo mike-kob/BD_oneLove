@@ -16,6 +16,8 @@ namespace BD_oneLove.Tools.DataStorage
         bool AddPlan(Plan p);
         bool UpdatePlan(Plan p, Plan oldP);
         bool DeletePlan(Plan p);
+        string GetCurYear();
+        bool UpdateCurYear(string year);
 
         //--------------Users-----------------
 
@@ -38,14 +40,24 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Parents---------------
         Parent GetFather(Student s);
         Parent GetMother(Student s);
+        List<Parent> GetTrustees(Student s);
+        List<ParentChild> GetParentChildren(Student s);
+        List<ParentChild> GetParentChildren(Parent p);
+        
         List<Parent> GetAllParents();
+        List<Parent> GetParentsInClass(Class c);
         bool AssignParentToStudent(Student st, Parent p, bool father);
+
+        Parent SaveParent(Parent p);
+        bool SaveParentChild(ParentChild pc);
+        bool RemoveParentChild(ParentChild pc);
+
 
         //--------------Classes---------------
         Class GetClass(string classId);
+        Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
         List<Student> GetStudents(Class c);
-        List<Parent> GetParentsInClass(Class c);
         bool AddClass(Class c);
         bool UpdateClass(Class c);
         bool DeleteClass(Class c);
@@ -82,7 +94,10 @@ namespace BD_oneLove.Tools.DataStorage
 
         //------------Movement---------------
         List<Movement> GetMovements(Class c);
+        List<Movement> GetMovements();
         List<Movement> SaveMovements(List<Movement> l);
         bool RemoveMovement(Movement m);
+
+   
     }
 }

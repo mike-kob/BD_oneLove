@@ -2,18 +2,31 @@
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
     class PlanViewModel : BaseViewModel
     {
+
+        private string _selectedStYear = StationManager.CurrentYear;
+
         public List<Plan> Plans { get; set; }
         public Plan SelPlan { get; set; }
+        public List<string> StYears { get; set; } = StationManager.DataStorage.GetYears();
+
+        public string SelectedStYear
+        {
+            get { return _selectedStYear;}
+            set
+            {
+                _selectedStYear = value;
+                if (!StationManager.DataStorage.UpdateCurYear(_selectedStYear))
+                    MessageBox.Show("Проблемы с обновлением текущего года.");
+            }
+        }
 
         #region Commands
 
@@ -87,6 +100,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             Plans = StationManager.DataStorage.GetPlans();
             OnPropertyChanged("Plans");
+            StYears = StationManager.DataStorage.GetYears();
+            OnPropertyChanged("StYears");
         }
     }
 }

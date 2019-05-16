@@ -43,7 +43,7 @@ namespace BD_oneLove.Models
 
         public Parent Father { get; set; }
         public Parent Mother { get; set; }
-        public Parent[] Trustees { get; set; }
+        public List<Parent> Trustees { get; set; }
 
         public List<Comment> Comments { get; set; } = new List<Comment>();
 

@@ -97,6 +97,7 @@
     <Compile Include="Models\Mark.cs" />
     <Compile Include="Models\Movement.cs" />
     <Compile Include="Models\Parent.cs" />
+    <Compile Include="Models\ParentChild.cs" />
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Subject.cs" />
@@ -114,7 +115,7 @@
       <DependentUpon>AddCommentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\UserDialogViewModels\AddCommentDialogViewModel.cs" />
-    <Compile Include="ViewModels\UserDialogViewModels\AddStudentDialogViewModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\StudentCardViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddTeacherClassViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ParentCardViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\SearchParentViewModel.cs" />
@@ -198,8 +199,8 @@
     <Compile Include="Views\SignInView.xaml.cs">
       <DependentUpon>SignInView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UserDialogs\AddStudentDialogView.xaml.cs">
-      <DependentUpon>AddStudentDialogView.xaml</DependentUpon>
+    <Compile Include="Views\UserDialogs\StudentCardView.xaml.cs">
+      <DependentUpon>StudentCardView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserDialogs\ParentCardView.xaml.cs">
       <DependentUpon>ParentCardView.xaml</DependentUpon>
@@ -303,7 +304,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UserDialogs\AddStudentDialogView.xaml">
+    <Page Include="Views\UserDialogs\StudentCardView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

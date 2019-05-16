@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using BD_oneLove.Tools;
 
 namespace BD_oneLove.Models
@@ -17,10 +14,10 @@ namespace BD_oneLove.Models
         public string Surname { get; set; }
 
         public string Sex { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
         public string BirthdayString
         {
-            get { return Birthday.Year < 1800 ? "" : Birthday.ToString("d-M-yyyy"); }
+            get { return Birthday?.ToString("d-M-yyyy"); }
         }
 
         public string Index { get; set; }
@@ -34,8 +31,10 @@ namespace BD_oneLove.Models
         public string Work { get; set; }
         public string Commentary { get; set; }
 
-        public bool Trustee { get; set; }
-        public string Relation { get; set; }
+        public string SurnameNamePatr
+        {
+            get { return Surname + " " + PName + " " + Patronymic; }
+        }
         #endregion
     }
 }

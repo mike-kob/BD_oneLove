@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Documents;
 
 namespace BD_oneLove.Models
 {
@@ -14,6 +11,12 @@ namespace BD_oneLove.Models
         public string Letter { get; set; }
         public string StYear { get; set; }
         public string NumOfStudents { get; set; }
+        public List<Student> ClassStudents { get; set; }
+
+
+        public int OrderNum {
+            get { return Int32.Parse(Number); }
+        }
 
         public string NumberLetter {
             get

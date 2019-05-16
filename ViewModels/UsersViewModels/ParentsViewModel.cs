@@ -32,12 +32,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Visibility _isShowWork;
         private Visibility _isShowComment;
 
-        private ICommand _saveCommand;
+        private ICommand _addCommand;
         private ICommand _removeCommand;
         private ICommand _editCommand;
-        private ICommand _cancelCommand;
-        private ICommand _addCommand;
         private ICommand _searchCommand;
+        private ICommand _refreshCommand;
+
         private Parent _selectedParent;
 
         #endregion
@@ -47,6 +47,25 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Class MyClass { get; set; }
 
         public List<Parent> ClassParents { get; set; }
+
+        public ICommand AddCommand
+        {
+            get
+            {
+                return _addCommand ?? (_addCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               StationManager.CurrentParent = new Parent();
+                               Window w = new ParentCardView();
+                               bool? res = w.ShowDialog();
+                               if (res == true)
+                               {
+                                   ClassParents.Add(StationManager.CurrentParent);
+                                   OnPropertyChanged("ClassParents");
+                               }
+                           }));
+            }
+        }
 
         public ICommand EditCommand
         {
@@ -72,6 +91,20 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                            }));
             }
         }
+
+        public ICommand RefreshCommand
+        {
+            get
+            {
+                return _refreshCommand ?? (_refreshCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               ClassParents = StationManager.DataStorage.GetParentsInClass(MyClass);
+                               OnPropertyChanged("ClassParents");
+                           }));
+            }
+        }
+
 
         public Parent SelectedParent
         {
