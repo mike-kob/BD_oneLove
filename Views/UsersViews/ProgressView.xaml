@@ -19,6 +19,9 @@
                 <DataTemplate DataType="{x:Type y:ClassProgressViewModel}">
                     <local:ClassProgressView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type y:SchoolProgressViewModel}">
+                    <local:SchoolProgressView/>
+                </DataTemplate>
             </TabControl.Resources>
             <TabControl.ItemTemplate>
                 <DataTemplate>

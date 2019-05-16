@@ -32,6 +32,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             Tabs = new ObservableCollection<BaseViewModel>();
             Tabs.Add(new SubjectProgressViewModel());
             Tabs.Add(new ClassProgressViewModel());
+            Tabs.Add(new SchoolProgressViewModel());
             SelectedTabIndex = 0;
         }
 

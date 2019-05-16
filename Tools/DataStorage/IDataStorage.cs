@@ -44,6 +44,7 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Classes---------------
         Class GetClass(string classId);
         List<Class> GetClasses(string year);
+        List<Class> GetClassesStatistics(string year,string type);
         List<Student> GetStudents(Class c);
         List<Parent> GetParentsInClass(Class c);
         bool AddClass(Class c);
