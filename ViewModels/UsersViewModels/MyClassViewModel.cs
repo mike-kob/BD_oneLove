@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
@@ -20,9 +14,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         public MyClassViewModel()
         {
-            string classId = "3";
-
-            _myClass = StationManager.DataStorage.GetClass(classId);
+            _myClass = StationManager.CurrentClass;
+            
             ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
         }
 

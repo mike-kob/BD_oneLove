@@ -2,11 +2,7 @@
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
-using BD_oneLove.Views.UsersViews;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -14,8 +10,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 {
     class TeachersViewModel: BaseViewModel
     {
-        string _selYear;
-
         #region Props
 
         public List<Teacher> SchoolTeachers { get; set; }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -18,7 +19,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             IncomeViewSource = new CollectionViewSource();
             OutcomeViewSource = new CollectionViewSource();
-            var l = StationManager.DataStorage.GetMovements(StationManager.CurrentClass);
+            List<Movement> l;
+            if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+            {
+                l = StationManager.DataStorage.GetMovements(StationManager.CurrentClass);
+            }
+            else
+            {
+                l = StationManager.DataStorage.GetMovements();
+            }
             Incomes = l.Where(m => m.Income).ToList();
             Outcomes = l.Where(m => !m.Income).ToList();
 
@@ -34,11 +43,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _removeOutcomeCommand;
 
         private ICommand _saveCommand;
-
+        private ICommand _findPeriodCommand;
+    
 
         #endregion
 
         #region Props
+
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
 
         public List<Movement> Incomes { get; set; }
         public List<Movement> Outcomes { get; set; }
@@ -152,6 +165,34 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                            {
                                StationManager.DataStorage.SaveMovements(Incomes);
                                StationManager.DataStorage.SaveMovements(Outcomes);
+                           }));
+            }
+        }
+
+        public ICommand FindPeriodCommand
+        {
+            get
+            {
+                return _findPeriodCommand ?? (_findPeriodCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               List<Movement> l;
+                               if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+                               {
+                                   l = StationManager.DataStorage.GetMovements(StationManager.CurrentClass);
+                               }
+                               else
+                               {
+                                   l = StationManager.DataStorage.GetMovements();
+                               }
+                               Incomes = l.Where(m => m.Income && m.MovementDate <= DateTo && m.MovementDate >= DateFrom).ToList();
+                               Outcomes = l.Where(m => !m.Income && m.MovementDate <= DateTo && m.MovementDate >= DateFrom).ToList();
+                               IncomeViewSource.Source = Incomes;
+                               OutcomeViewSource.Source = Outcomes;
+                               IncomeViewSource.View.Refresh();
+                               OutcomeViewSource.View.Refresh();
+                               OnPropertyChanged("Incomes");
+                               OnPropertyChanged("Outcomes");
                            }));
             }
         }

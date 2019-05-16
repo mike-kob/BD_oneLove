@@ -3,6 +3,7 @@ using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 
 namespace BD_oneLove.ViewModels
@@ -15,6 +16,25 @@ namespace BD_oneLove.ViewModels
 
         private string _selectedView;
 
+        private ICommand _logoutCommand;
+
+        public ICommand LogoutCommand
+        {
+            get { return _logoutCommand ?? (_logoutCommand = new RelayCommand<object>(o =>
+                             {
+                                 StationManager.CurrentUser = null;
+                                 StationManager.CurrentTeacher = null;
+                                 StationManager.CurrentClass = null;
+                                 StationManager.CurrentParent = null;
+                                 StationManager.CurrentPlan = null;
+                                 StationManager.CurrentStudent = null;
+                                 
+                                 NavigationManager.Instance.Navigate(ViewType.SignInView);
+                                 NavigationManager.Instance.DeleteView(ViewType.MainView);
+                             }));
+            }
+        }
+
 
         public TemplateViewModel()
         {
@@ -25,7 +45,6 @@ namespace BD_oneLove.ViewModels
 
             Items = new Dictionary<string, ViewType>();
             addItems();
-            StationManager.CurrentClass = StationManager.DataStorage.GetClass("3");
         }
 
         private void addItems()
@@ -46,15 +65,13 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     break;
                 case "Заместитель директора":
-                    //Items.Add("Успеваемость", ViewType.SubjectProgressView);
-                    Items.Add("Успеваемость", ViewType.ProgressView);
                     // Items.Add("Ученики");
-                    // Items.Add("Классы");
-                    // Items.Add("Выбывшие/прибывшие");
-                    // Items.Add("Учебный план");
-                    // Items.Add("Успеваемость");
+                    Items.Add("Классы", ViewType.ClassesView);
+                    Items.Add("Учебный план", ViewType.PlanView);
+                    Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
+                    Items.Add("Успеваемость", ViewType.ProgressView);
                     // Items.Add("Отчет по ученикам");
-                    // Items.Add("Выставление оценок");
+                    Items.Add("Выставление оценок", ViewType.PutMarksView);
                     break;
             }
         }

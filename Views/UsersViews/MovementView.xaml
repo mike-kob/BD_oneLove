@@ -15,42 +15,57 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
-        <TextBlock Text="Выбывшие:" FontSize="24" FontWeight="SemiBold"
+        <Grid Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <controls:DatePicker Margin="5" FontSize="16"
+                                 SelectedDate="{Binding DateFrom, StringFormat=\{0:dd/MMM/yyyy\}, Mode=TwoWay}"></controls:DatePicker>
+            <TextBlock Grid.Column="1" FontSize="16">-</TextBlock>
+            <controls:DatePicker Grid.Column="2"
+                Margin="5" FontSize="16"
+                SelectedDate="{Binding DateTo, StringFormat=\{0:dd/MMM/yyyy\}, Mode=TwoWay}"></controls:DatePicker>
+            <Button Grid.Column="3" Margin="15 5" Content="Найти за период" Command="{Binding FindPeriodCommand}"></Button>
+        </Grid>
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Text="Выбывшие:" FontSize="24" FontWeight="SemiBold"
                    VerticalAlignment="Bottom" Margin="5" />
-        <Button Grid.Column="1" Grid.Row="0" Margin="15 5"
+        <Button Grid.Column="1" Grid.Row="1" Margin="15 5"
                 Height="30" VerticalAlignment="Bottom"
                 Command="{Binding AddIncomeCommand}"
                 Content="Добавить" FontSize="20" />
-        <Button Grid.Column="2" Grid.Row="0" Margin="15 5"
+        <Button Grid.Column="2" Grid.Row="1" Margin="15 5"
                 Height="30" VerticalAlignment="Bottom"
                 Command="{Binding RemoveIncomeCommand}"
                 Content="Удалить" FontSize="20" />
         <controls:DataGrid ItemsSource="{Binding IncomeViewSource.View}"
                            SelectedItem="{Binding SelectedIncome, Mode=TwoWay}"
-                           Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"
+                           Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
                            Margin="5 20" Width="800"
                            HorizontalAlignment="Left"
                            Background="White" AutoGenerateColumns="False"
-                           CanUserAddRows="False"
-                           >
+                           CanUserAddRows="False">
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="ФИО" IsReadOnly="True" FontSize="14"
                                              Width="3*"
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
                                              Width="*"
-                                             Binding="{Binding MovementDate}" />
+                                             Binding="{Binding MovementDate, StringFormat=\{0:dd/MMM/yyyy\}}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
                                              Width="*"
-                                             Binding="{Binding SchCity}" >
-
-                </controls:DataGridTextColumn>
+                                             Binding="{Binding SchCity}" />
                 <controls:DataGridTextColumn Header="Область" IsReadOnly="False" FontSize="14"
                                              Width="*"
                                              Binding="{Binding SchRegion}" />
@@ -64,18 +79,18 @@
 
         <TextBlock Text="Прибывшие:" FontSize="24" FontWeight="SemiBold"
                    VerticalAlignment="Bottom" Margin="5"
-                   Grid.Column="0" Grid.Row="2" />
-        <Button Grid.Column="1" Grid.Row="2" Margin="15 5"
+                   Grid.Column="0" Grid.Row="3" />
+        <Button Grid.Column="1" Grid.Row="3" Margin="15 5"
                 Height="30" VerticalAlignment="Bottom"
                 Command="{Binding AddOutcomeCommand}"
                 Content="Добавить" FontSize="20" />
-        <Button Grid.Column="2" Grid.Row="2" Margin="15 5"
+        <Button Grid.Column="2" Grid.Row="3" Margin="15 5"
                 Height="30" VerticalAlignment="Bottom"
                 Command="{Binding RemoveOutcomeCommand}"
                 Content="Удалить" FontSize="20" />
         <controls:DataGrid ItemsSource="{Binding OutcomeViewSource.View}"
                            SelectedItem="{Binding SelectedOutcome, Mode=TwoWay}"
-                           Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"
+                           Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="4"
                            Margin="5 20" Width="800"
                            HorizontalAlignment="Left"
                            Background="White" AutoGenerateColumns="False"
@@ -86,7 +101,7 @@
                                              Binding="{Binding StudentFIO}" />
                 <controls:DataGridTextColumn Header="Дата" IsReadOnly="False" FontSize="14"
                                              Width="*"
-                                             Binding="{Binding MovementDate}" />
+                                             Binding="{Binding MovementDate, StringFormat=\{0:dd/MMM/yyyy\}}" />
                 <controls:DataGridTextColumn Header="Город" IsReadOnly="False" FontSize="14"
                                              Width="*"
                                              Binding="{Binding SchCity}" />
@@ -99,7 +114,7 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>
 
-        <Button Grid.Column="3" Grid.Row="4"
+        <Button Grid.Column="3" Grid.Row="5"
                 Margin="5"
                 Content="Сохранить"
                 Command="{Binding SaveCommand}" />

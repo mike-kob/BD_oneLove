@@ -2,23 +2,20 @@
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
     class ClassesViewModel : BaseViewModel
     {
-        private string _selYear;
+        private string _selYear = StationManager.CurrentYear;
         private Class _selClass;
 
         public ClassesViewModel()
         {
             Classes = StationManager.DataStorage.GetClasses(SelectedYear);
-            SelectedYear = Years[0];
+            SelectedYear = StationManager.CurrentYear;
         }
 
         #region Property

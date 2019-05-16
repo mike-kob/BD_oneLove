@@ -4,14 +4,14 @@ using BD_oneLove.ViewModels.UserDialogViewModels;
 namespace BD_oneLove.Views.UserDialogs
 {
     /// <summary>
-    /// Interaction logic for ParentCardView.xaml
+    /// Interaction logic for AddStudentDialogView.xaml
     /// </summary>
-    public partial class ParentCardView : Window
+    public partial class AddStudentDialogView : Window
     {
-        public ParentCardView()
+        public AddStudentDialogView()
         {
             InitializeComponent();
-            DataContext = new ParentCardViewModel();
+            DataContext = new StudentCardViewModel();
         }
     }
 }
