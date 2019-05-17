@@ -33,6 +33,10 @@ namespace BD_oneLove.Tools.DataStorage
         Student SaveStudent(Student s);
         Student UpdateStudent(Student s);
         Student GetStudent(string id);
+        List<Student> GetStudents(Class c);
+        List<Student> GetStudents();
+        List<Student> GetFreeStudents(Class c);
+        List<Student> GetFreeStudents();
         bool AssignStudentToClass(Student s, Class c);
         bool ExpelStudent(Student s, Class c);
         List<Student> GetStudentsStatistics(Class c, string type);
@@ -57,7 +61,6 @@ namespace BD_oneLove.Tools.DataStorage
         Class GetClass(string classId);
         Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
-        List<Student> GetStudents(Class c);
         bool AddClass(Class c);
         bool UpdateClass(Class c);
         bool DeleteClass(Class c);

@@ -33,10 +33,13 @@
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="150"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Margin="15 5" Command="{Binding AddCommand}">Добавить</Button>
             <Button Margin="15 5" Command="{Binding EditCommand}" Grid.Column="1">Ред-ть</Button>
             <Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>
+            <Button Margin="15 5" Command="{Binding SearchCommand}" Grid.Column="4">
+                <TextBlock TextAlignment="Center">Поиск учеников<LineBreak/>Перевести в класс</TextBlock></Button>
         </Grid>
         <!--  -->
         <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
@@ -72,7 +75,7 @@
                                              Binding="{Binding Sex}"
                                              Visibility="{Binding DataContext.IsShowSex, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Дата рождения"
-                                             Binding="{Binding BirthdayString, Mode=OneWay}" IsReadOnly="True"
+                                             Binding="{Binding Birthday, StringFormat=\{0:dd/MMM/yyyy\}}" 
                                              Visibility="{Binding DataContext.IsShowBirthday, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Алф. книга"
                                              Binding="{Binding NumAlphBook}"

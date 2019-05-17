@@ -176,17 +176,21 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
 
         private void SaveImplementation(Window win)
         {
+            Student res;
             if (String.IsNullOrEmpty(CurStudent.Id))
             {
-                StationManager.DataStorage.SaveStudent(CurStudent);
+                res = StationManager.DataStorage.SaveStudent(CurStudent);
+                
                 StationManager.DataStorage.AssignStudentToClass(CurStudent, StationManager.CurrentClass);
             }
             else
             {
-                StationManager.DataStorage.UpdateStudent(CurStudent);
+                res = StationManager.DataStorage.UpdateStudent(CurStudent);
             }
 
-            win?.Close();
+            if(res != null)
+                win?.Close();
+            
         }
 
         private bool CanExecuteSave(object obj)

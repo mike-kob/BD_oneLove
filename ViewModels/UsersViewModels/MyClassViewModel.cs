@@ -50,6 +50,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _addCommand;
         private ICommand _importCommand;
         private ICommand _importFileCommand;
+        private ICommand _searchCommand;
         #endregion
 
         #region Props
@@ -182,6 +183,23 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                }
                                ViewSource.View.Refresh();
                                OnPropertyChanged("ClassStudents");
+                           }));
+            }
+        }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                              SearchStudentDialog w = new SearchStudentDialog();
+                              var res = w.ShowDialog();
+                              if (res == true)
+                              {
+
+                              }
                            }));
             }
         }
@@ -341,6 +359,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private void RefreshList()
         {
             ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+            ViewSource.Source = ClassStudents;
+            ViewSource.View.Refresh();
             OnPropertyChanged("ClassStudents");
         }
 

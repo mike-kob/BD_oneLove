@@ -107,6 +107,7 @@
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddClassDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ChooseStudentDialogViewModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\SearchStudentViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ClassProgressViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MovementViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
@@ -144,6 +145,9 @@
     </Compile>
     <Compile Include="Views\UserDialogs\SearchParentDialog.xaml.cs">
       <DependentUpon>SearchParentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserDialogs\SearchStudentDialog.xaml.cs">
+      <DependentUpon>SearchStudentDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
@@ -254,6 +258,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserDialogs\SearchParentDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UserDialogs\SearchStudentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

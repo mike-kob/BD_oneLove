@@ -103,7 +103,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 RefreshDict();
             }
         }
-
         public string SelectedType
         {
             get { return _selectedType; }
