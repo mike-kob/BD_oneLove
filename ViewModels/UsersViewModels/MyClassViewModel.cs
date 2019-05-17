@@ -1,11 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
 using System.Windows.Forms;
+using BD_oneLove.Properties;
 using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
@@ -17,6 +21,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             _myClass = StationManager.CurrentClass;
             
             ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+            ViewSource = new CollectionViewSource();
+            ViewSource.Source = ClassStudents;
         }
 
         #region Fields
@@ -42,9 +48,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _editCommand;
         private ICommand _cancelCommand;
         private ICommand _addCommand;
+        private ICommand _importCommand;
+        private ICommand _importFileCommand;
         #endregion
 
         #region Props
+
+        public CollectionViewSource ViewSource { get; set; }
 
         public List<Student> ClassStudents { get; set; }
 
@@ -103,6 +113,76 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                win.ShowDialog();
                                RefreshList();
                            }, IsSelected));
+            }
+        }
+
+        public ICommand ImportCommand
+        {
+            get
+            {
+                return _importCommand ?? (_importCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               OpenFileDialog w = new OpenFileDialog();
+                               w.Filter = "Excel Worksheets|*.xls;*.xlsx";
+                               w.ShowDialog();
+                               List<Student> l = ExcelManager.LoadClassStudents(w.FileName, StationManager.CurrentClass);
+                               ClassStudents.AddRange(l);
+                               ViewSource.View.Refresh();
+                               OnPropertyChanged("ClassStudents");
+                               MessageBox.Show($"Импортировано учеников: {l.Count}\nПреоверьте правильность данных и нажмите 'Сохранить'",
+                                   "Импорт", MessageBoxButtons.OK,
+                                   MessageBoxIcon.Information);
+                           }));
+            }
+        }
+
+        public ICommand ImportFileCommand
+        {
+            get
+            {
+                return _importFileCommand ?? (_importFileCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               SaveFileDialog w = new SaveFileDialog();
+                               w.Title = "Save file for import";
+                               w.Filter = "Excel Worksheets|*.xls";
+                               var res = w.ShowDialog();
+                               
+                               if (res != DialogResult.Cancel && w.FileName != null)
+                               {
+                                   if(File.Exists(w.FileName))
+                                       File.Delete(w.FileName);
+                                   
+                                   File.WriteAllBytes(w.FileName, Resources.Students);
+                               }
+                           }));
+            }
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               foreach (Student s in ClassStudents)
+                               {
+                                   if (!String.IsNullOrEmpty(s.Id))
+                                   {
+                                       StationManager.DataStorage.UpdateStudent(s);
+                                       StationManager.DataStorage.AssignStudentToClass(s, StationManager.CurrentClass);
+                                   }
+                                   else
+                                   {
+                                       StationManager.DataStorage.SaveStudent(s);
+                                       StationManager.DataStorage.AssignStudentToClass(s, StationManager.CurrentClass);
+                                   }
+                               }
+                               ViewSource.View.Refresh();
+                               OnPropertyChanged("ClassStudents");
+                           }));
             }
         }
 
@@ -248,6 +328,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 StationManager.DataStorage.ExpelStudent(_selectedStudent, _myClass);
                 ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+                ViewSource.View.Refresh();
                 OnPropertyChanged("ClassStudents");
             }
         }

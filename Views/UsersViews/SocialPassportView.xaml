@@ -17,12 +17,13 @@
             <ColumnDefinition Width="100"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="150"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
                            SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
@@ -43,8 +44,14 @@
             </controls:DataGrid.Columns>
         </controls:DataGrid>
         <Button Command="{Binding SaveCommand}"
-                Grid.Column="8" Grid.Row="3"
+                Grid.Column="7" Grid.Row="2"
                 Margin="5" Content="Сохранить"/>
+        <Button Command="{Binding ImportCommand}"
+                Grid.Column="8" Grid.Row="2"
+                Margin="5" Content="Импортировать"/>
+        <Button Command="{Binding ImportFileCommand}"
+                Grid.Column="8" Grid.Row="3"
+                Margin="5" Content="Файл для импорта"/>
 
         <Grid Grid.Column="4" Grid.ColumnSpan="4" Grid.Row="1"
               Margin="5 20">

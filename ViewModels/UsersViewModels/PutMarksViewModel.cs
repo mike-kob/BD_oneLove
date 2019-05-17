@@ -19,6 +19,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 IsAdminVisible = Visibility.Hidden;
                 CurClass = StationManager.CurrentClass;
                 Subjects = StationManager.DataStorage.GetSubjects(CurClass, SelectedType);
+                ViewSource.Source = MarksDict;
+                SubjectsViewSource.Source = Subjects;
             }
             else
             {

@@ -487,73 +487,9 @@ namespace BD_oneLove.Tools.DataStorage
 
         #endregion
 
-        public bool DeleteUser(User u)
-        {
-            string sql = $"DELETE FROM [user] WHERE login = '{u.Username}'; ";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return true;
-        }
-
-        public bool UpdateUser(User u, User oldU)
-        {
-            string sql = "UPDATE [user] " +
-                         $"SET login='{u.Username}', " +
-                         $" password = '{u.Password}' " +
-                         $"WHERE login='{oldU.Username}'";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                MessageBox.Show("Пользователь с таким логином уже существует", "Warning");
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return true;
-        }
-
         //------------------Plans----------------------
+
+        #region Plans
 
         public bool AddPlan(Plan p)
         {
@@ -760,7 +696,6 @@ namespace BD_oneLove.Tools.DataStorage
             }
         }
 
-
         public List<Plan> GetPlans()
         {
             string sql = "SELECT st_year, date_term1, date_term2, date_year" +
@@ -800,6 +735,76 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
+        }
+
+        #endregion
+
+        #region Users
+
+        public bool DeleteUser(User u)
+        {
+            string sql = $"DELETE FROM [user] WHERE login = '{u.Username}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return true;
+        }
+
+        public bool UpdateUser(User u, User oldU)
+        {
+            string sql = "UPDATE [user] " +
+                         $"SET login='{u.Username}', " +
+                         $" password = '{u.Password}' " +
+                         $"WHERE login='{oldU.Username}'";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                MessageBox.Show("Пользователь с таким логином уже существует", "Warning");
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return true;
         }
 
         public bool AddUser(User t)
@@ -1054,6 +1059,8 @@ namespace BD_oneLove.Tools.DataStorage
 
             return null;
         }
+
+        #endregion
 
         public Class GetClass(string classId)
         {
@@ -1632,6 +1639,46 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
+        }
+
+        public bool AssignStudentToClass(Student s, Class c)
+        {
+            string sql1 =
+                "INSERT INTO classes_students (student_id, class_id)" +
+                $"VALUES ('{s.Id}', '{c.ClassId}')";
+            string sqlCheck =
+                "SELECT COUNT(*) " +
+                "FROM classes_students " +
+                $"WHERE student_id={s.Id} AND class_id={c.ClassId};";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand(sqlCheck, myConn))
+                {
+                    res = (int) command.ExecuteScalar();
+                }
+
+                if (res == 0)
+                {
+                    using (SqlCommand command = new SqlCommand(sql1, myConn))
+                    {
+                        res = command.ExecuteNonQuery();
+                    }
+                }
+
+                return res == 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
         }
 
         #endregion
@@ -2365,34 +2412,6 @@ namespace BD_oneLove.Tools.DataStorage
             return temp;
         }
 
-
-        public bool AssignStudentToClass(Student s, Class c)
-        {
-            string sql1 =
-                "INSERT INTO classes_students (student_id, class_id)" +
-                $"VALUES ('{s.Id}', '{c.ClassId}')";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-
-                return res == 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-        }
 
         public bool ExpelStudent(Student s, Class c)
         {
