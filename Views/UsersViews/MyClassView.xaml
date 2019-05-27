@@ -45,7 +45,7 @@
         <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
-                           AutoGenerateColumns="False"
+                           AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False"
                            SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
                            CanUserAddRows="False"
                            >

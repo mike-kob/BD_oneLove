@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Data;
 using System.Windows.Forms;
@@ -46,6 +47,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 _selectedStudent = value;
                 _selectedStudent.Comments = StationManager.DataStorage.GetComments(_selectedStudent);
                 CommentsViewSource.Source = _selectedStudent.Comments;
+                CommentsViewSource.View.Refresh();
                 OnPropertyChanged("SelectedStudent");
             }
         }
@@ -99,16 +101,22 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _importCommand ?? (_importCommand =
                            new RelayCommand<object>(o =>
                            {
-                               //OpenFileDialog w = new OpenFileDialog();
-                               //w.Filter = "Excel Worksheets|*.xls;*.xlsx";
-                               //w.ShowDialog();
-                               //List<Student> l = ExcelManager.LoadClassStudents(w.FileName, StationManager.CurrentClass);
-                               //ClassStudents.AddRange(l);
-                               //ViewSource.View.Refresh();
-                               //OnPropertyChanged("ClassStudents");
-                               //MessageBox.Show($"Импортировано учеников: {l.Count}\nПреоверьте правильность данных и нажмите 'Сохранить'",
-                               //    "Импорт", MessageBoxButtons.OK,
-                               //    MessageBoxIcon.Information);
+                               OpenFileDialog w = new OpenFileDialog();
+                               w.Filter = "Excel Worksheets|*.xls;*.xlsx";
+                               w.ShowDialog();
+                               if (!String.IsNullOrEmpty(w.FileName))
+                               {
+                                   List<Comment> l = ExcelManager.LoadComments(w.FileName);
+                                   StationManager.DataStorage.SaveComments(l);
+                               }
+
+                               if (_selectedStudent != null)
+                               {
+                                   _selectedStudent.Comments = StationManager.DataStorage.GetComments(_selectedStudent);
+                                   CommentsViewSource.Source = _selectedStudent.Comments;
+                                   CommentsViewSource.View.Refresh();
+                                   OnPropertyChanged("SelectedStudent");
+                               }
                            }));
             }
         }

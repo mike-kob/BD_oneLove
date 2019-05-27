@@ -77,8 +77,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
-      
-
         public ICommand AddCommand
         {
             get
@@ -104,15 +102,10 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                            {
                                StationManager.CurrentClass = _myClass;
                                StationManager.CurrentStudent = _selectedStudent;
-
-                               StationManager.CurrentStudent.Father =
-                                   StationManager.DataStorage.GetFather(_selectedStudent);
-
-                               StationManager.CurrentStudent.Mother =
-                                   StationManager.DataStorage.GetMother(_selectedStudent);
                                AddStudentDialogView win = new AddStudentDialogView();
                                win.ShowDialog();
                                RefreshList();
+
                            }, IsSelected));
             }
         }
@@ -198,7 +191,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                               var res = w.ShowDialog();
                               if (res == true)
                               {
-
+                                   RefreshList();
                               }
                            }));
             }
@@ -346,6 +339,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 StationManager.DataStorage.ExpelStudent(_selectedStudent, _myClass);
                 ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
+                ViewSource.Source = ClassStudents;
                 ViewSource.View.Refresh();
                 OnPropertyChanged("ClassStudents");
             }
@@ -358,10 +352,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void RefreshList()
         {
+            Student s = SelectedStudent;
             ClassStudents = StationManager.DataStorage.GetStudents(_myClass);
             ViewSource.Source = ClassStudents;
             ViewSource.View.Refresh();
             OnPropertyChanged("ClassStudents");
+            SelectedStudent = s;
+            OnPropertyChanged("SelectedStudent");
         }
 
     }

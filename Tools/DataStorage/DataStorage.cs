@@ -258,6 +258,41 @@ namespace BD_oneLove.Tools.DataStorage
 
         #region Classes
 
+        public Class GetClass(string classId)
+        {
+            string sql1 = $"SELECT number, letter, st_year FROM classes WHERE class_id='{classId}'";
+
+            Class res = new Class(classId);
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Number = reader.GetString(0);
+                        res.Letter = reader.GetString(1);
+                        res.StYear = reader.GetString(2);
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
         public bool DeleteClass(Class c)
         {
             string sql = $"DELETE FROM classes WHERE class_id = '{c.ClassId}'; ";
@@ -731,6 +766,34 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
+        }
+
+        public bool ExpelStudent(Student s, Class c)
+        {
+            string sql1 =
+                "DELETE FROM classes_students " +
+                $"WHERE student_id='{s.Id}' AND class_id='{c.ClassId}'";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                return res == 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
         }
 
         #endregion
@@ -1310,41 +1373,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         #endregion
 
-        public Class GetClass(string classId)
-        {
-            string sql1 = $"SELECT number, letter, st_year FROM classes WHERE class_id='{classId}'";
-
-            Class res = new Class(classId);
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        res.Number = reader.GetString(0);
-                        res.Letter = reader.GetString(1);
-                        res.StYear = reader.GetString(2);
-                    }
-
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return res;
-        }
-
         public List<string> GetYears()
         {
             string sql = "SELECT DISTINCT st_year FROM [plan];";
@@ -1505,39 +1533,6 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
-        }
-
-        public bool AssignParentToStudent(Student st, Parent p, bool father)
-        {
-            string sql1 = "UPDATE students " +
-                          $"SET father_id={p.Id} " +
-                          $"WHERE student_id={st.Id}";
-            string sql2 = "UPDATE students " +
-                          $"SET mother_id={p.Id} " +
-                          $"WHERE student_id={st.Id}";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                if (!father)
-                    sql1 = sql2;
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-
-                return res == 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
         }
 
         //----------------Students------------------
@@ -2605,33 +2600,7 @@ namespace BD_oneLove.Tools.DataStorage
         }
 
 
-        public bool ExpelStudent(Student s, Class c)
-        {
-            string sql1 =
-                "DELETE FROM classes_students " +
-                $"WHERE student_id='{s.Id}' AND class_id='{c.ClassId}'";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-
-                return res == 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-        }
+       
 
 
         public List<string> GetSubjects(Class c, string type)
@@ -2672,6 +2641,9 @@ namespace BD_oneLove.Tools.DataStorage
         }
 
         //----------------------Marks-----------------------------
+
+        #region Markss
+
         public bool AddSubject(string subject)
         {
             string sql = "INSERT INTO helping_subject" +
@@ -2831,8 +2803,12 @@ namespace BD_oneLove.Tools.DataStorage
             }
         }
 
+        #endregion
 
         //-----------------Comments----------------
+
+        #region Comments
+
         public List<Comment> GetComments(Student s)
         {
             string sql =
@@ -2971,6 +2947,42 @@ namespace BD_oneLove.Tools.DataStorage
                 myConn?.Close();
             }
         }
+
+        public List<Comment> SaveComments(List<Comment> l)
+        {
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                foreach (Comment c in l)
+                {
+                    if (String.IsNullOrEmpty(c.Id))
+                    {
+                        string sql = "INSERT INTO comments (student_id, descr) " +
+                                     "OUTPUT INSERTED.comment_id " +
+                                     $" VALUES ({c.StudentId},  '{c.Descr}');";
+                        using (SqlCommand command = new SqlCommand(sql, myConn))
+                        {
+                            var res = (long)command.ExecuteScalar();
+                            c.Id = res.ToString();
+                        }
+                    }
+                }
+
+                return l;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return l;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        #endregion
 
         //----------------Movement-----------------
 

@@ -133,8 +133,20 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
             {
                 return _selectCommand ?? (_selectCommand = new RelayCommand<Window>(w =>
                 {
-                    
-                }));
+                    foreach (Student student in _allStudents)
+                    {
+                        if (student.Selected)
+                        {
+                            StationManager.DataStorage.AssignStudentToClass(student, StationManager.CurrentClass);
+                        }
+                    }
+
+                    if (w != null)
+                    {
+                        w.DialogResult = true;
+                        w.Close();
+                    }
+                }, o=>SelectedStudent != null));
             }
         }
 

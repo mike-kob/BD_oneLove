@@ -50,7 +50,6 @@ namespace BD_oneLove.Tools.DataStorage
         
         List<Parent> GetAllParents();
         List<Parent> GetParentsInClass(Class c);
-        bool AssignParentToStudent(Student st, Parent p, bool father);
 
         Parent SaveParent(Parent p);
         bool SaveParentChild(ParentChild pc);
@@ -94,6 +93,7 @@ namespace BD_oneLove.Tools.DataStorage
         List<string> GetAllComments();
         List<Comment> SaveComments(Student s);
         bool RemoveComments(Comment c);
+        List<Comment> SaveComments(List<Comment> l);
 
         //------------Movement---------------
         List<Movement> GetMovements(Class c);
