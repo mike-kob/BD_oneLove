@@ -74,7 +74,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _editCommand ?? (_editCommand =
                            new RelayCommand<object>(o =>
                            {
-                              
+                               StationManager.CurrentParent = SelectedParent;
+                               Window w = new ParentCardView();
+                               w.ShowDialog();
                            }, IsSelected));
             }
         }

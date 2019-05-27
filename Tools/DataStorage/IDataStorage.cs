@@ -45,8 +45,10 @@ namespace BD_oneLove.Tools.DataStorage
         Parent GetFather(Student s);
         Parent GetMother(Student s);
         List<Parent> GetTrustees(Student s);
+
         List<ParentChild> GetParentChildren(Student s);
         List<ParentChild> GetParentChildren(Parent p);
+        Parent ParentExists(Parent p);
         
         List<Parent> GetAllParents();
         List<Parent> GetParentsInClass(Class c);

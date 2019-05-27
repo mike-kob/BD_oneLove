@@ -121,10 +121,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                w.Filter = "Excel Worksheets|*.xls;*.xlsx";
                                w.ShowDialog();
                                List<Student> l = ExcelManager.LoadClassStudents(w.FileName, StationManager.CurrentClass);
-                               ClassStudents.AddRange(l);
+                               foreach (Student student in l)
+                               {
+                                   StationManager.DataStorage.AssignStudentToClass(student, _myClass);
+                                   ClassStudents.Add(student);
+                               }
+
                                ViewSource.View.Refresh();
                                OnPropertyChanged("ClassStudents");
-                               MessageBox.Show($"Импортировано учеников: {l.Count}\nПреоверьте правильность данных и нажмите 'Сохранить'",
+                               MessageBox.Show($"Импортировано учеников: {l.Count}",
                                    "Импорт", MessageBoxButtons.OK,
                                    MessageBoxIcon.Information);
                            }));

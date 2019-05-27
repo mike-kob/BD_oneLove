@@ -824,9 +824,9 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@dateterm2", SqlDbType.DateTime);
                     command.Parameters.Add("@dateyear", SqlDbType.DateTime);
 
-                    command.Parameters["@dateterm1"].Value = (object) p.DateTerm1 ?? DBNull.Value;
-                    command.Parameters["@dateterm2"].Value = (object) p.DateTerm2 ?? DBNull.Value;
-                    command.Parameters["@dateyear"].Value = (object) p.DateYear ?? DBNull.Value;
+                    command.Parameters["@dateterm1"].Value = (object)p.DateTerm1 ?? DBNull.Value;
+                    command.Parameters["@dateterm2"].Value = (object)p.DateTerm2 ?? DBNull.Value;
+                    command.Parameters["@dateyear"].Value = (object)p.DateYear ?? DBNull.Value;
                     res = command.ExecuteNonQuery();
                 }
             }
@@ -905,9 +905,9 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@dateterm2", SqlDbType.DateTime);
                     command.Parameters.Add("@dateyear", SqlDbType.DateTime);
 
-                    command.Parameters["@dateterm1"].Value = (object) p.DateTerm1 ?? DBNull.Value;
-                    command.Parameters["@dateterm2"].Value = (object) p.DateTerm2 ?? DBNull.Value;
-                    command.Parameters["@dateyear"].Value = (object) p.DateYear ?? DBNull.Value;
+                    command.Parameters["@dateterm1"].Value = (object)p.DateTerm1 ?? DBNull.Value;
+                    command.Parameters["@dateterm2"].Value = (object)p.DateTerm2 ?? DBNull.Value;
+                    command.Parameters["@dateyear"].Value = (object)p.DateYear ?? DBNull.Value;
                     res = command.ExecuteNonQuery();
                 }
             }
@@ -942,7 +942,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int res = 0;
                 using (SqlCommand command = new SqlCommand(sql1, myConn))
                 {
-                    count = (int) command.ExecuteScalar();
+                    count = (int)command.ExecuteScalar();
                 }
 
                 if (count == 0)
@@ -1272,12 +1272,12 @@ namespace BD_oneLove.Tools.DataStorage
                 int count2 = 0;
                 using (SqlCommand command = new SqlCommand(sql1, myConn))
                 {
-                    count1 = (int) command.ExecuteScalar();
+                    count1 = (int)command.ExecuteScalar();
                 }
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
-                    count2 = (int) command.ExecuteScalar();
+                    count2 = (int)command.ExecuteScalar();
                 }
 
                 myConn.Close();
@@ -1302,7 +1302,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int count = 0;
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
-                    count = (int) command.ExecuteScalar();
+                    count = (int)command.ExecuteScalar();
                 }
 
                 myConn.Close();
@@ -1327,7 +1327,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int count = 0;
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
-                    count = (int) command.ExecuteScalar();
+                    count = (int)command.ExecuteScalar();
                 }
 
                 myConn.Close();
@@ -1550,17 +1550,6 @@ namespace BD_oneLove.Tools.DataStorage
                 $"@ind, @city, @street, @house, @apart," +
                 $"@phone, '{s.GpdAttendance}', '{s.ExamAllowedToPass}')";
 
-            //string sqlAddParent = "INSERT INTO student_parent (student_id, parent_id, role) " +
-            //                      "VALUES(@s_id, @p_id, @role); ";
-
-            //string sqlUpdateParent = "UPDATE student_parent " +
-            //                         "SET student_id = @s_id, parent_id=@p_id, role=@role; ";
-
-            //string sqlCheckParent = "SELECT COUNT(*) " +
-            //                        "FROM student_parent " +
-            //                        "WHERE parent_id = @p AND student_id = @s; ";
-
-
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
@@ -1583,93 +1572,26 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@apart", SqlDbType.VarChar);
                     command.Parameters.Add("@phone", SqlDbType.VarChar);
 
-                    command.Parameters["@serdoc"].Value = (object) s.SerDoc ?? DBNull.Value;
-                    command.Parameters["@patr"].Value = (object) s.Patronymic ?? DBNull.Value;
-                    command.Parameters["@ind"].Value = (object) s.Index ?? DBNull.Value;
+                    command.Parameters["@serdoc"].Value = (object)s.SerDoc ?? DBNull.Value;
+                    command.Parameters["@patr"].Value = (object)s.Patronymic ?? DBNull.Value;
+                    command.Parameters["@ind"].Value = (object)s.Index ?? DBNull.Value;
                     command.Parameters["@birthday"].Value = s.Birthday;
-                    command.Parameters["@city"].Value = (object) s.City ?? DBNull.Value;
-                    command.Parameters["@street"].Value = (object) s.Street ?? DBNull.Value;
-                    command.Parameters["@house"].Value = (object) s.House ?? DBNull.Value;
-                    command.Parameters["@apart"].Value = (object) s.Apart ?? DBNull.Value;
-                    command.Parameters["@phone"].Value = (object) s.HomePhone ?? DBNull.Value;
+                    command.Parameters["@city"].Value = (object)s.City ?? DBNull.Value;
+                    command.Parameters["@street"].Value = (object)s.Street ?? DBNull.Value;
+                    command.Parameters["@house"].Value = (object)s.House ?? DBNull.Value;
+                    command.Parameters["@apart"].Value = (object)s.Apart ?? DBNull.Value;
+                    command.Parameters["@phone"].Value = (object)s.HomePhone ?? DBNull.Value;
 
-                    res = (long) command.ExecuteScalar();
+                    res = (long)command.ExecuteScalar();
                 }
 
                 s.Id = res.ToString();
-
-                //if (s.Father != null && !String.IsNullOrEmpty(s.Father.Id))
-                //{
-                //    int count = 0;
-                //    using (SqlCommand command = new SqlCommand(sqlCheckParent, myConn))
-                //    {
-                //        command.Parameters.AddWithValue("@p", s.Father.Id);
-                //        command.Parameters.AddWithValue("@s", s.Id);
-                //        count = (int) command.ExecuteScalar();
-                //    }
-
-                //    string execSql = (count == 0) ? sqlAddParent : sqlUpdateParent;
-                //    using (SqlCommand command = new SqlCommand(execSql, myConn))
-                //    {
-                //        command.Parameters.AddWithValue("@p_id", s.Father.Id);
-                //        command.Parameters.AddWithValue("@s_id", s.Id);
-                //        command.Parameters.AddWithValue("@role", "father");
-                //        command.ExecuteNonQuery();
-                //    }
-                //}
-
-                //if (s.Mother != null && !String.IsNullOrEmpty(s.Mother.Id))
-                //{
-                //    int count = 0;
-                //    using (SqlCommand command = new SqlCommand(sqlCheckParent, myConn))
-                //    {
-                //        command.Parameters.AddWithValue("@p", s.Mother.Id);
-                //        command.Parameters.AddWithValue("@s", s.Id);
-                //        count = (int) command.ExecuteScalar();
-                //    }
-
-                //    string execSql = (count == 0) ? sqlAddParent : sqlUpdateParent;
-                //    using (SqlCommand command = new SqlCommand(execSql, myConn))
-                //    {
-                //        command.Parameters.AddWithValue("@p_id", s.Mother.Id);
-                //        command.Parameters.AddWithValue("@s_id", s.Id);
-                //        command.Parameters.AddWithValue("@role", "mother");
-                //        command.ExecuteNonQuery();
-                //    }
-                //}
-
-                //if (s.Trustees != null && s.Trustees.Count != 0)
-                //{
-                //    for (int i = 0; i < s.Trustees.Count; i++)
-                //    {
-                //        Parent cur = s.Trustees[i];
-                //        int count = 0;
-                //        if (cur != null && !String.IsNullOrEmpty(cur.Id))
-                //        {
-                //            using (SqlCommand command = new SqlCommand(sqlCheckParent, myConn))
-                //            {
-                //                command.Parameters.AddWithValue("@p", cur.Id);
-                //                command.Parameters.AddWithValue("@s", s.Id);
-                //                count = (int) command.ExecuteScalar();
-                //            }
-
-                //            string execSql = (count == 0) ? sqlAddParent : sqlUpdateParent;
-                //            using (SqlCommand command = new SqlCommand(execSql, myConn))
-                //            {
-                //                command.Parameters.AddWithValue("@p_id", cur.Id);
-                //                command.Parameters.AddWithValue("@s_id", s.Id);
-                //                command.Parameters.AddWithValue("@role", "trustee");
-                //                command.ExecuteNonQuery();
-                //            }
-                //        }
-                //    }
-                //}
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Произошла ошибка добаления, возможно повторяющийся номер домента или алфавитной книги. " +
-                                "Проверьте правильность данных или наличие данного ученика уже в базе данных.", "Ошибка добавления",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                //MessageBox.Show("Произошла ошибка добаления, возможно повторяющийся номер домента или алфавитной книги. " +
+                //                "Проверьте правильность данных или наличие данного ученика уже в базе данных.", "Ошибка добавления",
+                //    MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
             finally
@@ -1732,15 +1654,15 @@ namespace BD_oneLove.Tools.DataStorage
                     command.Parameters.Add("@apart", SqlDbType.VarChar);
                     command.Parameters.Add("@phone", SqlDbType.VarChar);
 
-                    command.Parameters["@serdoc"].Value = (object) s.SerDoc ?? DBNull.Value;
-                    command.Parameters["@patr"].Value = (object) s.Patronymic ?? DBNull.Value;
-                    command.Parameters["@ind"].Value = (object) s.Index ?? DBNull.Value;
+                    command.Parameters["@serdoc"].Value = (object)s.SerDoc ?? DBNull.Value;
+                    command.Parameters["@patr"].Value = (object)s.Patronymic ?? DBNull.Value;
+                    command.Parameters["@ind"].Value = (object)s.Index ?? DBNull.Value;
                     command.Parameters["@birthday"].Value = s.Birthday;
-                    command.Parameters["@city"].Value = (object) s.City ?? DBNull.Value;
-                    command.Parameters["@street"].Value = (object) s.Street ?? DBNull.Value;
-                    command.Parameters["@house"].Value = (object) s.House ?? DBNull.Value;
-                    command.Parameters["@apart"].Value = (object) s.Apart ?? DBNull.Value;
-                    command.Parameters["@phone"].Value = (object) s.HomePhone ?? DBNull.Value;
+                    command.Parameters["@city"].Value = (object)s.City ?? DBNull.Value;
+                    command.Parameters["@street"].Value = (object)s.Street ?? DBNull.Value;
+                    command.Parameters["@house"].Value = (object)s.House ?? DBNull.Value;
+                    command.Parameters["@apart"].Value = (object)s.Apart ?? DBNull.Value;
+                    command.Parameters["@phone"].Value = (object)s.HomePhone ?? DBNull.Value;
 
                     res = command.ExecuteNonQuery();
                 }
@@ -1844,7 +1766,7 @@ namespace BD_oneLove.Tools.DataStorage
                 int res = 0;
                 using (SqlCommand command = new SqlCommand(sqlCheck, myConn))
                 {
-                    res = (int) command.ExecuteScalar();
+                    res = (int)command.ExecuteScalar();
                 }
 
                 if (res == 0)
@@ -2077,7 +1999,7 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.Surname = reader.GetString(3);
 
                         cur.Sex = reader.GetString(4);
-                        cur.Birthday = reader.IsDBNull(5) ? (DateTime?) null : reader.GetDateTime(5);
+                        cur.Birthday = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5);
                         cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
                         cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
                         cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
@@ -2093,7 +2015,7 @@ namespace BD_oneLove.Tools.DataStorage
                         pc.Parent = cur;
                         pc.Child = s;
                         pc.Role = reader.GetString(15);
-                        pc.Trustee = reader.IsDBNull(16) ? (bool?) null : reader.GetBoolean(16);
+                        pc.Trustee = reader.IsDBNull(16) ? (bool?)null : reader.GetBoolean(16);
                         pc.Relation = reader.IsDBNull(17) ? "" : reader.GetString(17);
 
                         parents.Add(pc);
@@ -2161,7 +2083,7 @@ namespace BD_oneLove.Tools.DataStorage
                         pc.Parent = p;
                         pc.Child = cur;
                         pc.Role = reader.GetString(18);
-                        pc.Trustee = reader.IsDBNull(19) ? (bool?) null : reader.GetBoolean(19);
+                        pc.Trustee = reader.IsDBNull(19) ? (bool?)null : reader.GetBoolean(19);
                         pc.Relation = reader.IsDBNull(20) ? "" : reader.GetString(20);
 
                         parents.Add(pc);
@@ -2224,7 +2146,7 @@ namespace BD_oneLove.Tools.DataStorage
 
                         cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
                         cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
-                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Work = reader.IsDBNull(13) ? "" : reader.GetString(13);
                         cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
 
                         res.Add(cur);
@@ -2309,13 +2231,13 @@ namespace BD_oneLove.Tools.DataStorage
         public Parent SaveParent(Parent p)
         {
             string sql1 =
-                "INSERT INTO parents (p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary, trustee, relation) " +
+                "INSERT INTO parents (p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary) " +
                 "OUTPUT INSERTED.parent_id " +
-                "VALUES (@name, @patr, @surname, @sex, @birthday, @ind, @city, @street, @house, @apart, @home_phone, @work_phone, @work, @commentary, @trustee, @relation); ";
+                "VALUES (@name, @patr, @surname, @sex, @birthday, @ind, @city, @street, @house, @apart, @home_phone, @work_phone, @work, @commentary); ";
 
             string sql3 =
                 "UPDATE parents " +
-                "SET p_name=@name, patronymic=@patr, surname=@surname, sex=@sex, birthday=@birthday, [index]=@ind, city=@city, street=@street, house=@house, apart=@apart, home_phone=@home_phone, work_phone=@work_phone, work=@work, commentary=@commentary, trustee=@trustee, relation=@relation " +
+                "SET p_name=@name, patronymic=@patr, surname=@surname, sex=@sex, birthday=@birthday, [index]=@ind, city=@city, street=@street, house=@house, apart=@apart, home_phone=@home_phone, work_phone=@work_phone, work=@work, commentary=@commentary " +
                 "WHERE parent_id=@p_id";
 
 
@@ -2348,21 +2270,19 @@ namespace BD_oneLove.Tools.DataStorage
                         command.Parameters.Add("@home_phone", SqlDbType.VarChar);
                         command.Parameters.Add("@work", SqlDbType.VarChar);
                         command.Parameters.Add("@commentary", SqlDbType.VarChar);
-                        command.Parameters.Add("@trustee", SqlDbType.Bit);
-                        command.Parameters.Add("@relation", SqlDbType.VarChar);
 
-                        command.Parameters["@patr"].Value = (object) p.Patronymic ?? DBNull.Value;
-                        command.Parameters["@birthday"].Value = (object) p.Birthday ?? DBNull.Value;
-                        command.Parameters["@ind"].Value = (object) p.Index ?? DBNull.Value;
-                        command.Parameters["@city"].Value = (object) p.City ?? DBNull.Value;
-                        command.Parameters["@street"].Value = (object) p.Street ?? DBNull.Value;
-                        command.Parameters["@house"].Value = (object) p.House ?? DBNull.Value;
-                        command.Parameters["@apart"].Value = (object) p.Apart ?? DBNull.Value;
-                        command.Parameters["@home_phone"].Value = (object) p.HomePhone ?? DBNull.Value;
-                        command.Parameters["@work_phone"].Value = (object) p.WorkPhone ?? DBNull.Value;
-                        command.Parameters["@work"].Value = (object) p.Work ?? DBNull.Value;
-                        command.Parameters["@commentary"].Value = (object) p.Commentary ?? DBNull.Value;
-                        var res = (long) command.ExecuteScalar();
+                        command.Parameters["@patr"].Value = (object)p.Patronymic ?? DBNull.Value;
+                        command.Parameters["@birthday"].Value = (object)p.Birthday ?? DBNull.Value;
+                        command.Parameters["@ind"].Value = (object)p.Index ?? DBNull.Value;
+                        command.Parameters["@city"].Value = (object)p.City ?? DBNull.Value;
+                        command.Parameters["@street"].Value = (object)p.Street ?? DBNull.Value;
+                        command.Parameters["@house"].Value = (object)p.House ?? DBNull.Value;
+                        command.Parameters["@apart"].Value = (object)p.Apart ?? DBNull.Value;
+                        command.Parameters["@home_phone"].Value = (object)p.HomePhone ?? DBNull.Value;
+                        command.Parameters["@work_phone"].Value = (object)p.WorkPhone ?? DBNull.Value;
+                        command.Parameters["@work"].Value = (object)p.Work ?? DBNull.Value;
+                        command.Parameters["@commentary"].Value = (object)p.Commentary ?? DBNull.Value;
+                        var res = (long)command.ExecuteScalar();
                         p.Id = res.ToString();
                     }
                 }
@@ -2386,20 +2306,18 @@ namespace BD_oneLove.Tools.DataStorage
                         command.Parameters.Add("@home_phone", SqlDbType.VarChar);
                         command.Parameters.Add("@work", SqlDbType.VarChar);
                         command.Parameters.Add("@commentary", SqlDbType.VarChar);
-                        command.Parameters.Add("@trustee", SqlDbType.Bit);
-                        command.Parameters.Add("@relation", SqlDbType.VarChar);
 
-                        command.Parameters["@patr"].Value = (object) p.Patronymic ?? DBNull.Value;
-                        command.Parameters["@birthday"].Value = (object) p.Birthday ?? DBNull.Value;
-                        command.Parameters["@ind"].Value = (object) p.Index ?? DBNull.Value;
-                        command.Parameters["@city"].Value = (object) p.City ?? DBNull.Value;
-                        command.Parameters["@street"].Value = (object) p.Street ?? DBNull.Value;
-                        command.Parameters["@house"].Value = (object) p.House ?? DBNull.Value;
-                        command.Parameters["@apart"].Value = (object) p.Apart ?? DBNull.Value;
-                        command.Parameters["@home_phone"].Value = (object) p.HomePhone ?? DBNull.Value;
-                        command.Parameters["@work_phone"].Value = (object) p.WorkPhone ?? DBNull.Value;
-                        command.Parameters["@work"].Value = (object) p.Work ?? DBNull.Value;
-                        command.Parameters["@commentary"].Value = (object) p.Commentary ?? DBNull.Value;
+                        command.Parameters["@patr"].Value = (object)p.Patronymic ?? DBNull.Value;
+                        command.Parameters["@birthday"].Value = (object)p.Birthday ?? DBNull.Value;
+                        command.Parameters["@ind"].Value = (object)p.Index ?? DBNull.Value;
+                        command.Parameters["@city"].Value = (object)p.City ?? DBNull.Value;
+                        command.Parameters["@street"].Value = (object)p.Street ?? DBNull.Value;
+                        command.Parameters["@house"].Value = (object)p.House ?? DBNull.Value;
+                        command.Parameters["@apart"].Value = (object)p.Apart ?? DBNull.Value;
+                        command.Parameters["@home_phone"].Value = (object)p.HomePhone ?? DBNull.Value;
+                        command.Parameters["@work_phone"].Value = (object)p.WorkPhone ?? DBNull.Value;
+                        command.Parameters["@work"].Value = (object)p.Work ?? DBNull.Value;
+                        command.Parameters["@commentary"].Value = (object)p.Commentary ?? DBNull.Value;
                         command.ExecuteNonQuery();
                     }
                 }
@@ -2417,6 +2335,97 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return p;
+        }
+
+        public Parent ParentExists(Parent p)
+        {
+            string sql1 =
+                "SELECT COUNT(*)" +
+                "FROM parents " +
+                "WHERE p_name=@name " +
+                "   AND patronymic=@patr" +
+                "   AND surname=@surname" +
+                "   AND birthday=@birthday; ";
+
+            string sql =
+                "SELECT parent_id, p_name, patronymic, surname, sex, birthday, [index], city, street, house, apart, home_phone, work_phone, work, commentary " +
+                "FROM parents " +
+                "WHERE p_name=@name " +
+                "   AND patronymic=@patr" +
+                "   AND surname=@surname" +
+                "   AND birthday=@birthday; ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    command.Parameters.AddWithValue("@name", p.PName);
+                    command.Parameters.AddWithValue("@surname", p.Surname);
+                    command.Parameters.Add("@patr", SqlDbType.VarChar);
+                    command.Parameters.Add("@birthday", SqlDbType.Date);
+
+                    command.Parameters["@patr"].Value = (object)p.Patronymic ?? DBNull.Value;
+                    command.Parameters["@birthday"].Value = (object)p.Birthday ?? DBNull.Value;
+
+                    res = (int)command.ExecuteScalar();
+                }
+
+                if (res == 0)
+                    return null;
+                Parent cur = null;
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.Parameters.AddWithValue("@name", p.PName);
+                    command.Parameters.AddWithValue("@surname", p.Surname);
+                    command.Parameters.Add("@patr", SqlDbType.VarChar);
+                    command.Parameters.Add("@birthday", SqlDbType.Date);
+
+                    command.Parameters["@patr"].Value = (object)p.Patronymic ?? DBNull.Value;
+                    command.Parameters["@birthday"].Value = (object)p.Birthday ?? DBNull.Value;
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cur = new Parent();
+                        cur.Id = reader.GetInt64(0).ToString();
+                        cur.PName = reader.GetString(1);
+                        cur.Patronymic = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.Surname = reader.GetString(3);
+
+                        cur.Sex = reader.GetString(4);
+                        cur.Birthday = reader.IsDBNull(5) ? new DateTime() : reader.GetDateTime(5);
+                        cur.Index = reader.IsDBNull(6) ? "" : reader.GetString(6);
+                        cur.City = reader.IsDBNull(7) ? "" : reader.GetString(7);
+                        cur.Street = reader.IsDBNull(8) ? "" : reader.GetString(8);
+                        cur.House = reader.IsDBNull(9) ? "" : reader.GetString(9);
+                        cur.Apart = reader.IsDBNull(10) ? "" : reader.GetString(10);
+
+
+                        cur.HomePhone = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
+                        cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
+
+                        break;
+                    }
+
+                    reader.Close();
+                }
+
+                return cur;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return null;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
         }
 
         public bool SaveParentChild(ParentChild pc)
@@ -2450,7 +2459,7 @@ namespace BD_oneLove.Tools.DataStorage
                 {
                     command.Parameters.AddWithValue("@p_id", pc.Parent.Id);
                     command.Parameters.AddWithValue("@s_id", pc.Child.Id);
-                    count = (int) command.ExecuteScalar();
+                    count = (int)command.ExecuteScalar();
                 }
 
                 if (count == 0)
@@ -2463,8 +2472,8 @@ namespace BD_oneLove.Tools.DataStorage
                         command.Parameters.Add("@trustee", SqlDbType.Bit);
                         command.Parameters.Add("@relation", SqlDbType.VarChar);
 
-                        command.Parameters["@trustee"].Value = (object) pc.Trustee ?? DBNull.Value;
-                        command.Parameters["@relation"].Value = (object) pc.Relation ?? DBNull.Value;
+                        command.Parameters["@trustee"].Value = (object)pc.Trustee ?? DBNull.Value;
+                        command.Parameters["@relation"].Value = (object)pc.Relation ?? DBNull.Value;
                         command.ExecuteNonQuery();
                     }
                 }
@@ -2478,8 +2487,8 @@ namespace BD_oneLove.Tools.DataStorage
                         command.Parameters.Add("@trustee", SqlDbType.Bit);
                         command.Parameters.Add("@relation", SqlDbType.VarChar);
 
-                        command.Parameters["@trustee"].Value = (object) pc.Trustee ?? DBNull.Value;
-                        command.Parameters["@relation"].Value = (object) pc.Relation ?? DBNull.Value;
+                        command.Parameters["@trustee"].Value = (object)pc.Trustee ?? DBNull.Value;
+                        command.Parameters["@relation"].Value = (object)pc.Relation ?? DBNull.Value;
                         command.ExecuteNonQuery();
                     }
                 }
@@ -2600,7 +2609,7 @@ namespace BD_oneLove.Tools.DataStorage
         }
 
 
-       
+
 
 
         public List<string> GetSubjects(Class c, string type)
@@ -2900,7 +2909,7 @@ namespace BD_oneLove.Tools.DataStorage
                                      $" VALUES ({s.Id},  '{c}');";
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
-                            var res = (long) command.ExecuteScalar();
+                            var res = (long)command.ExecuteScalar();
                             c.Id = res.ToString();
                         }
                     }
@@ -3191,8 +3200,8 @@ namespace BD_oneLove.Tools.DataStorage
                         {
                             command.Parameters.Add("@in_id", SqlDbType.BigInt);
                             command.Parameters.Add("@out_id", SqlDbType.BigInt);
-                            command.Parameters["@in_id"].Value = mov.Income ? (object) mov.StudentId : DBNull.Value;
-                            command.Parameters["@out_id"].Value = !mov.Income ? (object) mov.StudentId : DBNull.Value;
+                            command.Parameters["@in_id"].Value = mov.Income ? (object)mov.StudentId : DBNull.Value;
+                            command.Parameters["@out_id"].Value = !mov.Income ? (object)mov.StudentId : DBNull.Value;
 
                             if (String.IsNullOrEmpty(mov.SchCity))
                                 command.Parameters.AddWithValue("@city", DBNull.Value);
@@ -3211,7 +3220,7 @@ namespace BD_oneLove.Tools.DataStorage
 
                             command.Parameters.AddWithValue("@date", mov.MovementDate);
 
-                            var t = (long) command.ExecuteScalar();
+                            var t = (long)command.ExecuteScalar();
                             mov.Id = t.ToString();
                         }
                     }
