@@ -6,28 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
-    class ClassProgressViewModel:BaseViewModel
+    class SchoolProgressViewModel:BaseViewModel
     {
         private string _selYear;
         private readonly System.Windows.Thickness _bigMargin;
         private readonly Thickness _smallMargin;
 
+
         #region Props
 
-        public string Title { get; set; } = "";
-        public string TabTitle { get { return "Класс"; } }
+        public string Title { get; set; } = "Уровень учебных достижений \"Cтахановская специализованная школа №10\"";
+        public string TabTitle { get { return "Школа"; } }
         public Thickness SmallMargin { get { return _smallMargin; } }
         public Thickness BigMargin { get { return _bigMargin; } }
         public Thickness Margin { get; set; }
-        public List<Student> Students { get; set; }
+        public School School { get; set; } = new School();
         public List<string> Years { get; set; } = StationManager.DataStorage.GetYears();
-        public List<Class> Classes { get; set; }
         public string[] Types { get; set; } = { "семестр1", "семестр2", "годовая" };
+        public List<School> Schools { get; set; } = new List<School>();
 
+        public CollectionViewSource ViewSource {
+            get;
+        }
 
         public bool IsYearSel
         {
@@ -44,14 +49,10 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             set
             {
                 _selYear = value;
-                Classes = StationManager.DataStorage.GetClasses(SelectedYear);
                 OnPropertyChanged("SelectedYear");
-                OnPropertyChanged("Classes");
             }
         }
 
-
-        public Class SelectedClass { get; set; }
         public string SelectedType { get; set; }
 
         #endregion
@@ -64,30 +65,33 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             get
             {
                 return _findCommand ?? (_findCommand = new RelayCommand<object>(
-                         o => FindImplementation(), o => SelectedClass != null && SelectedType != null));
+                         o => FindImplementation(), o =>  !String.IsNullOrEmpty(SelectedType)));
             }
         }
 
         private void FindImplementation()
         {
-            Students = StationManager.DataStorage.GetStudentsStatistics(SelectedClass, SelectedType);
-            OnPropertyChanged("Students");
-            Margin = (Students != null && Students.Any()) ? BigMargin : SmallMargin;
+            School.Classes = StationManager.DataStorage.GetClassesStatistics(SelectedYear, SelectedType);
+            School.Update();
+            OnPropertyChanged("School");
+            ViewSource.View.Refresh();
+           
+            Margin = (School.Classes != null && School.Classes.Any()) ? BigMargin : SmallMargin;
             OnPropertyChanged("Margin");
-            Title = "Сводная ведомость успеваемости " + SelectedClass.NumberLetter + " класса за " +
-                    SelectedYear + " " + SelectedType;
-            OnPropertyChanged("Title");
+
         }
 
-        public ClassProgressViewModel()
+        public SchoolProgressViewModel()
         {
-            Classes = StationManager.DataStorage.GetClasses(SelectedYear);
-            SelectedYear = StationManager.DataStorage.GetCurYear();
+            ViewSource = new CollectionViewSource();
+            ViewSource.Source = Schools;
+
+            SelectedYear = Years[0];
             _bigMargin = new Thickness(26, 0, 26, 0);
             _smallMargin = new Thickness(20, 0, 20, 0);
             Margin = SmallMargin;
+            Schools.Add(School);
         }
-
 
     }
 }

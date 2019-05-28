@@ -10,18 +10,78 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+
+        public List<Class> GetClassesStatistics(string year, string type)
+        {
+                    string sql = "WITH Temp AS( " +
+            "SELECT s.student_id, c.class_id, MIN(grade) AS min_riven " +
+            "FROM(marks AS m INNER JOIN classes AS c ON m.class_id = c.class_id) INNER JOIN Students s ON s.student_id = m.student_id " +
+            $"WHERE mark_type = '{type}' AND st_year = '{year}' " +
+            "GROUP BY s.student_id, c.class_id) " +
+            " SELECT class_id,[1] AS CN,[2] AS BN,[3] AS MN,[4]  AS GN,[5] AS HN, [1]+[2]+[3]+[4]+[5] AS Summ " +
+            "FROM Temp " +
+            "PIVOT(COUNT(student_id) FOR min_riven IN([1],[2],[3],[4],[5])) AS NumTable; ";
+
+            List<Class> res = new List<Class>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                
+                    while (reader.Read())
+                    {
+                        Class cur = GetClass(reader.GetInt64(0).ToString());
+                        cur.Sum = reader.GetInt32(6);
+                        cur.HighNumber = reader.GetInt32(5);
+                        cur.GoodNumber = reader.GetInt32(4);
+                        cur.MiddleNumber = reader.GetInt32(3);
+                        cur.BeginNumber = reader.GetInt32(2);
+                        cur.CriticalNumber = reader.GetInt32(1);
+                        res.Add(cur);
+                      
+                    }
+
+                    reader.Close();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return res;
+
+        }
         public List<Student> GetStudentsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
-                         $"SELECT m.grade, m.student_id, m.subject " +
-                         $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
-                         $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                            $"SELECT m.grade, m.student_id, m.subject " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND m.mark_type = '{type}') " +
                          $"SELECT student_id, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ, " +
                          $"CAST((5*[5]+4*[4]+3*[3]+2*[2]+1*[1]) AS float)/([1]+[2]+[3]+[4]+[5]) AS Middle " +
                          $"FROM Temp " +
-                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable ORDER BY  Middle DESC; ";
+                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable  " +
+                         $"UNION " +
+                         $"SELECT s.student_id, '0' AS HN, '0' AS GN,'0' AS MN,'0' AS BN,'0' AS CN,'0' AS Summ, " +
+                         $"CAST('0' AS float) AS Middle " +
+                         $"FROM students s INNER JOIN classes_students cs ON s.student_id=cs.student_id " +
+                         $"WHERE cs.class_id= '{c.ClassId}' AND  s.student_id NOT IN (" +
+                         $"                                                     SELECT student_id " +
+                         $"                                                     FROM Temp) " +
+                         $"ORDER BY  Middle DESC;  ";
 
-            List<Student> res = new List<Student>();
+
+
+            List <Student> res = new List<Student>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {

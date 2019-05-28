@@ -20,8 +20,8 @@
         MovementView,
 
         //заместитель
-        SubjectProgressView,
-        ProgressView
+        ProgressView,
+        StudentsView
     }
 
     interface INavigationModel

@@ -69,7 +69,7 @@ namespace BD_oneLove.Models
             set
             {
                 _highNumber = value;
-                HighPercent = Math.Round((double)_highNumber / Sum * 100, 2);
+                HighPercent = (Sum!=0)?Math.Round((double)_highNumber / Sum * 100, 2):0;
             }
         }
 
@@ -79,7 +79,7 @@ namespace BD_oneLove.Models
             set
             {
                 _goodNumber = value;
-                GoodPercent = Math.Round((double)_goodNumber / Sum * 100, 2);
+                GoodPercent = (Sum != 0) ? Math.Round((double)_goodNumber / Sum * 100, 2) : 0;
             }
         }
 
@@ -89,7 +89,7 @@ namespace BD_oneLove.Models
             set
             {
                 _middleNumber = value;
-                MiddlePercent = Math.Round((double)_middleNumber / Sum * 100, 2);
+                MiddlePercent = (Sum != 0) ? Math.Round((double)_middleNumber / Sum * 100, 2) : 0;
             }
         }
 
@@ -100,7 +100,7 @@ namespace BD_oneLove.Models
             set
             {
                 _beginNumber = value;
-                BeginPercent = Math.Round((double)_beginNumber / Sum * 100, 2);
+                BeginPercent = (Sum != 0) ? Math.Round((double)_beginNumber / Sum * 100, 2) : 0;
             }
         }
 
@@ -110,7 +110,7 @@ namespace BD_oneLove.Models
             set
             {
                 _criticalNumber = value;
-                CriticalPercent = Math.Round((double)_criticalNumber / Sum * 100, 2);
+                CriticalPercent = (Sum != 0) ? Math.Round((double)_criticalNumber / Sum * 100, 2) : 0;
             }
         }
 
