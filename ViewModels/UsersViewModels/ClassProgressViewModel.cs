@@ -82,7 +82,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public ClassProgressViewModel()
         {
             Classes = StationManager.DataStorage.GetClasses(SelectedYear);
-            SelectedYear = Years[0];
+            SelectedYear = StationManager.DataStorage.GetCurYear();
             _bigMargin = new Thickness(26, 0, 26, 0);
             _smallMargin = new Thickness(20, 0, 20, 0);
             Margin = SmallMargin;

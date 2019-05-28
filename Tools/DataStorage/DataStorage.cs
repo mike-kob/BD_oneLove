@@ -64,14 +64,24 @@ namespace BD_oneLove.Tools.DataStorage
         {
             string sql = $"WITH Temp AS( " +
                             $"SELECT m.grade, m.student_id, m.subject " +
-                            $"FROM Marks AS m RIGHT OUTER JOIN Classes AS c ON c.class_id= m.class_id " +
-                            $"WHERE c.class_id= '{c.ClassId}' AND mark_type = '{type}') " +
+                            $"FROM Marks AS m INNER JOIN Classes AS c ON c.class_id= m.class_id " +
+                            $"WHERE c.class_id= '{c.ClassId}' AND m.mark_type = '{type}') " +
                          $"SELECT student_id, [5] AS HN, [4] AS GN,[3] AS MN,[2] AS BN,[1] AS CN,[1]+[2]+[3]+[4]+[5] AS Summ, " +
                          $"CAST((5*[5]+4*[4]+3*[3]+2*[2]+1*[1]) AS float)/([1]+[2]+[3]+[4]+[5]) AS Middle " +
                          $"FROM Temp " +
-                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable ORDER BY  Middle DESC; ";
+                         $"PIVOT(COUNT(subject) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable  " +
+                         $"UNION " +
+                         $"SELECT s.student_id, '0' AS HN, '0' AS GN,'0' AS MN,'0' AS BN,'0' AS CN,'0' AS Summ, " +
+                         $"CAST('0' AS float) AS Middle " +
+                         $"FROM students s INNER JOIN classes_students cs ON s.student_id=cs.student_id " +
+                         $"WHERE cs.class_id= '{c.ClassId}' AND  s.student_id NOT IN (" +
+                         $"                                                     SELECT student_id " +
+                         $"                                                     FROM Temp) " +
+                         $"ORDER BY  Middle DESC;  ";
 
-            List<Student> res = new List<Student>();
+
+
+            List <Student> res = new List<Student>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {

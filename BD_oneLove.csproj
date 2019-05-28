@@ -112,6 +112,7 @@
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ProgressViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\SchoolProgressViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModels\StudentsViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\SubjectProgressViewModel.cs" />
     <Compile Include="Views\UserDialogs\AddCommentDialog.xaml.cs">
       <DependentUpon>AddCommentDialog.xaml</DependentUpon>
@@ -169,6 +170,9 @@
     </Compile>
     <Compile Include="Views\UsersViews\SocialPassportView.xaml.cs">
       <DependentUpon>SocialPassportView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UsersViews\StudentsView.xaml.cs">
+      <DependentUpon>StudentsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\SubjectProgressView.xaml.cs">
       <DependentUpon>SubjectProgressView.xaml</DependentUpon>
@@ -290,6 +294,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UsersViews\SocialPassportView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersViews\StudentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

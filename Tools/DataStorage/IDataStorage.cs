@@ -64,8 +64,6 @@ namespace BD_oneLove.Tools.DataStorage
         bool DeleteClass(Class c);
 
 
-
-
         //--------------Teachers--------------
         List<string> GetYears();
         List<Teacher> GetTeachers(string year);

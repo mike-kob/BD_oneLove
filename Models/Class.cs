@@ -10,11 +10,34 @@ namespace BD_oneLove.Models
         public int _middleNumber;
         public int _beginNumber;
         public int _criticalNumber;
+        public string _number;
+        public string _letter;
+        public string _numberLetter;
+   
 
         public string ClassId { get; set; }
 
-        public string Number { get; set; }
-        public string Letter { get; set; }
+        public string Number
+        {
+            get
+            {
+                return _number;
+            }
+            set { _number = value;
+                NumberLetter = Number + "-" + Letter;
+            }
+        }
+        public string Letter {
+            get
+            {
+                return _letter;
+            }
+            set
+            {
+                _letter = value;
+                NumberLetter = Number + "-" + Letter;
+            }
+        }
         public string StYear { get; set; }
         public string NumOfStudents { get; set; }
         public List<Student> ClassStudents { get; set; }
@@ -25,10 +48,8 @@ namespace BD_oneLove.Models
         }
 
         public string NumberLetter {
-            get
-            {
-                return  Number + "-" + Letter;
-            }
+            get;
+            set;
         }
 
         public Class(string id)
