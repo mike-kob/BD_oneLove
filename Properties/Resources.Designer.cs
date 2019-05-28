@@ -59,5 +59,35 @@ namespace BD_oneLove.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Parents {
+            get {
+                object obj = ResourceManager.GetObject("Parents", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] SocialPassport {
+            get {
+                object obj = ResourceManager.GetObject("SocialPassport", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] Students {
+            get {
+                object obj = ResourceManager.GetObject("Students", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
     }
 }

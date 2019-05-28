@@ -59,9 +59,9 @@ namespace BD_oneLove.ViewModels
                     break;
                 case "Классный руководитель":
                     Items.Add("Мой класс", ViewType.MyClassView);
+                    Items.Add("Родители", ViewType.ParentsView);
                     Items.Add("Выставление оценок", ViewType.PutMarksView);
                     Items.Add("Социальный паспорт", ViewType.SocialPassportView);
-                    Items.Add("Родители", ViewType.ParentsView);
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
                     break;
                 case "Заместитель директора":
