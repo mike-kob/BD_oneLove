@@ -47,6 +47,7 @@ namespace BD_oneLove.Models
 
         public List<Comment> Comments { get; set; } = new List<Comment>();
 
+        public bool Selected { get; set; } = false;
 
         public double HighPercent { get; set; }
         public double GoodPercent { get; set; }

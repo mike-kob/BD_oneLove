@@ -35,14 +35,14 @@
             <Button Margin="15 5" Command="{Binding SearchCommand}" Grid.Column="1">Поиск в базе</Button>
             <Button Margin="15 5" Command="{Binding RefreshCommand}" Grid.Column="3" Width="100"
                     HorizontalAlignment="Right">Обновить</Button>
-            <!--<Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>-->
+            <Button Margin="15 5" Command="{Binding EditCommand}" Grid.Column="2">Просмотреть</Button>
         </Grid>
         <!--  -->
         <controls:DataGrid ItemsSource="{Binding ClassParents}" 
                            Grid.Column="0" Grid.Row="1" 
                            Margin="20"
                            AutoGenerateColumns="False"
-                           SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
+                           SelectedItem="{Binding SelectedParent, Mode=TwoWay}"
                            CanUserAddRows="False"
                            >
             <controls:DataGrid.Columns>

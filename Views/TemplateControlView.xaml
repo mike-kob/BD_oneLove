@@ -102,7 +102,7 @@
         </TabControl>
 !-->
         <ContentControl Name="_viewContentControl" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="12"
-                        Grid.RowSpan="7" />
+                        Grid.RowSpan="8" />
         <!--<Rectangle Grid.ColumnSpan="12" Grid.Column="3" Grid.Row="7" Fill="AliceBlue" />
         <Button Margin="5" Grid.Column="13" Grid.ColumnSpan="2" Grid.Row="7" Content="Save" />
         <Button Margin="5" Grid.Column="11" Grid.ColumnSpan="2" Grid.Row="7" Content="Cancel" />-->

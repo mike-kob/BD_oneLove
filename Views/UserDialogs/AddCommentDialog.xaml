@@ -24,10 +24,12 @@
         <TextBlock Text="Выбрать существующую:" FontSize="18" Grid.ColumnSpan="3" VerticalAlignment="Center"
                    Margin="5 0" />
         <ComboBox Grid.Row="1" Grid.ColumnSpan="3" Margin="5" ItemsSource="{Binding ExistingComments}" 
+                  FontSize="16" IsEnabled="{Binding IsNotAddingNew}"
                   SelectedItem="{Binding SelectedComment, Mode=TwoWay}"/>
         <TextBlock Text="Добавить новую:" FontSize="18" Grid.ColumnSpan="3" Grid.Row="3" VerticalAlignment="Center"
                    Margin="5 0" />
-        <TextBox Grid.ColumnSpan="3" Grid.Row="4" Margin="5" Text="{Binding NewComment, Mode=TwoWay}" />
+        <TextBox Grid.ColumnSpan="3" Grid.Row="4" Margin="5" Text="{Binding NewComment, Mode=TwoWay}"
+                 FontSize="16"/>
 
         <Button Margin="5" Grid.Column="1" Grid.Row="5" Content="Отмена" 
                 Command="{Binding CancelCommand}"  CommandParameter="{Binding ElementName=AddCommentWindow}"/>
