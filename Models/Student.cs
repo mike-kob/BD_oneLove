@@ -61,6 +61,21 @@ namespace BD_oneLove.Models
         public string SurnameNamePatr
         {
             get { return Surname + " " + StName + " " + Patronymic; }
+            set
+            {
+                string[] arr = value.Split(' ');
+                if (arr.Length == 3)
+                {
+                    Surname = arr[0];
+                    StName = arr[1];
+                    Patronymic = arr[2];
+                }
+                else if (arr.Length == 2)
+                {
+                    Surname = arr[0];
+                    StName = arr[1];
+                }
+            }
         }
 
 

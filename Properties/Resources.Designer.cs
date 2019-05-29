@@ -63,9 +63,9 @@ namespace BD_oneLove.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] Parents {
+        internal static byte[] Marks {
             get {
-                object obj = ResourceManager.GetObject("Parents", resourceCulture);
+                object obj = ResourceManager.GetObject("Marks", resourceCulture);
                 return ((byte[])(obj));
             }
         }

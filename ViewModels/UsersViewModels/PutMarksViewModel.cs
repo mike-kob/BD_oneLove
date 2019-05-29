@@ -1,9 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
+using BD_oneLove.Properties;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -49,6 +54,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _addCommand;
         private ICommand _removeCommand;
         private ICommand _saveCommand;
+        private ICommand _importCommand;
+        private ICommand _importFileCommand;
 
         #endregion
 
@@ -198,6 +205,59 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                    StationManager.DataStorage.RemoveSubject(CurClass, SelectedSubject);
                                }
                            }, o => SelectedToRemoveSubject != null));
+            }
+        }
+
+        public ICommand ImportCommand
+        {
+            get
+            {
+                return _importCommand ?? (_importCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               OpenFileDialog w = new OpenFileDialog();
+                               w.Filter = "Excel Worksheets|*.xls;*.xlsx";
+                               w.ShowDialog();
+                               if (!String.IsNullOrEmpty(w.FileName))
+                               {
+                                   List<Mark> marks = ExcelManager.LoadMarks(w.FileName, CurClass);
+                                   StationManager.DataStorage.SaveMarks(marks);
+                                   int count = marks.Count(m => !String.IsNullOrEmpty(m.Id));
+                                   List<string> l = marks.Select(m => m.Subject).Distinct().ToList();
+                                   foreach (string s in l)
+                                   {
+                                        StationManager.DataStorage.AddSubject(CurClass, s);
+                                   }
+                                   MessageBox.Show($"Импортировано {count} оценок", "Иморт", MessageBoxButtons.OK,
+                                       MessageBoxIcon.Information);
+                                   Subjects = StationManager.DataStorage.GetSubjects(CurClass);
+                                   SubjectsViewSource.Source = Subjects;
+                               }
+                           }));
+            }
+        }
+
+        public ICommand ImportFileCommand
+        {
+            get
+            {
+                return _importFileCommand ?? (_importFileCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               SaveFileDialog w = new SaveFileDialog();
+                               w.Title = "Save file for import";
+                               w.Filter = "Excel Worksheets|*.xls";
+                               var res = w.ShowDialog();
+
+                               if (res != DialogResult.Cancel && w.FileName != null)
+                               {
+                                   if (File.Exists(w.FileName))
+                                       File.Delete(w.FileName);
+
+                                   File.WriteAllBytes(w.FileName, Resources.Marks);
+                                   ExcelManager.FillMarks(w.FileName, StudentsDict.Values.ToList(), Subjects, CurClass);
+                               }
+                           }));
             }
         }
 

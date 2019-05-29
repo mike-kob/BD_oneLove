@@ -2858,38 +2858,72 @@ namespace BD_oneLove.Tools.DataStorage
 
         public List<Mark> SaveMarks(List<Mark> l)
         {
+            string sqlCheck = "SELECT COUNT(*) " +
+            "                   FROM marks " +
+            "                   WHERE student_id=@s_id AND subject=@sub AND mark_type=@m_t AND class_id=@c_id ;";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
                 myConn.Open();
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
                 for (int i = 0; i < l.Count; i++)
                 {
-                    string sql = "";
-                    if (!String.IsNullOrEmpty(l[i].Id) && !String.IsNullOrEmpty(l[i].Grade))
-                    {
-                        sql = "UPDATE marks " +
-                              $" SET grade={l[i].Grade}, mark_type='{l[i].MarkType}', subject='{l[i].Subject}', mark_date=@date, student_id={l[i].StudentId} " +
-                              $"WHERE mark_id={l[i].Id};";
+                    if (String.IsNullOrEmpty(l[i].Grade))
+                        continue;
 
+                    string sql = "UPDATE marks " +
+                                 $" SET grade={l[i].Grade}, mark_type='{l[i].MarkType}', subject='{l[i].Subject}', mark_date=@date, student_id={l[i].StudentId} " +
+                                 $"WHERE mark_id={l[i].Id};";
+
+                    if (!String.IsNullOrEmpty(l[i].Id))
+                    {
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
                             command.Parameters.Add("@date", SqlDbType.DateTime);
                             command.Parameters["@date"].Value = l[i].MarkDate;
-                            var res = command.ExecuteNonQuery();
+                            
+                            command.ExecuteNonQuery();
                         }
                     }
-                    else if (!String.IsNullOrEmpty(l[i].Grade))
+                    else
                     {
-                        sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
-                              " OUTPUT INSERTED.mark_id " +
-                              $" VALUES ({l[i].Grade}, '{l[i].MarkType}', '{l[i].Subject}', @date, {l[i].StudentId}, {l[i].ClassId});";
+                        int check = 0;
+                        using (SqlCommand command = new SqlCommand(sqlCheck, myConn))
+                        {
+                            command.Parameters.AddWithValue("@s_id", l[i].StudentId);
+                            command.Parameters.AddWithValue("@sub", l[i].Subject);
+                            command.Parameters.AddWithValue("@m_t", l[i].MarkType);
+                            command.Parameters.AddWithValue("@c_id", l[i].ClassId);
+                            check = (int)command.ExecuteScalar();
+                        }
+
+                        if (check == 0)
+                        {
+                            sql = "INSERT INTO marks (grade, mark_type, subject, mark_date, student_id, class_id) " +
+                                  " OUTPUT INSERTED.mark_id " +
+                                  $" VALUES ({l[i].Grade}, '{l[i].MarkType}', '{l[i].Subject}', @date, {l[i].StudentId}, {l[i].ClassId});";
+                        }
+                        else
+                        {
+                            sql = "UPDATE marks " +
+                                  $"SET grade={l[i].Grade}, mark_date=@date " +
+                                  $"OUTPUT INSERTED.mark_id " +
+                                  $"WHERE mark_type='{l[i].MarkType}' AND subject='{l[i].Subject}'AND student_id={l[i].StudentId} " +
+                                  $"AND class_id={l[i].ClassId} ;";
+                        }
 
                         using (SqlCommand command = new SqlCommand(sql, myConn))
                         {
-                            command.Parameters.Add("@date", SqlDbType.DateTime);
-                            command.Parameters["@date"].Value = l[i].MarkDate;
-                            var res = command.ExecuteScalar();
-                            l[i].Id = res.ToString();
+                      
+                                command.Parameters.Add("@date", SqlDbType.DateTime);
+                                command.Parameters["@date"].Value = l[i].MarkDate;
+                                var res = command.ExecuteScalar();
+                                l[i].Id = res.ToString();
+                           
                         }
                     }
                 }
