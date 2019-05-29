@@ -1,8 +1,9 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using BD_oneLove.Models;
 using BD_oneLove.Tools.DataStorage;
 using BD_oneLove.ViewModels.UsersViewModels;
+using Microsoft.Office.Interop.Excel;
+using Window = System.Windows.Window;
 
 namespace BD_oneLove.Tools.Managers
 {
@@ -31,6 +32,15 @@ namespace BD_oneLove.Tools.Managers
         public static IDataStorage DataStorage
         {
             get { return _dataStorage; }
+        }
+
+        public delegate void MyRefresh();
+
+        public static event MyRefresh RefreshClassListEvent;
+
+        public static void RefreshClassList()
+        {
+            RefreshClassListEvent?.Invoke();
         }
     }
 }

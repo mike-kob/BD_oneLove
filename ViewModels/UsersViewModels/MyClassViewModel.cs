@@ -121,15 +121,21 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                w.Filter = "Excel Worksheets|*.xls;*.xlsx";
                                w.ShowDialog();
                                List<Student> l = ExcelManager.LoadClassStudents(w.FileName, StationManager.CurrentClass);
+                               int count = 0;
                                foreach (Student student in l)
                                {
-                                   StationManager.DataStorage.AssignStudentToClass(student, _myClass);
-                                   ClassStudents.Add(student);
+                                   if (!String.IsNullOrEmpty(student.Id))
+                                   {
+                                       StationManager.DataStorage.AssignStudentToClass(student, _myClass);
+                                       ClassStudents.Add(student);
+                                       count++;
+                                   }
                                }
 
                                ViewSource.View.Refresh();
+                               StationManager.RefreshClassList();
                                OnPropertyChanged("ClassStudents");
-                               MessageBox.Show($"Импортировано учеников: {l.Count}",
+                               MessageBox.Show($"Импортировано учеников: {count}",
                                    "Импорт", MessageBoxButtons.OK,
                                    MessageBoxIcon.Information);
                            }));
@@ -209,7 +215,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         }
 
 
-
+        #region VisibilityColumns
 
         public Visibility IsShowId => _isShowId;
         public Visibility IsShowName => _isShowName;
@@ -332,6 +338,10 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 OnPropertyChanged("IsShowAlph");
             }
         }
+
+
+        #endregion
+
         #endregion
 
 
@@ -347,6 +357,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 ViewSource.Source = ClassStudents;
                 ViewSource.View.Refresh();
                 OnPropertyChanged("ClassStudents");
+                StationManager.RefreshClassList();
             }
         }
 
@@ -364,6 +375,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             OnPropertyChanged("ClassStudents");
             SelectedStudent = s;
             OnPropertyChanged("SelectedStudent");
+            StationManager.RefreshClassList();
         }
 
     }

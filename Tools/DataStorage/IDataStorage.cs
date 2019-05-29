@@ -63,7 +63,7 @@ namespace BD_oneLove.Tools.DataStorage
         Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
         List<Class> GetClassesStatistics(string year,string type);
-        List<Student> GetStudents(Class c);
+      //  List<Student> GetStudents(Class c);
 
         bool AddClass(Class c);
         bool UpdateClass(Class c);

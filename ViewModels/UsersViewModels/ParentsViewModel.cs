@@ -15,6 +15,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             MyClass = StationManager.CurrentClass;
             ClassParents = StationManager.DataStorage.GetParentsInClass(MyClass);
+            StationManager.RefreshClassListEvent += Refresh;
+        }
+
+        public void Refresh()
+        {
+            ClassParents = StationManager.DataStorage.GetParentsInClass(MyClass);
+            OnPropertyChanged("ClassParents");
         }
 
         #region Fields
@@ -101,8 +108,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _refreshCommand ?? (_refreshCommand =
                            new RelayCommand<object>(o =>
                            {
-                               ClassParents = StationManager.DataStorage.GetParentsInClass(MyClass);
-                               OnPropertyChanged("ClassParents");
+                               Refresh();
                            }));
             }
         }

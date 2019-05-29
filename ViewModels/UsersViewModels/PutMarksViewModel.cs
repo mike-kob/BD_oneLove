@@ -29,7 +29,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
             if (SelectedYear != null)
                 Classes = StationManager.DataStorage.GetClasses(SelectedYear);
-         
+
+            StationManager.RefreshClassListEvent += () =>
+            {
+                CurClass = StationManager.CurrentClass;
+                RefreshDict();
+            };
+
         }
 
         #region Fields
