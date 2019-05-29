@@ -85,10 +85,12 @@ namespace BD_oneLove.Tools.DataStorage
 
 
         //-------------Marks-------------------
-        bool AddSubject(string subject);
+        bool AddSubject(Class c, string subject);
+        bool RemoveSubject(Class c, string subject);
         List<string> GetSubjects(Class c, string type);
         List<Mark> GetMarks(Class c, string subject, string type);
         List<Mark> SaveMarks(List<Mark> l);
+        List<string> GetSubjects(Class c);
         bool RemoveMarks(List<Mark> l);
 
         //-------------Comments--------------

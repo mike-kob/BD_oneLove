@@ -2672,6 +2672,12 @@ namespace BD_oneLove.Tools.DataStorage
 
 
 
+
+
+        //----------------------Marks-----------------------------
+
+        #region Marks
+
         public List<string> GetSubjects(Class c, string type)
         {
             string sql = "SELECT DISTINCT subject" +
@@ -2709,14 +2715,75 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        //----------------------Marks-----------------------------
-
-        #region Markss
-
-        public bool AddSubject(string subject)
+        public List<string> GetSubjects(Class c)
         {
-            string sql = "INSERT INTO helping_subject" +
-                         $"VALUES ('{subject}'); ";
+            string sql = "SELECT subject" +
+                         " FROM classes_subjects " +
+                         $"WHERE class_id={c.ClassId};";
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public bool AddSubject(Class c, string subject)
+        {
+            string sql = "INSERT INTO classes_subjects (class_id, subject)" +
+                         $"VALUES ('{c.ClassId}', '{subject}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool RemoveSubject(Class c, string subject)
+        {
+            string sql = "DELETE FROM classes_subjects " +
+                         $"WHERE class_id='{c.ClassId}' AND subject='{subject}'; ";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try

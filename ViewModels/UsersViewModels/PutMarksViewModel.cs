@@ -18,7 +18,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 IsAdminVisible = Visibility.Hidden;
                 CurClass = StationManager.CurrentClass;
-                Subjects = StationManager.DataStorage.GetSubjects(CurClass, SelectedType);
+                Subjects = StationManager.DataStorage.GetSubjects(CurClass);
                 ViewSource.Source = MarksDict;
                 SubjectsViewSource.Source = Subjects;
             }
@@ -35,7 +35,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 CurClass = StationManager.CurrentClass;
                 RefreshDict();
             };
-
         }
 
         #region Fields
@@ -109,6 +108,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 RefreshDict();
             }
         }
+
+        public string SelectedToRemoveSubject { get; set; }
+
         public string SelectedType
         {
             get { return _selectedType; }
@@ -138,14 +140,24 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _addCommand ?? (_addCommand =
                            new RelayCommand<object>(o =>
                            {
+                               string t = SelectedSubject;
                                string s = Microsoft.VisualBasic.Interaction.InputBox("Введите предмет:", "Предмет", "");
                                s = s.Trim().ToUpper();
-                               Subjects.Add(s);
-                               SubjectsViewSource.View.Refresh();
-                               OnPropertyChanged("Subjects");
-                               OnPropertyChanged("SubjectsViewSource");
+                               if (!StationManager.DataStorage.AddSubject(CurClass, s))
+                               {
+                                   MessageBox.Show("Не возможно добавить предмет. Скорее всего он уже добавлен.",
+                                       "Ошибка добавления",
+                                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                               }
+                               else
+                               {
+                                   Subjects.Add(s);
+                                   SubjectsViewSource.View.Refresh();
+                                   OnPropertyChanged("Subjects");
+                                   OnPropertyChanged("SubjectsViewSource");
+                               }
 
-                               SelectedSubject = s;
+                               SelectedSubject = t;
                                OnPropertyChanged("SelectedSubject");
                                CreateDict(s);
                            }));
@@ -172,21 +184,20 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _removeCommand ?? (_removeCommand =
                            new RelayCommand<object>(o =>
                            {
-                               if (StationManager.DataStorage.RemoveMarks(MarksDict))
+                               var res = MessageBox.Show(
+                                   $"Вы действительно хотите удалить '{SelectedSubject}', '{SelectedType}' со всеми оценками?",
+                                   "Удаление оценок", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                               if (res == DialogResult.Yes)
                                {
-                                   var res = MessageBox.Show(
-                                       $"Вы действительно хотите удалить '{SelectedSubject}', '{SelectedType}' со всеми оценками?",
-                                       "Удаление оценок", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                                   if (res == DialogResult.Yes)
-                                   {
-                                       Subjects.Remove(SelectedSubject);
-                                       SubjectsViewSource.View.Refresh();
-                                       OnPropertyChanged("SubjectsViewSource");
-                                       SelectedSubject = null;
-                                       OnPropertyChanged("SelectedSubject");
-                                   }
+                                   StationManager.DataStorage.RemoveMarks(MarksDict);
+                                   Subjects.Remove(SelectedSubject);
+                                   SubjectsViewSource.View.Refresh();
+                                   OnPropertyChanged("SubjectsViewSource");
+                                   SelectedSubject = null;
+                                   OnPropertyChanged("SelectedSubject");
+                                   StationManager.DataStorage.RemoveSubject(CurClass, SelectedSubject);
                                }
-                           }));
+                           }, o => SelectedToRemoveSubject != null));
             }
         }
 
