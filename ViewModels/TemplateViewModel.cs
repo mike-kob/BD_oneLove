@@ -63,6 +63,7 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Выставление оценок", ViewType.PutMarksView);
                     Items.Add("Социальный паспорт", ViewType.SocialPassportView);
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
+                    Items.Add("Рейтинг класса", ViewType.ClassProgressView);
                     break;
                 case "Заместитель директора":
                     Items.Add("Ученики", ViewType.StudentsView);

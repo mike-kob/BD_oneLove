@@ -18,6 +18,7 @@
         SocialPassportView,
         ParentsView,
         MovementView,
+        ClassProgressView,
 
         //заместитель
         ProgressView,
