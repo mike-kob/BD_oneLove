@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
@@ -178,6 +177,34 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _saveCommand ?? (_saveCommand =
                            new RelayCommand<object>(o =>
                            {
+                               DateTime compare;
+                               if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+                               {
+                                   Plan p = StationManager.DataStorage.GetCurrentPlan(StationManager.CurrentYear);
+                                   switch (_selectedType)
+                                   {
+                                       case "семестр1":
+                                           compare = p.DateTerm1;
+                                           break;
+                                       case "семестр2":
+                                           compare = p.DateTerm2;
+                                           break;
+                                       default:
+                                           compare = p.DateYear;
+                                           break;
+                                   }
+
+
+                                   if (DateTime.Now > compare)
+                                   {
+                                       MessageBox.Show(
+                                           "Похоже, что срок выставления оценок в этом семесте закончился, " +
+                                           "обратитесь к администратору.", "Ошибка ввода", MessageBoxButtons.OK,
+                                           MessageBoxIcon.Error);
+                                       return;
+                                   }
+                               }
+
                                StationManager.DataStorage.SaveMarks(MarksDict);
                                OnPropertyChanged("Marks");
                            }));
@@ -226,8 +253,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                    List<string> l = marks.Select(m => m.Subject).Distinct().ToList();
                                    foreach (string s in l)
                                    {
-                                        StationManager.DataStorage.AddSubject(CurClass, s);
+                                       StationManager.DataStorage.AddSubject(CurClass, s);
                                    }
+
                                    MessageBox.Show($"Импортировано {count} оценок", "Иморт", MessageBoxButtons.OK,
                                        MessageBoxIcon.Information);
                                    Subjects = StationManager.DataStorage.GetSubjects(CurClass);

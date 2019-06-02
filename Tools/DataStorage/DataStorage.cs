@@ -60,6 +60,7 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
 
         }
+
         public List<Student> GetStudentsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
@@ -121,59 +122,6 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        public Student GetStudent(string id)
-        {
-            string sql = $"SELECT s.student_id, s.type_doc, s.ser_doc, s.num_doc, s.st_name, s.patronymic, " +
-                         "s.surname, s.sex, s.birthday, s.num_alph_book, [index], s.city, " +
-                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam " +
-                         "FROM students s " +
-                         $"WHERE s.student_id='{id}';";
-            Student cur = null;
-            try
-            {
-                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-                myConn.Open();
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        cur = new Student();
-                        cur.NumAlphBook = reader.GetString(9);
-                        cur.Id = reader.GetInt64(0).ToString();
-
-                        cur.TypeDoc = reader.GetString(1);
-                        cur.SerDoc = reader.IsDBNull(2) ? "" : reader.GetString(2);
-                        cur.NumDoc = reader.GetString(3);
-                        cur.StName = reader.GetString(4);
-                        cur.Patronymic = reader.IsDBNull(5) ? "" : reader.GetString(5);
-                        cur.Surname = reader.GetString(6);
-                        cur.Sex = reader.GetString(7);
-                        cur.Birthday = reader.GetDateTime(8);
-                        cur.Index = reader.IsDBNull(10) ? "" : reader.GetString(10);
-                        cur.City = reader.IsDBNull(11) ? "" : reader.GetString(11);
-                        cur.Street = reader.IsDBNull(12) ? "" : reader.GetString(12);
-                        cur.House = reader.IsDBNull(13) ? "" : reader.GetString(13);
-                        cur.Apart = reader.IsDBNull(14) ? "" : reader.GetString(14);
-                        cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
-                        cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
-                        cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-                    }
-
-                    reader.Close();
-                }
-
-                myConn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-
-            return cur;
-        }
-
         public List<Subject> GetSubjectsStatistics(Class c, string type)
         {
             string sql = $"WITH Temp AS( " +
@@ -215,106 +163,6 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
-
-        public bool DeleteTeacherClass(Teacher t, Class c)
-        {
-            string sql =
-                $"DELETE FROM head_teachers_classes WHERE class_id = '{c.ClassId}' AND tab_number='{t.TabNumber}'; ";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return true;
-        }
-
-        public bool AddTeacherClass(Teacher t, Class c)
-        {
-            string sql = $"INSERT INTO head_teachers_classes (class_id,tab_number) VALUES ('{c.ClassId}', " +
-                         $"'{t.TabNumber}'); ";
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-                int res = 0;
-                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-                return false;
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return true;
-        }
-
-        public Teacher GetTeacher(string id)
-        {
-            string sql = $"SELECT h_name, patronymic, surname FROM head_teachers WHERE tab_number='{id}'";
-            try
-            {
-                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-                myConn.Open();
-                Teacher t = null;
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        t = new Teacher(id);
-                        t.HName = reader.GetString(0);
-                        t.Patronymiс = reader.GetString(1);
-                        t.Surname = reader.GetString(2);
-                    }
-
-                    reader.Close();
-                }
-
-                myConn.Close();
-                return t;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-
-            return null;
-        }
-
-        //------------------Classes----------------
 
         #region Classes
 
@@ -856,9 +704,71 @@ namespace BD_oneLove.Tools.DataStorage
             }
         }
 
-        #endregion
+        public bool DeleteTeacherClass(Teacher t, Class c)
+        {
+            string sql =
+                $"DELETE FROM head_teachers_classes WHERE class_id = '{c.ClassId}' AND tab_number='{t.TabNumber}'; ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
 
-        //------------------Plans----------------------
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return true;
+        }
+
+        public bool AddTeacherClass(Teacher t, Class c)
+        {
+            string sql = $"INSERT INTO head_teachers_classes (class_id,tab_number) VALUES ('{c.ClassId}', " +
+                         $"'{t.TabNumber}'); ";
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                int res = 0;
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return true;
+        }
+        #endregion
 
         #region Plans
 
@@ -1106,6 +1016,79 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return res;
+        }
+
+        public Plan GetCurrentPlan(string year)
+        {
+            string sql = "SELECT st_year, date_term1, date_term2, date_year " +
+                         "FROM [plan] " +
+                        $"WHERE st_year='{year}';";
+            Plan cur = null;
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cur = new Plan();
+                        cur.StYear = reader.GetString(0);
+                        cur.DateTerm1 = reader.GetDateTime(1);
+                        cur.DateTerm2 = reader.GetDateTime(2);
+                        cur.DateYear = reader.GetDateTime(3);
+                    }
+
+                    reader.Close();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+            return cur;
+        }
+
+        public List<string> GetYears()
+        {
+            string sql = "SELECT DISTINCT st_year FROM [plan];";
+            List<string> list = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string cur = reader.GetString(0).ToString();
+                        list.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return list;
         }
 
         #endregion
@@ -1431,43 +1414,6 @@ namespace BD_oneLove.Tools.DataStorage
             return null;
         }
 
-        #endregion
-
-        public List<string> GetYears()
-        {
-            string sql = "SELECT DISTINCT st_year FROM [plan];";
-            List<string> list = new List<string>();
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            try
-            {
-                myConn.Open();
-
-                using (SqlCommand command = new SqlCommand(sql, myConn))
-                {
-                    var reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        string cur = reader.GetString(0).ToString();
-                        list.Add(cur);
-                    }
-
-                    reader.Close();
-                }
-
-                return list;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return list;
-        }
-
         public List<Teacher> GetTeachers(string year)
         {
             string sql =
@@ -1595,9 +1541,161 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        //----------------Students------------------
+        public Teacher UpdateTeacher(Teacher t, Teacher oldT)
+        {
+            //to make with parameters
+
+
+            string sql2 = "UPDATE  head_teachers " +
+                          $"SET h_name = '{t.HName}', " +
+                          $"surname = '{t.Surname}', " +
+                          $"patronymic = '{t.Patronymiс}', " +
+                          $"login = '{t.User.Username}' " +
+                          $"WHERE tab_number='{t.TabNumber}'";
+
+
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            int res = 0;
+            Teacher temp = null;
+
+            try
+            {
+                myConn.Open();
+
+
+                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+
+                //maybe it is possible just to use (!UserExists(...)) if login is AK in head_teachers
+
+                if (!UserExistsUseless(t.User.Username))
+                {
+                    bool flag = UpdateUser(t.User, oldT.User);
+                    if (!flag) return temp;
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    res = command.ExecuteNonQuery();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql3, myConn))
+                {
+                    var reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        temp = new Teacher(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return temp;
+        }
+
+        public Teacher GetTeacher(string id)
+        {
+            string sql = $"SELECT h_name, patronymic, surname FROM head_teachers WHERE tab_number='{id}'";
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+                myConn.Open();
+                Teacher t = null;
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        t = new Teacher(id);
+                        t.HName = reader.GetString(0);
+                        t.Patronymiс = reader.GetString(1);
+                        t.Surname = reader.GetString(2);
+                    }
+
+                    reader.Close();
+                }
+
+                myConn.Close();
+                return t;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return null;
+        }
+
+        #endregion
 
         #region Students
+        public Student GetStudent(string id)
+        {
+            string sql = $"SELECT s.student_id, s.type_doc, s.ser_doc, s.num_doc, s.st_name, s.patronymic, " +
+                         "s.surname, s.sex, s.birthday, s.num_alph_book, [index], s.city, " +
+                         "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam " +
+                         "FROM students s " +
+                         $"WHERE s.student_id='{id}';";
+            Student cur = null;
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        cur = new Student();
+                        cur.NumAlphBook = reader.GetString(9);
+                        cur.Id = reader.GetInt64(0).ToString();
+
+                        cur.TypeDoc = reader.GetString(1);
+                        cur.SerDoc = reader.IsDBNull(2) ? "" : reader.GetString(2);
+                        cur.NumDoc = reader.GetString(3);
+                        cur.StName = reader.GetString(4);
+                        cur.Patronymic = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.Surname = reader.GetString(6);
+                        cur.Sex = reader.GetString(7);
+                        cur.Birthday = reader.GetDateTime(8);
+                        cur.Index = reader.IsDBNull(10) ? "" : reader.GetString(10);
+                        cur.City = reader.IsDBNull(11) ? "" : reader.GetString(11);
+                        cur.Street = reader.IsDBNull(12) ? "" : reader.GetString(12);
+                        cur.House = reader.IsDBNull(13) ? "" : reader.GetString(13);
+                        cur.Apart = reader.IsDBNull(14) ? "" : reader.GetString(14);
+                        cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
+                        cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
+                        cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
+                    }
+
+                    reader.Close();
+                }
+
+                myConn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return cur;
+        }
 
         public Student SaveStudent(Student s)
         {
@@ -1851,8 +1949,6 @@ namespace BD_oneLove.Tools.DataStorage
         }
 
         #endregion
-
-        //-------------Parents---------------------
 
         #region Parents
 
@@ -2600,82 +2696,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         #endregion
 
-
-        public Teacher UpdateTeacher(Teacher t, Teacher oldT)
-        {
-            //to make with parameters
-
-
-            string sql2 = "UPDATE  head_teachers " +
-                          $"SET h_name = '{t.HName}', " +
-                          $"surname = '{t.Surname}', " +
-                          $"patronymic = '{t.Patronymiс}', " +
-                          $"login = '{t.User.Username}' " +
-                          $"WHERE tab_number='{t.TabNumber}'";
-
-
-            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
-
-            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
-            int res = 0;
-            Teacher temp = null;
-
-            try
-            {
-                myConn.Open();
-
-
-                using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
-                {
-                    command.ExecuteNonQuery();
-                }
-
-
-                //maybe it is possible just to use (!UserExists(...)) if login is AK in head_teachers
-
-                if (!UserExistsUseless(t.User.Username))
-                {
-                    bool flag = UpdateUser(t.User, oldT.User);
-                    if (!flag) return temp;
-                }
-
-                using (SqlCommand command = new SqlCommand(sql2, myConn))
-                {
-                    res = command.ExecuteNonQuery();
-                }
-
-                using (SqlCommand command = new SqlCommand(sql3, myConn))
-                {
-                    var reader = command.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        temp = new Teacher(reader.GetString(0));
-                    }
-
-                    reader.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
-            finally
-            {
-                myConn?.Close();
-            }
-
-            return temp;
-        }
-
-
-
-
-
-
-
-        //----------------------Marks-----------------------------
-
         #region Marks
 
         public List<string> GetSubjects(Class c, string type)
@@ -2975,8 +2995,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         #endregion
 
-        //-----------------Comments----------------
-
         #region Comments
 
         public List<Comment> GetComments(Student s)
@@ -3154,8 +3172,6 @@ namespace BD_oneLove.Tools.DataStorage
 
         #endregion
 
-        //----------------Movement-----------------
-
         #region Movement
 
         public List<Movement> GetMovements(Class c)
@@ -3315,7 +3331,6 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
-
 
         public List<Movement> SaveMovements(List<Movement> l)
         {

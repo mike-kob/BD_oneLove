@@ -13,6 +13,7 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Plans-----------------
 
         List<Plan> GetPlans();
+        Plan GetCurrentPlan(string year);
         bool AddPlan(Plan p);
         bool UpdatePlan(Plan p, Plan oldP);
         bool DeletePlan(Plan p);
