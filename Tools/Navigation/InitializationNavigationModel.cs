@@ -1,6 +1,6 @@
 ﻿using System;
-using BD_oneLove.ViewModels;
 using BD_oneLove.Views;
+using TemplateControlView = BD_oneLove.Views.TemplateControlView;
 
 namespace BD_oneLove.Tools.Navigation
 {
@@ -21,12 +21,6 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.MainView:
                     ViewsDictionary.Add(viewType, new TemplateControlView());
                     break;
-                //case ViewType.AddPersonView:
-                //    ViewsDictionary.Add(viewType, new AddPersonView());
-                //    break;
-                //case ViewType.EditPersonView:
-                //    ViewsDictionary.Add(viewType, new EditPersonView());
-                //    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
             }
