@@ -38,6 +38,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Visibility _isShowWorkPhone;
         private Visibility _isShowWork;
         private Visibility _isShowComment;
+        private Visibility _isShowMobile;
 
         private ICommand _addCommand;
         private ICommand _removeCommand;
@@ -131,6 +132,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Visibility IsShowWorkPhone => _isShowWorkPhone;
         public Visibility IsShowWork => _isShowWork;
         public Visibility IsShowComment => _isShowComment;
+        public Visibility IsShowMobile => _isShowMobile;
 
         public bool IsShowIdBool
         {
@@ -236,7 +238,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
-
+        public bool IsShowMobileBool
+        {
+            get { return _isShowMobile == Visibility.Visible; }
+            set
+            {
+                _isShowMobile = value ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged("IsShowMobile");
+            }
+        }
         #endregion
 
 

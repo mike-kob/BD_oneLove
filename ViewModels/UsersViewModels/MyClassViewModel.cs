@@ -42,6 +42,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Visibility _isShowExam;
         private Visibility _isShowGPD;
         private Visibility _isShowPhone;
+        private Visibility _isShowMobile;
 
         private ICommand _saveCommand;
         private ICommand _removeCommand;
@@ -229,6 +230,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Visibility IsShowGPD => _isShowGPD;
         public Visibility IsShowPhone => _isShowPhone;
         public Visibility IsShowDoc => _isShowDoc;
+        public Visibility IsShowMobile => _isShowMobile;
 
         public bool IsShowIdBool
         {
@@ -338,7 +340,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 OnPropertyChanged("IsShowAlph");
             }
         }
-
+        public bool IsShowMobileBool
+        {
+            get { return _isShowMobile == Visibility.Visible; }
+            set
+            {
+                _isShowMobile = value ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged("IsShowMobile");
+            }
+        }
 
         #endregion
 

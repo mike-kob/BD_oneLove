@@ -381,11 +381,31 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
                         cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-
+                        
                         res.Add(cur);
+
                     }
 
                     reader.Close();
+                    foreach (Student cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM student_phone " +
+                                      $"WHERE student_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
                 return res;
@@ -440,11 +460,30 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
                         cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-
+                        
                         res.Add(cur);
                     }
 
                     reader.Close();
+                    foreach (Student cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM student_phone " +
+                                      $"WHERE student_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
                 return res;
@@ -506,11 +545,29 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
                         cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-
                         res.Add(cur);
                     }
 
                     reader.Close();
+                    foreach (Student cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM student_phone " +
+                                      $"WHERE student_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
                 return res;
@@ -569,11 +626,30 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.HomePhone = reader.IsDBNull(15) ? "" : reader.GetString(15);
                         cur.GpdAttendance = !reader.IsDBNull(16) && reader.GetBoolean(16);
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
-
+                    
                         res.Add(cur);
                     }
 
                     reader.Close();
+                    foreach (Student cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM student_phone " +
+                                      $"WHERE student_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
                 return res;
@@ -1651,6 +1727,10 @@ namespace BD_oneLove.Tools.DataStorage
                          "s.street, s.house, s.apart, s.home_phone, s.gpd_attendance, s.exam " +
                          "FROM students s " +
                          $"WHERE s.student_id='{id}';";
+
+            string sql2 = "SELECT number " +
+                          "FROM student_phone " +
+                          $"WHERE student_id={id};";
             Student cur = null;
             try
             {
@@ -1684,6 +1764,18 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.ExamAllowedToPass = !reader.IsDBNull(17) && reader.GetBoolean(17);
                     }
 
+                    reader.Close();
+                }
+
+                using (SqlCommand command = new SqlCommand(sql2, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    List<string> phones = new List<string>();
+                    while (reader.Read())
+                    {
+                       phones.Add(reader.GetString(0));
+                    }
+                    cur?.MobileNumbers.AddRange(phones);
                     reader.Close();
                 }
 
@@ -1996,6 +2088,25 @@ namespace BD_oneLove.Tools.DataStorage
 
                     reader.Close();
                 }
+
+                if (!String.IsNullOrEmpty(father?.Id))
+                {
+                    string sql2 = "SELECT number " +
+                                  "FROM parent_phone " +
+                                  $"WHERE parent_id={father.Id};";
+                    using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                    {
+                        var reader2 = command2.ExecuteReader();
+                        List<string> phones = new List<string>();
+                        while (reader2.Read())
+                        {
+                            phones.Add(reader2.GetString(0));
+                        }
+                        father?.MobileNumbers.AddRange(phones);
+                        reader2.Close();
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -2053,6 +2164,23 @@ namespace BD_oneLove.Tools.DataStorage
                     }
 
                     reader.Close();
+                    if (!String.IsNullOrEmpty(mother?.Id))
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM parent_phone " +
+                                      $"WHERE parent_id={mother.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            mother?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -2108,11 +2236,30 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
                         cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
                         cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
-
+                      
                         trustees.Add(cur);
                     }
-
                     reader.Close();
+
+                    foreach (Parent cur in trustees)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM parent_phone " +
+                                      $"WHERE parent_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
             }
             catch (Exception ex)
@@ -2304,11 +2451,30 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
                         cur.Work = reader.IsDBNull(13) ? "" : reader.GetString(13);
                         cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
-
+                        
                         res.Add(cur);
                     }
 
                     reader.Close();
+                    foreach (Parent cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM parent_phone " +
+                                      $"WHERE parent_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
 
@@ -2362,11 +2528,30 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.WorkPhone = reader.IsDBNull(12) ? "" : reader.GetString(12);
                         cur.Work = reader.IsDBNull(12) ? "" : reader.GetString(13);
                         cur.Commentary = reader.IsDBNull(14) ? "" : reader.GetString(14);
-
+                        
                         res.Add(cur);
                     }
 
                     reader.Close();
+                    foreach (Parent cur in res)
+                    {
+                        string sql2 = "SELECT number " +
+                                      "FROM parent_phone " +
+                                      $"WHERE parent_id={cur.Id};";
+                        using (SqlCommand command2 = new SqlCommand(sql2, myConn))
+                        {
+
+                            var reader2 = command2.ExecuteReader();
+                            List<string> phones = new List<string>();
+                            while (reader2.Read())
+                            {
+                                phones.Add(reader2.GetString(0));
+                            }
+                            cur?.MobileNumbers.AddRange(phones);
+                            reader2.Close();
+                        }
+
+                    }
                 }
 
 
@@ -2686,6 +2871,202 @@ namespace BD_oneLove.Tools.DataStorage
             catch (Exception ex)
             {
                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        #endregion
+
+        #region Mobiles
+
+        public List<string> GetMobileNumbers(Parent p)
+        {
+            string sql1 =
+                "SELECT number " +
+                "FROM parent_phone " +
+               $"WHERE parent_id={p.Id};";
+
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public List<string> GetMobileNumbers(Student s)
+        {
+            string sql1 =
+                "SELECT number " +
+                "FROM student_phone " +
+                $"WHERE student_id={s.Id};";
+
+
+            List<string> res = new List<string>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql1, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        res.Add(reader.GetString(0));
+                    }
+
+                    reader.Close();
+                }
+
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
+
+        public bool AddMobileNumber(Parent p, string num)
+        {
+            string sql = "INSERT INTO parent_phone (parent_id, number)" +
+                         $"VALUES ('{p.Id}', '{num}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Add mobile parent: There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool AddMobileNumber(Student s, string num)
+        {
+            string sql = "INSERT INTO student_phone (student_id, number)" +
+                         $"VALUES ('{s.Id}', '{num}'); ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Add mobile student: There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool RemoveMobileNumber(Parent p, string num)
+        {
+            string sql = "DELETE FROM parent_phone " +
+                         $"WHERE parent_id={p.Id} AND number='{num}'; ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Remove mobile parent: There's problem with you connection!\n" + ex.Message);
+                return false;
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+        }
+
+        public bool RemoveMobileNumber(Student s, string num)
+        {
+            string sql = "DELETE FROM student_phone " +
+                         $"WHERE student_id={s.Id} AND number='{num}'; ";
+
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Remove mobile student: There's problem with you connection!\n" + ex.Message);
                 return false;
             }
             finally

@@ -49,7 +49,7 @@
                            CanUserAddRows="False"
                            >
             <controls:DataGrid.Columns>
-                <controls:DataGridTextColumn Header="Id"
+                <controls:DataGridTextColumn Header="Id" 
                                              Binding="{Binding Id, Mode=OneWay}"
                                              Visibility="{Binding DataContext.IsShowId, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Тип док."
@@ -79,6 +79,10 @@
                 <controls:DataGridTextColumn Header="Алф. книга"
                                              Binding="{Binding AlphBook}"
                                              Visibility="{Binding DataContext.IsShowAlph, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Моб. тел"
+                                             Binding="{Binding MobileString, Mode=OneWay}" IsReadOnly="True"
+                                             Width="80"
+                                             Visibility="{Binding DataContext.IsShowMobile, Source={StaticResource ProxyElement}}"/>
                 <controls:DataGridTextColumn Header="Индекс"
                                              Binding="{Binding Index}"
                                              Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
@@ -119,6 +123,7 @@
             <CheckBox Content="Отчество" IsChecked="{Binding IsShowPatrBool}"></CheckBox>
             <CheckBox Content="Дата рождения" IsChecked="{Binding IsShowBirthdayBool}"></CheckBox>
             <CheckBox Content="Пол" IsChecked="{Binding IsShowSexBool}"></CheckBox>
+            <CheckBox Content="Моб. телефоны" IsChecked="{Binding IsShowMobileBool}"></CheckBox>
             <CheckBox Content="Адрес" IsChecked="{Binding IsShowAddrBool}"></CheckBox>
             <CheckBox Content="Номер алф. книги" IsChecked="{Binding IsShowAlphBool}"></CheckBox>
             <CheckBox Content="Телефон" IsChecked="{Binding IsShowPhoneBool}"></CheckBox>

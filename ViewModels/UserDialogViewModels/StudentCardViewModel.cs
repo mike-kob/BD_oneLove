@@ -39,7 +39,7 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
         private ICommand _searchFatherCommand;
         private ICommand _searchMotherCommand;
         private ICommand _searchTrusteeCommand;
-
+        private ICommand _mobileCommand;
         #endregion
 
         #region Props
@@ -171,7 +171,19 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
             }
         }
 
-
+        public ICommand MobileCommand
+        {
+            get
+            {
+                return _mobileCommand ?? (_mobileCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               StationManager.CurrentMobile = CurStudent;
+                               Window w = new MobileNumberDialog();
+                               w.ShowDialog();
+                           }, o => !String.IsNullOrEmpty(CurStudent?.Id)));
+            }
+        }
         #endregion
 
         private void SaveImplementation(Window win)

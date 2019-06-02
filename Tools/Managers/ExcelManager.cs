@@ -44,6 +44,10 @@ namespace BD_oneLove.Tools.Managers
                         
                         //TODO edit window
                     }
+                    else if (cur.MobileNumbers.Count != 0)
+                    {
+                        StationManager.DataStorage.AddMobileNumber(answ, cur.MobileNumbers[0]);
+                    }
                     
 
                     Parent mother = LoadParent(range, i, 1);
@@ -75,6 +79,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(mother);
+                            if (mother.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(mother, mother.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(mother.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -116,6 +124,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(father);
+                            if (father.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(father, father.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(father.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -164,6 +176,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(trustee1);
+                            if (trustee1.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(trustee1, trustee1.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(trustee1.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -186,6 +202,7 @@ namespace BD_oneLove.Tools.Managers
                     if (trustee2 != null)
                     {
                         Parent parentAnsw = StationManager.DataStorage.ParentExists(trustee2);
+                        
                         if (parentAnsw != null)
                         {
                             var dialogRes = MessageBox.Show(
@@ -216,7 +233,11 @@ namespace BD_oneLove.Tools.Managers
                         }
                         else
                         {
-                            StationManager.DataStorage.SaveParent(trustee1);
+                            StationManager.DataStorage.SaveParent(trustee2);
+                            if (trustee2.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(trustee2, trustee2.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(trustee2.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -304,7 +325,9 @@ namespace BD_oneLove.Tools.Managers
             if (val != null)
                 cur.Apart = val.ToString();
 
-            //TODO read mobile number
+            val = range.Range["P" + row]?.Value2;
+            if (val != null)
+                cur.MobileNumbers.Add(val.ToString());
 
             val = range.Range["Q" + row]?.Value2;
             if (val != null)
@@ -367,8 +390,9 @@ namespace BD_oneLove.Tools.Managers
             val = range.Range["F" + row]?.Value2;
             if (val != null)
                 cur.HomePhone = val.ToString();
-            
-            //TODO read mobile number
+            val = range.Range["G" + row]?.Value2;
+            if (val != null)
+                cur.MobileNumbers.Add(val.ToString());
 
             val = range.Range["H" + row]?.Value2;
             if (val != null)

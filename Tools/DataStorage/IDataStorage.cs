@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Policy;
 using BD_oneLove.Models;
 
 namespace BD_oneLove.Tools.DataStorage
@@ -58,6 +59,15 @@ namespace BD_oneLove.Tools.DataStorage
         bool SaveParentChild(ParentChild pc);
         bool RemoveParentChild(ParentChild pc);
 
+        //--------------Mobile phones----------
+        List<string> GetMobileNumbers(Parent p);
+        List<string> GetMobileNumbers(Student s);
+
+        bool AddMobileNumber(Parent p, string num);
+        bool AddMobileNumber(Student s, string num);
+
+        bool RemoveMobileNumber(Parent p, string num);
+        bool RemoveMobileNumber(Student s, string num);
 
         //--------------Classes---------------
         Class GetClass(string classId);

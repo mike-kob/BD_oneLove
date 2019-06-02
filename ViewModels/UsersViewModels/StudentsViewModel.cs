@@ -2,10 +2,7 @@
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
@@ -46,6 +43,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Visibility _isShowExam;
         private Visibility _isShowGPD;
         private Visibility _isShowPhone;
+        private Visibility _isShowMobile;
 
         private ICommand _saveCommand;
         private ICommand _removeCommand;
@@ -116,8 +114,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
-
-
         public ICommand AddCommand
         {
             get
@@ -162,8 +158,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         }
 
 
-
-
         public Visibility IsShowId => _isShowId;
         public Visibility IsShowName => _isShowName;
         public Visibility IsShowSurname => _isShowSurname;
@@ -176,6 +170,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Visibility IsShowGPD => _isShowGPD;
         public Visibility IsShowPhone => _isShowPhone;
         public Visibility IsShowDoc => _isShowDoc;
+        public Visibility IsShowMobile => _isShowMobile;
 
         public bool IsShowIdBool
         {
@@ -283,6 +278,15 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 _isShowAlph = value ? Visibility.Visible : Visibility.Hidden;
                 OnPropertyChanged("IsShowAlph");
+            }
+        }
+        public bool IsShowMobileBool
+        {
+            get { return _isShowMobile == Visibility.Visible; }
+            set
+            {
+                _isShowMobile = value ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged("IsShowMobile");
             }
         }
         #endregion
