@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BD_oneLove.Models
 {
-    class Subject
+    class ClassSubject
     {
 
         public string Name { get; set; }
@@ -22,7 +22,7 @@ namespace BD_oneLove.Models
         public int Sum { get; set; }
       
 
-        public Subject(int s, int h, int g,int m,int b,int c)
+        public ClassSubject(int s, int h, int g,int m,int b,int c)
         {
             Sum = s;
             HighNumber = h;

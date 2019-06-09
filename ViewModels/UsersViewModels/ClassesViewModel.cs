@@ -16,6 +16,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         {
             Classes = StationManager.DataStorage.GetClasses(SelectedYear);
             SelectedYear = StationManager.CurrentYear;
+            StationManager.RefreshYearListEvent += () => 
+            {
+                Years = StationManager.DataStorage.GetYears();
+                OnPropertyChanged("Years");
+            };
         }
 
         #region Property

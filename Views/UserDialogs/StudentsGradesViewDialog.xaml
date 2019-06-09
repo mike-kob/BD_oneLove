@@ -1,0 +1,44 @@
+﻿<Window x:Class="BD_oneLove.Views.UserDialogs.StudentsGradesViewDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BD_oneLove.Views.UserDialogs"
+        xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
+        mc:Ignorable="d"
+        Title="StudentsGradesViewDialog" Height="600" Width="500">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="0 15" HorizontalAlignment="Center">
+            <TextBlock FontSize="15" Text=" Табель ученика "/>
+            <TextBlock FontSize="15" Text="{Binding Student.SurnameNamePatr}"/>
+            <TextBlock FontSize="15" Text=" за " />
+            <ComboBox SelectedItem="{Binding SelectedClass, Mode=TwoWay}" ItemsSource="{Binding Classes}" DisplayMemberPath="NumberLetter" Width="50" ></ComboBox>
+        </StackPanel>
+        <controls:DataGrid ItemsSource="{Binding Subjects}"
+                           Grid.Column="0" Grid.Row="1" 
+                           Margin="20"
+                           AutoGenerateColumns="False"
+                           CanUserAddRows="False"
+                         >
+            <controls:DataGrid.Columns>
+                <controls:DataGridTextColumn Header="Предмет"
+                                             Binding="{Binding Name, Mode=OneWay}" />
+                <controls:DataGridTextColumn Header="Семестр1"
+                                             Binding="{Binding Term1, Mode=OneWay}" />
+                <controls:DataGridTextColumn Header="Семестр2"
+                                             Binding="{Binding Term2, Mode=OneWay}" />
+                <controls:DataGridTextColumn Header="Годовая"
+                                             Binding="{Binding Year, Mode=OneWay}" />
+
+
+
+            </controls:DataGrid.Columns>
+        </controls:DataGrid>
+
+
+    </Grid>
+</Window>

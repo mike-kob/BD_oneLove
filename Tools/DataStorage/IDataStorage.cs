@@ -7,7 +7,7 @@ namespace BD_oneLove.Tools.DataStorage
     {
 
         //--------------Subjects-----------------
-        List<Subject> GetSubjectsStatistics(Class c, string type);
+        List<ClassSubject> GetSubjectsStatistics(Class c, string type);
 
 
         //--------------Plans-----------------
@@ -62,8 +62,9 @@ namespace BD_oneLove.Tools.DataStorage
         Class GetClass(string classId);
         Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
+        List<Class> GetClasses(Student s);
         List<Class> GetClassesStatistics(string year,string type);
-        List<Student> GetStudents(Class c);
+        //List<Student> GetStudents(Class c);
 
         bool AddClass(Class c);
         bool UpdateClass(Class c);
@@ -88,6 +89,7 @@ namespace BD_oneLove.Tools.DataStorage
         bool AddSubject(string subject);
         List<string> GetSubjects(Class c, string type);
         List<Mark> GetMarks(Class c, string subject, string type);
+        List<StudentSubject> GetMarks(Student s, Class c);
         List<Mark> SaveMarks(List<Mark> l);
         bool RemoveMarks(List<Mark> l);
 

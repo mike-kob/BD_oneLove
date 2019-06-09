@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using BD_oneLove.Models;
 using BD_oneLove.Tools.DataStorage;
 using BD_oneLove.ViewModels.UsersViewModels;
+using BD_oneLove.Views.UsersViews;
 
 namespace BD_oneLove.Tools.Managers
 {
@@ -20,6 +21,8 @@ namespace BD_oneLove.Tools.Managers
         public static UsersViewModel usersView { get; set; }
         public static TeachersViewModel TeachersView { get; set; }
 
+     
+
         public static Window MyMain { get; set; }
         public static Window MySettings { get; set; }
 
@@ -31,6 +34,15 @@ namespace BD_oneLove.Tools.Managers
         public static IDataStorage DataStorage
         {
             get { return _dataStorage; }
+        }
+
+        public delegate void MyRefresh();
+
+        public static event MyRefresh RefreshYearListEvent;
+        
+        public static void RefreshListYear()
+        {
+            RefreshYearListEvent?.Invoke();
         }
     }
 }

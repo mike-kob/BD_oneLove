@@ -1,6 +1,4 @@
-﻿using BD_oneLove.Tools.Managers;
-using BD_oneLove.Tools.Navigation;
-using BD_oneLove.ViewModels.UsersViewModels;
+﻿using BD_oneLove.ViewModels.UserDialogViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,22 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace BD_oneLove.Views.UsersViews
+namespace BD_oneLove.Views.UserDialogs
 {
     /// <summary>
-    /// Логика взаимодействия для StudentsView.xaml
+    /// Логика взаимодействия для StudentsGradesViewDialog.xaml
     /// </summary>
-    public partial class StudentsView : UserControl, INavigatable
+    public partial class StudentsGradesViewDialog : Window
     {
-        public StudentsView()
+        public StudentsGradesViewDialog()
         {
             InitializeComponent();
-            DataContext = new StudentsViewModel();
-          
-
+            DataContext = new StudentsGradesDialogViewModel();
         }
     }
 }

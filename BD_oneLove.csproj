@@ -71,6 +71,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Excel.15.0.4795.1000\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Office.Interop.Word.15.0.4797.1003\lib\net20\Microsoft.Office.Interop.Word.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -101,7 +109,8 @@
     <Compile Include="Models\Plan.cs" />
     <Compile Include="Models\School.cs" />
     <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\Subject.cs" />
+    <Compile Include="Models\StudentSubject.cs" />
+    <Compile Include="Models\ClassSubject.cs" />
     <Compile Include="Models\Teacher.cs" />
     <Compile Include="Tools\Managers\ExcelManager.cs" />
     <Compile Include="Tools\Managers\ViewNavigationManager.cs" />
@@ -109,6 +118,7 @@
     <Compile Include="ViewModels\UserDialogViewModels\AddClassDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ChooseStudentDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\SearchStudentViewModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\StudentsGradesDialogViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ClassProgressViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\MovementViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddPlanDialogViewModel.cs" />
@@ -151,6 +161,9 @@
     </Compile>
     <Compile Include="Views\UserDialogs\SearchStudentDialog.xaml.cs">
       <DependentUpon>SearchStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserDialogs\StudentsGradesViewDialog.xaml.cs">
+      <DependentUpon>StudentsGradesViewDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UsersViews\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
@@ -274,6 +287,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserDialogs\StudentsGradesViewDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UsersViews\ClassesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -380,6 +397,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="BD_oneLove_TemporaryKey.pfx" />
+    <None Include="packages.config" />
     <None Include="Properties\Parents.xls" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -413,7 +431,6 @@
     <Resource Include="Resources\background.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Tools\DataStorage\PartialDataStorage\" />
     <COMReference Include="Microsoft.Office.Core">
       <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
       <VersionMajor>2</VersionMajor>
@@ -441,6 +458,9 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Tools\DataStorage\PartialDataStorage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
