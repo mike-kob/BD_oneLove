@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Windows.Input;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace BD_oneLove.ViewModels
 {
@@ -15,21 +18,25 @@ namespace BD_oneLove.ViewModels
                 var file = new FileInfo(FileFolderHelper.StorageFilePath);
                 if (file.CreateFolderAndCheckFileExistance())
                 {
-                    string props = File.ReadAllText(FileFolderHelper.StorageFilePath);
-                    string[] splitProps = props.Split(' ');
-                    if (splitProps.Length == 5)
-                    {
-                        CompName = splitProps[0];
-                        ServerName = splitProps[1];
-                        DBName = splitProps[2];
-                        UserName = splitProps[3];
-                        StationManager.DbPassword.Password = splitProps[4];
-                        CompColor = _unmodifiedColor;
-                        ServerColor = _unmodifiedColor;
-                        DBColor = _unmodifiedColor;
-                        UserColor = _unmodifiedColor;
-   
-                    }
+                    
+                    byte[] encoded = File.ReadAllBytes(FileFolderHelper.StorageFilePath);
+                    if(encoded.Length == 0)
+                        return;
+                    byte[] decoded = ProtectedData.Unprotect(encoded, StationManager.SecretKey, 
+                        DataProtectionScope.CurrentUser);
+                    string props = Encoding.Unicode.GetString(decoded);
+                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(props);
+                    CompName = builder.DataSource.Split('\\')[0];
+                    ServerName = builder.DataSource.Split('\\')[1];
+                    DBName = builder.InitialCatalog;
+                    UserName = builder.UserID;
+                    StationManager.DbPassword.Password = builder.Password;
+
+                    CompColor = _unmodifiedColor;
+                    ServerColor = _unmodifiedColor;
+                    DBColor = _unmodifiedColor;
+                    UserColor = _unmodifiedColor;
+
                 }
                 else
                 {
@@ -43,7 +50,6 @@ namespace BD_oneLove.ViewModels
         }
 
         #region Fileds
-
         private string _compName;
         private string _serverName;
         private string _dbName;
@@ -136,20 +142,14 @@ namespace BD_oneLove.ViewModels
                 {
                     file.Create();
                 }
-                using (var stream = new StreamWriter(FileFolderHelper.StorageFilePath))
-                {
-                    stream.Write(CompName);
-                    stream.Write(' ');
-                    stream.Write(ServerName);
-                    stream.Write(' ');
-                    stream.Write(DBName);
-                    stream.Write(' ');
-                    stream.Write(UserName);
-                    stream.Write(' ');
-                    stream.Write(StationManager.DbPassword.Password);
-                }
                 StationManager.ConnectionString = $"Data Source={CompName}\\{ServerName};" +
                                                   $"Initial Catalog={DBName};User ID={UserName};Password={StationManager.DbPassword.Password}";
+
+                byte[] data = Encoding.Unicode.GetBytes(StationManager.ConnectionString);
+                byte[] encoded = ProtectedData.Protect(data, StationManager.SecretKey,
+                    DataProtectionScope.CurrentUser);
+                File.WriteAllBytes(FileFolderHelper.StorageFilePath, encoded);
+
                 CompColor = _unmodifiedColor;
                 ServerColor = _unmodifiedColor;
                 DBColor = _unmodifiedColor;

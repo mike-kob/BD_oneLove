@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
@@ -16,12 +18,12 @@ namespace BD_oneLove.ViewModels
                 var file = new FileInfo(FileFolderHelper.StorageFilePath);
                 if (file.CreateFolderAndCheckFileExistance())
                 {
-                    string props = File.ReadAllText(FileFolderHelper.StorageFilePath);
-                    string[] splitProps = props.Split(' ');
-                    if (splitProps.Length == 5)
+                    byte[] encoded = File.ReadAllBytes(FileFolderHelper.StorageFilePath);
+                    if (encoded.Length != 0)
                     {
-                        StationManager.ConnectionString = $"Data Source={splitProps[0]}\\{splitProps[1]};" +
-                                                          $"Initial Catalog={splitProps[2]};User ID={splitProps[3]};Password={splitProps[4]}";
+                        byte[] decoded = ProtectedData.Unprotect(encoded, StationManager.SecretKey,
+                            DataProtectionScope.CurrentUser);
+                        StationManager.ConnectionString = Encoding.Unicode.GetString(decoded);
                     }
                     else
                     {

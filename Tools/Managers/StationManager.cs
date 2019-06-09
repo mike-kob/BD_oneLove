@@ -39,6 +39,8 @@ namespace BD_oneLove.Tools.Managers
 
         public static event MyRefresh RefreshClassListEvent;
 
+        public static byte[] SecretKey = { 8, 10, 97, 5, 15, 254, 78, 0, 166, 9, 210, 123, 198, 17 };
+
         public static void RefreshClassList()
         {
             RefreshClassListEvent?.Invoke();

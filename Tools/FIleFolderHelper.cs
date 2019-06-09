@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace BD_oneLove.Tools
 {
@@ -15,7 +12,7 @@ namespace BD_oneLove.Tools
             Path.Combine(AppDataPath, "SchoolJournal");
         
         internal static readonly string StorageFilePath =
-            Path.Combine(AppFolderPath, "Storage.schj");
+            Path.Combine(AppFolderPath, "Storage1.schj");
 
         internal static readonly string LogFilePath =
             Path.Combine(AppFolderPath, "Log.txt");
