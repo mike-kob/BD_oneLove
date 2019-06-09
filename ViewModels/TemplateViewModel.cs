@@ -35,7 +35,7 @@ namespace BD_oneLove.ViewModels
         public TemplateViewModel()
         {
             Caption = StationManager.CurrentUser.Username + "\n" +
-                      StationManager.CurrentClass.NumberLetter + "\n" +
+                      StationManager.CurrentClass?.NumberLetter + "\n" +
                       StationManager.CurrentYear;
             Photo = "Resources/dailyplanner.jpg";
             Items = new Dictionary<string, ViewType>();
