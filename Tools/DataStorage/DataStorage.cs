@@ -10,6 +10,96 @@ namespace BD_oneLove.Tools.DataStorage
 {
     internal class DataStorage : IDataStorage
     {
+        public List<StudentSubject> GetMarks(Student s, Class c)
+        {
+            string sql = "WITH student_masrks  AS ( " +
+                         "SELECT grade, subject, mark_type " +
+                         "FROM marks " +
+                         $"WHERE student_id = '{s.Id}' AND class_id='{c.ClassId}') " +
+                         "SELECT subject, [семестр1] as семестр1, [семестр2] as семестр2, [годовая] as годовая " +
+                         "FROM student_masrks " +
+                         "PIVOT " +
+                         "(MIN(grade) " +
+                         "FOR mark_type IN( [семестр1], [семестр2], [годовая]) " +
+                         ") AS num_table; ";
+
+            List<StudentSubject> res = new List<StudentSubject>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        StudentSubject cur = new StudentSubject();
+                        cur.Name = reader.GetString(0);
+                        cur.Term1 = reader.IsDBNull(1) ? "" : reader.GetInt32(1).ToString();
+                        cur.Term2 = reader.IsDBNull(2) ? "" : reader.GetInt32(2).ToString();
+                        cur.Year = reader.IsDBNull(3) ? "" : reader.GetInt32(3).ToString();
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+
+        }
+
+        public List<Class> GetClasses(Student s)
+        {
+            string sql = "SELECT c.class_id, c.number, c.letter, c.st_year " +
+                        $"FROM (classes c INNER JOIN classes_students cs ON c.class_id=cs.class_id) " +
+                        $"WHERE cs.student_id = '{s.Id}'; ";
+
+            List<Class> res = new List<Class>();
+            SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+            try
+            {
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Class cur = new Class(reader.GetInt64(0).ToString());
+                        cur.Number = reader.GetString(1);
+                        cur.Letter = reader.GetString(2);
+                        cur.StYear = reader.GetString(3);
+                        res.Add(cur);
+                    }
+
+                    reader.Close();
+                }
+
+                return res;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+            finally
+            {
+                myConn?.Close();
+            }
+
+            return res;
+        }
 
         public List<Class> GetClassesStatistics(string year, string type)
         {
@@ -122,7 +212,10 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        public List<Subject> GetSubjectsStatistics(Class c, string type)
+        
+
+        public List<ClassSubject> GetSubjectsStatistics(Class c, string type)
+
         {
             string sql = $"WITH Temp AS( " +
                          $"SELECT m.grade, m.student_id, m.subject " +
@@ -132,7 +225,7 @@ namespace BD_oneLove.Tools.DataStorage
                          $"FROM Temp " +
                          $"PIVOT(COUNT(student_id) FOR grade IN([1],[2],[3],[4],[5])) AS NumTable; ";
 
-            List<Subject> res = new List<Subject>();
+            List<ClassSubject> res = new List<ClassSubject>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
@@ -143,7 +236,7 @@ namespace BD_oneLove.Tools.DataStorage
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        Subject cur = new Subject(reader.GetInt32(6), reader.GetInt32(1), reader.GetInt32(2),
+                        ClassSubject cur = new ClassSubject(reader.GetInt32(6), reader.GetInt32(1), reader.GetInt32(2),
                             reader.GetInt32(3), reader.GetInt32(4), reader.GetInt32(5));
                         cur.Name = reader.GetString(0);
                         res.Add(cur);

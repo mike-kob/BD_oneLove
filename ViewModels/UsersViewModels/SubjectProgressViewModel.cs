@@ -23,7 +23,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public  Thickness SmallMargin { get { return _smallMargin; } }
         public Thickness BigMargin { get { return _bigMargin; } }
         public Thickness Margin { get; set; }
-        public List<Subject> Subjects { get; set; }
+        public List<ClassSubject> Subjects { get; set; }
         public List<string> Years { get; set; } = StationManager.DataStorage.GetYears();
         public List<Class> Classes { get; set; }
         public string[] Types { get; set; } = { "семестр1", "семестр2", "годовая" };

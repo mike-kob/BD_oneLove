@@ -102,6 +102,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             OnPropertyChanged("Plans");
             StYears = StationManager.DataStorage.GetYears();
             OnPropertyChanged("StYears");
+            StationManager.RefreshListYear();
         }
     }
 }

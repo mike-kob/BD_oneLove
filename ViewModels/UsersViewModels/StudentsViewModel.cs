@@ -8,6 +8,8 @@ using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
+using Microsoft.Office.Interop.Word;
+using System;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -22,13 +24,16 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             Class temp = new Class();
             temp.NumberLetter = "Все";
             Classes.Add(temp);
-           
+            ViewSource.Filter += new FilterEventHandler(ShowWithFilter);
+
         }
 
         #region Fields
 
         private Class _selectedClass;
         private Student _selectedStudent;
+        public string[] _filters = { "Id", "Тип док.", "Серия", "Номер", "Фамилия", "Имя", "Отчество", "Пол", "Дата рождения", "Алф. книга",
+        "Индекс", "Город", "Улица", "Дом", "Квартира", "Дом. телефон"};
 
 
         private Visibility _isShowId;
@@ -50,9 +55,18 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _editCommand;
         private ICommand _cancelCommand;
         private ICommand _addCommand;
+        private ICommand _filterCommand;
+        private ICommand _createDocumentCommand;
+
+        public event System.Windows.Data.FilterEventHandler Filter;
         #endregion
 
         #region Props
+
+        public int  SelectedIndex
+        {
+            get; set;
+        }
 
         public CollectionViewSource ViewSource
         {
@@ -60,9 +74,27 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         }
         public List<Class> Classes { get; set; }
 
+        public string FilterString { get; set; }
+
+        public IEnumerable<string> Filters
+        {
+            get { return _filters; }
+        }
+
         public string CurrentYear { get; set; } = StationManager.DataStorage.GetCurYear();
 
         public List<Student> ClassStudents { get; set; } = new List<Student>();
+
+        public Student SelectedStudent
+        {
+            get { return _selectedStudent; }
+            set
+            {
+                _selectedStudent = value;
+
+
+            }
+        }
 
         public Class SelectedClass {
             get
@@ -81,8 +113,6 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                     {
                         IEnumerable<Student> temp = StationManager.DataStorage.GetStudents(c);
                         ClassStudents.AddRange(temp);
-
-                       
                     }
                 }
                 else
@@ -90,8 +120,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                      ClassStudents = StationManager.DataStorage.GetStudents(_selectedClass);
                     ViewSource.Source = ClassStudents;
                 }
+                
                 ViewSource.View.Refresh();
-         
+                
 
             }
         }
@@ -104,6 +135,25 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                            new RelayCommand<object>(o => OnPropertyChanged("ClassStudents")));
             }
         }
+
+        public ICommand FilterCommand
+        {
+            get
+            {
+                return _filterCommand ?? (_filterCommand =
+                           new RelayCommand<object>(FilterImplementation));
+            }
+        }
+
+        public ICommand GradesCommand
+        {
+            get
+            {
+                return _cancelCommand ?? (_cancelCommand =
+                           new RelayCommand<object>(GradesImplementation, IsSelected));
+            }
+        }
+
 
         public ICommand RemoveCommand
         {
@@ -151,10 +201,49 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             }
         }
 
-        public Student SelectedStudent
+
+
+        public ICommand CreateDocumentCommand
         {
-            get { return _selectedStudent; }
-            set { _selectedStudent = value; }
+            get
+            {
+                return _createDocumentCommand ?? (_createDocumentCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               Microsoft.Office.Interop.Word.Application winword = new Microsoft.Office.Interop.Word.Application();
+                               winword.Visible = true;
+                               object missing = System.Reflection.Missing.Value;
+                               Microsoft.Office.Interop.Word.Document document = winword.Documents.Add(ref missing, ref missing, ref missing, ref missing);
+
+                               document.Content.SetRange(0, 0);
+
+
+                               Microsoft.Office.Interop.Word.Paragraph para1 = document.Content.Paragraphs.Add(ref missing);
+                               para1.Range.Text = "СПРАВКА";
+                               para1.Range.Bold = 1;
+                               para1.Range.Font.Size = 18;
+                               para1.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                               para1.Range.InsertParagraphAfter();
+
+                               Microsoft.Office.Interop.Word.Paragraph para2 = document.Content.Paragraphs.Add(ref missing);
+                               para2.Range.Font.Size = 14;
+                               para2.Range.Text = "\nДана " + SelectedStudent.SurnameNamePatr + " в том, что она действительно обучается " +
+                               "в Государственном бюджетном образовательном учреждении \"Стахановская специализированная школа I-III ступеней" +
+                               " №10\" в "+SelectedClass.NumberLetter +" классе. ";
+                               para2.Range.Bold = 0;
+                               para2.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+                               para2.Range.InsertParagraphAfter();
+
+
+                               Microsoft.Office.Interop.Word.Paragraph para3 = document.Content.Paragraphs.Add(ref missing);
+                               para3.Range.Text = "Справка дана для предьявления по месту требования";
+                               para3.Alignment = WdParagraphAlignment.wdAlignParagraphRight;
+                               para3.Range.Font.Size = 14;
+                               para3.Range.InsertParagraphAfter();
+
+
+                           }, IsSelected));
+            }
         }
 
 
@@ -280,6 +369,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 OnPropertyChanged("IsShowAlph");
             }
         }
+
         public bool IsShowMobileBool
         {
             get { return _isShowMobile == Visibility.Visible; }
@@ -289,8 +379,56 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 OnPropertyChanged("IsShowMobile");
             }
         }
+
         #endregion
 
+        private void FilterImplementation(object obj)
+        {
+            ViewSource.View.Refresh();
+        }
+
+
+        private void ShowWithFilter(object sender, FilterEventArgs e)
+        {
+            Student st = e.Item as Student;
+            if (st != null && !String.IsNullOrEmpty(FilterString))
+            {
+                switch (SelectedIndex)
+                {
+                    case 0:  e.Accepted = (st.Id == FilterString); break;
+                    case 1: e.Accepted = (st.TypeDoc == FilterString); break;
+                    case 2: e.Accepted = (st.SerDoc == FilterString); break;
+                    case 3: e.Accepted = (st.NumDoc == FilterString); break;
+                    case 4: e.Accepted = (st.Surname == FilterString); break;
+                    case 5: e.Accepted = (st.StName == FilterString); break;
+                    case 6: e.Accepted = (st.Patronymic == FilterString); break;
+                    case 7: e.Accepted = (st.Sex == FilterString); break;
+                    case 8: e.Accepted = (st.Birthday.ToString("dd/MMM/yyyy") == FilterString); break;
+                    case 9: e.Accepted = (st.NumAlphBook == FilterString); break;
+                    case 10: e.Accepted = (st.Index == FilterString); break;
+                    case 11: e.Accepted = (st.City == FilterString); break;
+                    case 12: e.Accepted = (st.Street == FilterString); break;
+                    case 13: e.Accepted = (st.House == FilterString); break;
+                    case 14: e.Accepted = (st.Apart == FilterString); break;
+                    case 15: e.Accepted = (st.HomePhone == FilterString); break;
+                  
+                    
+                }
+            }
+            else
+            {
+                e.Accepted = true;
+            }
+        }
+
+        private void GradesImplementation(object obj)
+        {
+            StationManager.CurrentStudent = SelectedStudent;
+            StationManager.CurrentClass = SelectedClass;
+            StudentsGradesViewDialog win = new StudentsGradesViewDialog();
+            win.Owner = StationManager.MyMain;
+            win.ShowDialog();
+        }
 
         private void RemoveImplementation(object obj)
         {

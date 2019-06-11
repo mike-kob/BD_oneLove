@@ -16,6 +16,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="100"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -26,9 +27,10 @@
         <!--Grid for top buttons-->
         <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
-                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -38,15 +40,25 @@
             <Button Margin="15 5" Command="{Binding AddCommand}">Добавить</Button>
             <Button Margin="15 5" Command="{Binding EditCommand}" Grid.Column="1">Ред-ть</Button>
             <Button Margin="15 5" Command="{Binding RemoveCommand}" Grid.Column="2">Выписать</Button>
-            <ComboBox  Margin="15 5" ItemsSource="{Binding Classes}" DisplayMemberPath="NumberLetter" SelectedItem="{Binding SelectedClass, Mode=TwoWay}" Grid.Row="1" Grid.Column="0"></ComboBox>
+            <Button Margin="15 5" Command="{Binding GradesCommand}" Grid.Row ="1" Grid.Column="1">Табель</Button>
+            <TextBlock Margin="15 0" Grid.Row="1" >Класс:</TextBlock>
+            <ComboBox  Margin="15 20 15 5" ItemsSource="{Binding Classes}" DisplayMemberPath="NumberLetter" SelectedItem="{Binding SelectedClass, Mode=TwoWay}" Grid.Row="1" Grid.Column="0"></ComboBox>
+
+            <TextBlock Margin="15 0" Grid.Column="3" >Фильтр: </TextBlock>
+            <ComboBox  Margin="15 20 15 5" ItemsSource="{Binding Filters}" SelectedIndex="{Binding SelectedIndex}" Grid.Column="3"></ComboBox>
+            <TextBox  Margin="15 5"  Grid.Column="4" Text="{Binding FilterString, Mode=TwoWay}"></TextBox>
+            <Button Command="{Binding FilterCommand}" Margin="15 5" Grid.Column="4" Grid.Row="1">Искать</Button>
+
         </Grid>
         <!--  -->
         <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
                            Grid.Column="0" Grid.Row="1" 
+                           Grid.RowSpan="2"
                            Margin="20"
                            AutoGenerateColumns="False"
                            SelectedItem="{Binding SelectedStudent, Mode=TwoWay}"
                            CanUserAddRows="False"
+                           Name="StudentsGrid"
                            >
             <controls:DataGrid.Columns>
                 <controls:DataGridTextColumn Header="Id" 
@@ -130,6 +142,7 @@
             <CheckBox Content="ГПД" IsChecked="{Binding IsShowGPDBool}"></CheckBox>
             <CheckBox Content="Допуск к екзамену" IsChecked="{Binding IsShowExamBool}"></CheckBox>
         </ListBox>
+        <Button Grid.Column="1" Grid.Row="2" Margin="15 5" Command="{Binding CreateDocumentCommand}">Справка</Button>
 
     </Grid>
 

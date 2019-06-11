@@ -2,8 +2,10 @@
 using BD_oneLove.Models;
 using BD_oneLove.Tools.DataStorage;
 using BD_oneLove.ViewModels.UsersViewModels;
+using BD_oneLove.Views.UsersViews;
 using Microsoft.Office.Interop.Excel;
 using Window = System.Windows.Window;
+
 
 namespace BD_oneLove.Tools.Managers
 {
@@ -22,6 +24,8 @@ namespace BD_oneLove.Tools.Managers
         public static UsersViewModel usersView { get; set; }
         public static TeachersViewModel TeachersView { get; set; }
 
+     
+
         public static Window MyMain { get; set; }
         public static Window MySettings { get; set; }
 
@@ -37,6 +41,14 @@ namespace BD_oneLove.Tools.Managers
 
         public delegate void MyRefresh();
 
+
+        public static event MyRefresh RefreshYearListEvent;
+
+        public static void RefreshListYear()
+        {
+            RefreshYearListEvent?.Invoke();
+        }
+
         public static event MyRefresh RefreshClassListEvent;
 
         public static byte[] SecretKey = { 8, 10, 97, 5, 15, 254, 78, 0, 166, 9, 210, 123, 198, 17 };
@@ -44,6 +56,7 @@ namespace BD_oneLove.Tools.Managers
         public static void RefreshClassList()
         {
             RefreshClassListEvent?.Invoke();
+
         }
     }
 }
