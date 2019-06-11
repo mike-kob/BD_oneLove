@@ -43,10 +43,11 @@ namespace BD_oneLove.Tools.Managers
 
 
         public static event MyRefresh RefreshYearListEvent;
-        
+
         public static void RefreshListYear()
         {
             RefreshYearListEvent?.Invoke();
+        }
 
         public static event MyRefresh RefreshClassListEvent;
 

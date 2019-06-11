@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using MessageBox = System.Windows.Forms.MessageBox;
 using Microsoft.Office.Interop.Word;
-
+using System;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
@@ -403,7 +403,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                     case 5: e.Accepted = (st.StName == FilterString); break;
                     case 6: e.Accepted = (st.Patronymic == FilterString); break;
                     case 7: e.Accepted = (st.Sex == FilterString); break;
-                    case 8: e.Accepted = (st.BirthdayString == FilterString); break;
+                    case 8: e.Accepted = (st.Birthday.ToString("dd/MMM/yyyy") == FilterString); break;
                     case 9: e.Accepted = (st.NumAlphBook == FilterString); break;
                     case 10: e.Accepted = (st.Index == FilterString); break;
                     case 11: e.Accepted = (st.City == FilterString); break;
