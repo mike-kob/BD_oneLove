@@ -10,10 +10,6 @@ namespace BD_oneLove.ViewModels
 {
     class TemplateViewModel: BaseViewModel
     {
-        private string _name = StationManager.CurrentUser.Username; // change and get from station manager
-        private string _position = StationManager.CurrentUser.AccessType;
-        private string _photo = "Resources/dailyplanner.jpg";
-
         private string _selectedView;
 
         private ICommand _logoutCommand;
@@ -38,18 +34,17 @@ namespace BD_oneLove.ViewModels
 
         public TemplateViewModel()
         {
-            //  Tabs = new ObservableCollection<TabItem>();
-            //  Tabs.Add(new TabItem { Header = "One", Content = "One's content" });
-            //  Tabs.Add(new TabItem { Header = "Two", Content = "Two's content" });
-            //switch for items
-
+            Caption = StationManager.CurrentUser.Username + "\n" +
+                      StationManager.CurrentClass?.NumberLetter + "\n" +
+                      StationManager.CurrentYear;
+            Photo = "Resources/dailyplanner.jpg";
             Items = new Dictionary<string, ViewType>();
             addItems();
         }
 
         private void addItems()
         {
-            switch (_position)
+            switch (StationManager.CurrentUser.AccessType)
             {
                 case "Директор":
                     Items.Add("Учителя", ViewType.TeachersView);
@@ -63,6 +58,7 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Выставление оценок", ViewType.PutMarksView);
                     Items.Add("Социальный паспорт", ViewType.SocialPassportView);
                     Items.Add("Выбывшие/прибывшие", ViewType.MovementView);
+                    Items.Add("Рейтинг класса", ViewType.ClassProgressView);
                     break;
                 case "Заместитель директора":
                     Items.Add("Ученики", ViewType.StudentsView);
@@ -77,18 +73,8 @@ namespace BD_oneLove.ViewModels
             }
         }
 
-        public string Caption
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-
-        public string Photo
-        {
-            get { return _photo; }
-            set { _photo = value; }
-        }
+        public string Caption { get; set; }
+        public string Photo { get; set; }
 
         public string SelectedView
         {

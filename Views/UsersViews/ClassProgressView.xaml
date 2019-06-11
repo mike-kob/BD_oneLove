@@ -29,13 +29,13 @@
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock Margin="15 0 0 0" Text="Учебный год: " VerticalAlignment="Center"></TextBlock>
-            <TextBlock Margin="15 0 0 0" Text="Класс: " Grid.Column="1" VerticalAlignment="Center"></TextBlock>
-            <TextBlock Margin="15 0 0 0" Text="Тип: " Grid.Column="2" VerticalAlignment="Center"></TextBlock>
+            <TextBlock IsEnabled="{Binding IsAdmin}" Margin="15 0 0 0" Text="Учебный год: " VerticalAlignment="Center"></TextBlock>
+            <TextBlock IsEnabled="{Binding IsAdmin}" Margin="15 0 0 0" Text="Класс: " Grid.Column="1" VerticalAlignment="Center"></TextBlock>
+            <TextBlock IsEnabled="{Binding IsAdmin}" Margin="15 0 0 0" Text="Тип: " Grid.Column="2" VerticalAlignment="Center"></TextBlock>
 
-            <ComboBox Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Years}"
+            <ComboBox IsEnabled="{Binding IsAdmin}" Margin="15 5" Grid.Column="0" Grid.Row="1" ItemsSource="{Binding Years}" 
                       SelectedItem="{Binding SelectedYear}"></ComboBox>
-            <ComboBox IsEnabled="{Binding IsYearSel}" Margin="15 5" Grid.Column="1" DisplayMemberPath="NumberLetter" Grid.Row="1" ItemsSource="{Binding Classes}"
+            <ComboBox IsEnabled="{Binding IsAdmin}" Margin="15 5" Grid.Column="1" DisplayMemberPath="NumberLetter" Grid.Row="1" ItemsSource="{Binding Classes}"
                       SelectedItem="{Binding SelectedClass}"></ComboBox>
             <ComboBox ItemsSource="{Binding Types}" Margin="15 5" Grid.Column="2" Grid.Row="1"
                       SelectedItem="{Binding SelectedType}">
@@ -111,6 +111,7 @@
                 <controls:DataGridTextColumn Width ="100" Header="Средний балл"  
                                    Binding="{Binding MiddleMark, Mode=OneWay}"/>
                 <controls:DataGridTextColumn Width="100"  Header="Место в рейтинге" 
+                                             FontSize="16" FontWeight="SemiBold"
                                    Binding="{Binding Number, Mode=OneWay}"/>
 
 

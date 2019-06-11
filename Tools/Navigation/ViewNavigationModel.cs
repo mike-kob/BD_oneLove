@@ -50,7 +50,9 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.ProgressView:
                     ViewsDictionary.Add(viewType, new ProgressView());
                     break;
-                
+                case ViewType.ClassProgressView:
+                    ViewsDictionary.Add(viewType, new ClassProgressView());
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(viewType), viewType, null);
             }

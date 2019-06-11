@@ -22,7 +22,8 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="30"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="35"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
         <ComboBox Grid.Column="1" Grid.Row="0" Margin="5" ItemsSource="{Binding StYears}" 
                   SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
@@ -44,8 +45,10 @@
                <RowDefinition Height="30"></RowDefinition>
                <RowDefinition Height="30"></RowDefinition>
                <RowDefinition Height="30"></RowDefinition>
-               <RowDefinition Height="30"></RowDefinition>
                <RowDefinition Height="*"></RowDefinition>
+               <RowDefinition Height="30"></RowDefinition>
+               <RowDefinition Height="10"></RowDefinition>
+               <RowDefinition Height="40"></RowDefinition>
            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -53,21 +56,30 @@
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Предмет:" VerticalAlignment="Center" 
-                       FontSize="16" Margin="5"></TextBlock>
-            <ComboBox Grid.Column="1" Margin="5" ItemsSource="{Binding SubjectsViewSource.View}" 
-                      SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"/>
-            <Button Content="Добваить" Grid.Column="2" Grid.Row="0" Margin="5"
-                    Command="{Binding AddCommand}"/>
-            <Button Content="Удалить" Grid.Column="3" Grid.Row="0" Margin="5"
-                    Command="{Binding RemoveCommand}"/>
+            
             <TextBlock Text="Тип:" VerticalAlignment="Center" 
-                       Grid.Column="0" Grid.Row="2"
+                       Grid.Column="0" Grid.Row="0"
                        FontSize="16" Margin="5"></TextBlock>
-                <ComboBox Grid.Column="1" Grid.Row="2" Margin="5" ItemsSource="{Binding Types}" 
+                <ComboBox Grid.Column="1" Grid.Row="0" Margin="5" 
+                          ItemsSource="{Binding Types}" 
                       SelectedItem="{Binding SelectedType, Mode=TwoWay}"/>
 
-</Grid>
+            <TextBlock Text="Список предметов, которые читаются в классе:" VerticalAlignment="Center" 
+                       Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="4"
+                       FontSize="16" Margin="5"></TextBlock>
+           <ListBox Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="4"
+                    Width="250" Margin="10" HorizontalAlignment="Left"
+                    ItemsSource="{Binding SubjectsViewSource.View}"
+                    SelectedItem="{Binding SelectedSubject, Mode=TwoWay}"
+                    FontSize="16" FontWeight="SemiBold"/>
+            <Button Content="Добваить" Grid.Column="2" Grid.Row="4" Margin="5"
+                    Command="{Binding AddCommand}"/>
+            <Button Content="Удалить" Grid.Column="3" Grid.Row="4" Margin="5"
+                    Command="{Binding RemoveCommand}"/>
+            <Button Command="{Binding SaveCommand}"
+                        Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="4" Width="300" 
+                        Margin="5" Content="Сохранить"/>
+        </Grid>
         <controls:DataGrid ItemsSource="{Binding ViewSource.View}"
                            Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="7"
                            Margin="5 20" Width="300"
@@ -86,8 +98,11 @@
 
             </controls:DataGrid.Columns>
         </controls:DataGrid>
-        <Button Command="{Binding SaveCommand}"
+        <Button Command="{Binding ImportCommand}"
+                Grid.Column="8" Grid.Row="2"
+                Margin="5" Content="Импортировать"/>
+        <Button Command="{Binding ImportFileCommand}"
                 Grid.Column="8" Grid.Row="3"
-                Margin="5" Content="Сохранить"/>
+                Margin="5" Content="Файл для импорта"/>
     </Grid>
 </UserControl>

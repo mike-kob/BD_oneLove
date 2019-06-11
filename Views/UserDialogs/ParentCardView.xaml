@@ -134,7 +134,7 @@
                  Margin="5" FontWeight="SemiBold" FontSize="16" MaxLength="30" />
         <Button Grid.Column="1" Grid.Row="12"
                 Width="150" Margin="5" HorizontalAlignment="Left"
-                Content="Моб. телефоны" />
+                Content="Моб. телефоны" Command="{Binding MobileCommand}" />
 
         <Button Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=ParentCardWindow}"
                 Content="Сохранить" Grid.Column="1" Grid.Row="17" Margin="5" />

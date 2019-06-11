@@ -82,6 +82,7 @@
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
@@ -102,6 +103,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\IPerson.cs" />
     <Compile Include="Models\Mark.cs" />
     <Compile Include="Models\Movement.cs" />
     <Compile Include="Models\Parent.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Tools\Navigation\ViewNavigationModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\AddClassDialogViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\ChooseStudentDialogViewModel.cs" />
+    <Compile Include="ViewModels\UserDialogViewModels\MobileNumberViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\SearchStudentViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\StudentsGradesDialogViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\ClassProgressViewModel.cs" />
@@ -155,6 +158,9 @@
     </Compile>
     <Compile Include="Views\UserDialogs\ChooseStudentDialog.xaml.cs">
       <DependentUpon>ChooseStudentDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UserDialogs\MobileNumberDialog.xaml.cs">
+      <DependentUpon>MobileNumberDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserDialogs\SearchParentDialog.xaml.cs">
       <DependentUpon>SearchParentDialog.xaml</DependentUpon>
@@ -279,6 +285,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\UserDialogs\MobileNumberDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UserDialogs\SearchParentDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -398,6 +408,7 @@
     <None Include="app.config" />
     <None Include="BD_oneLove_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\Marks.xls" />
     <None Include="Properties\Parents.xls" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

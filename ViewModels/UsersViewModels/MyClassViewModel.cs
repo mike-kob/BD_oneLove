@@ -42,6 +42,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private Visibility _isShowExam;
         private Visibility _isShowGPD;
         private Visibility _isShowPhone;
+        private Visibility _isShowMobile;
 
         private ICommand _saveCommand;
         private ICommand _removeCommand;
@@ -121,15 +122,21 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                                w.Filter = "Excel Worksheets|*.xls;*.xlsx";
                                w.ShowDialog();
                                List<Student> l = ExcelManager.LoadClassStudents(w.FileName, StationManager.CurrentClass);
+                               int count = 0;
                                foreach (Student student in l)
                                {
-                                   StationManager.DataStorage.AssignStudentToClass(student, _myClass);
-                                   ClassStudents.Add(student);
+                                   if (!String.IsNullOrEmpty(student.Id))
+                                   {
+                                       StationManager.DataStorage.AssignStudentToClass(student, _myClass);
+                                       ClassStudents.Add(student);
+                                       count++;
+                                   }
                                }
 
                                ViewSource.View.Refresh();
+                               StationManager.RefreshClassList();
                                OnPropertyChanged("ClassStudents");
-                               MessageBox.Show($"Импортировано учеников: {l.Count}",
+                               MessageBox.Show($"Импортировано учеников: {count}",
                                    "Импорт", MessageBoxButtons.OK,
                                    MessageBoxIcon.Information);
                            }));
@@ -209,7 +216,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         }
 
 
-
+        #region VisibilityColumns
 
         public Visibility IsShowId => _isShowId;
         public Visibility IsShowName => _isShowName;
@@ -223,6 +230,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public Visibility IsShowGPD => _isShowGPD;
         public Visibility IsShowPhone => _isShowPhone;
         public Visibility IsShowDoc => _isShowDoc;
+        public Visibility IsShowMobile => _isShowMobile;
 
         public bool IsShowIdBool
         {
@@ -332,6 +340,18 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 OnPropertyChanged("IsShowAlph");
             }
         }
+        public bool IsShowMobileBool
+        {
+            get { return _isShowMobile == Visibility.Visible; }
+            set
+            {
+                _isShowMobile = value ? Visibility.Visible : Visibility.Hidden;
+                OnPropertyChanged("IsShowMobile");
+            }
+        }
+
+        #endregion
+
         #endregion
 
 
@@ -347,6 +367,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 ViewSource.Source = ClassStudents;
                 ViewSource.View.Refresh();
                 OnPropertyChanged("ClassStudents");
+                StationManager.RefreshClassList();
             }
         }
 
@@ -364,6 +385,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             OnPropertyChanged("ClassStudents");
             SelectedStudent = s;
             OnPropertyChanged("SelectedStudent");
+            StationManager.RefreshClassList();
         }
 
     }

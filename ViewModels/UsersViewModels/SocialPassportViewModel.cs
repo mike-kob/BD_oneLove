@@ -21,6 +21,14 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             ViewSource = new CollectionViewSource();
             CommentsViewSource = new CollectionViewSource();
             ViewSource.Source = _students;
+
+            StationManager.RefreshClassListEvent += () =>
+            {
+                _students = StationManager.DataStorage.GetStudents(StationManager.CurrentClass);
+                ViewSource.Source = _students;
+                ViewSource.View.Refresh();
+                OnPropertyChanged("ViewSource");
+            };
         }
 
         #region Fields

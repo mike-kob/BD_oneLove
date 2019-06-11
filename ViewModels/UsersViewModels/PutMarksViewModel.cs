@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using BD_oneLove.Models;
+using BD_oneLove.Properties;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using MessageBox = System.Windows.Forms.MessageBox;
@@ -18,7 +22,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 IsAdminVisible = Visibility.Hidden;
                 CurClass = StationManager.CurrentClass;
-                Subjects = StationManager.DataStorage.GetSubjects(CurClass, SelectedType);
+                Subjects = StationManager.DataStorage.GetSubjects(CurClass);
                 ViewSource.Source = MarksDict;
                 SubjectsViewSource.Source = Subjects;
             }
@@ -29,7 +33,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
             if (SelectedYear != null)
                 Classes = StationManager.DataStorage.GetClasses(SelectedYear);
-         
+
+            StationManager.RefreshClassListEvent += () =>
+            {
+                CurClass = StationManager.CurrentClass;
+                RefreshDict();
+            };
         }
 
         #region Fields
@@ -44,6 +53,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         private ICommand _addCommand;
         private ICommand _removeCommand;
         private ICommand _saveCommand;
+        private ICommand _importCommand;
+        private ICommand _importFileCommand;
 
         #endregion
 
@@ -103,6 +114,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 RefreshDict();
             }
         }
+
+        public string SelectedToRemoveSubject { get; set; }
+
         public string SelectedType
         {
             get { return _selectedType; }
@@ -132,14 +146,24 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _addCommand ?? (_addCommand =
                            new RelayCommand<object>(o =>
                            {
+                               string t = SelectedSubject;
                                string s = Microsoft.VisualBasic.Interaction.InputBox("Введите предмет:", "Предмет", "");
                                s = s.Trim().ToUpper();
-                               Subjects.Add(s);
-                               SubjectsViewSource.View.Refresh();
-                               OnPropertyChanged("Subjects");
-                               OnPropertyChanged("SubjectsViewSource");
+                               if (!StationManager.DataStorage.AddSubject(CurClass, s))
+                               {
+                                   MessageBox.Show("Не возможно добавить предмет. Скорее всего он уже добавлен.",
+                                       "Ошибка добавления",
+                                       MessageBoxButtons.OK, MessageBoxIcon.Error);
+                               }
+                               else
+                               {
+                                   Subjects.Add(s);
+                                   SubjectsViewSource.View.Refresh();
+                                   OnPropertyChanged("Subjects");
+                                   OnPropertyChanged("SubjectsViewSource");
+                               }
 
-                               SelectedSubject = s;
+                               SelectedSubject = t;
                                OnPropertyChanged("SelectedSubject");
                                CreateDict(s);
                            }));
@@ -153,6 +177,34 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _saveCommand ?? (_saveCommand =
                            new RelayCommand<object>(o =>
                            {
+                               DateTime compare;
+                               if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+                               {
+                                   Plan p = StationManager.DataStorage.GetCurrentPlan(StationManager.CurrentYear);
+                                   switch (_selectedType)
+                                   {
+                                       case "семестр1":
+                                           compare = p.DateTerm1;
+                                           break;
+                                       case "семестр2":
+                                           compare = p.DateTerm2;
+                                           break;
+                                       default:
+                                           compare = p.DateYear;
+                                           break;
+                                   }
+
+
+                                   if (DateTime.Now > compare)
+                                   {
+                                       MessageBox.Show(
+                                           "Похоже, что срок выставления оценок в этом семесте закончился, " +
+                                           "обратитесь к администратору.", "Ошибка ввода", MessageBoxButtons.OK,
+                                           MessageBoxIcon.Error);
+                                       return;
+                                   }
+                               }
+
                                StationManager.DataStorage.SaveMarks(MarksDict);
                                OnPropertyChanged("Marks");
                            }));
@@ -166,19 +218,72 @@ namespace BD_oneLove.ViewModels.UsersViewModels
                 return _removeCommand ?? (_removeCommand =
                            new RelayCommand<object>(o =>
                            {
-                               if (StationManager.DataStorage.RemoveMarks(MarksDict))
+                               var res = MessageBox.Show(
+                                   $"Вы действительно хотите удалить '{SelectedSubject}', '{SelectedType}' со всеми оценками?",
+                                   "Удаление оценок", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+                               if (res == DialogResult.Yes)
                                {
-                                   var res = MessageBox.Show(
-                                       $"Вы действительно хотите удалить '{SelectedSubject}', '{SelectedType}' со всеми оценками?",
-                                       "Удаление оценок", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                                   if (res == DialogResult.Yes)
+                                   StationManager.DataStorage.RemoveMarks(MarksDict);
+                                   Subjects.Remove(SelectedSubject);
+                                   SubjectsViewSource.View.Refresh();
+                                   OnPropertyChanged("SubjectsViewSource");
+                                   SelectedSubject = null;
+                                   OnPropertyChanged("SelectedSubject");
+                                   StationManager.DataStorage.RemoveSubject(CurClass, SelectedSubject);
+                               }
+                           }, o => SelectedToRemoveSubject != null));
+            }
+        }
+
+        public ICommand ImportCommand
+        {
+            get
+            {
+                return _importCommand ?? (_importCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               OpenFileDialog w = new OpenFileDialog();
+                               w.Filter = "Excel Worksheets|*.xls;*.xlsx";
+                               w.ShowDialog();
+                               if (!String.IsNullOrEmpty(w.FileName))
+                               {
+                                   List<Mark> marks = ExcelManager.LoadMarks(w.FileName, CurClass);
+                                   StationManager.DataStorage.SaveMarks(marks);
+                                   int count = marks.Count(m => !String.IsNullOrEmpty(m.Id));
+                                   List<string> l = marks.Select(m => m.Subject).Distinct().ToList();
+                                   foreach (string s in l)
                                    {
-                                       Subjects.Remove(SelectedSubject);
-                                       SubjectsViewSource.View.Refresh();
-                                       OnPropertyChanged("SubjectsViewSource");
-                                       SelectedSubject = null;
-                                       OnPropertyChanged("SelectedSubject");
+                                       StationManager.DataStorage.AddSubject(CurClass, s);
                                    }
+
+                                   MessageBox.Show($"Импортировано {count} оценок", "Иморт", MessageBoxButtons.OK,
+                                       MessageBoxIcon.Information);
+                                   Subjects = StationManager.DataStorage.GetSubjects(CurClass);
+                                   SubjectsViewSource.Source = Subjects;
+                               }
+                           }));
+            }
+        }
+
+        public ICommand ImportFileCommand
+        {
+            get
+            {
+                return _importFileCommand ?? (_importFileCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               SaveFileDialog w = new SaveFileDialog();
+                               w.Title = "Save file for import";
+                               w.Filter = "Excel Worksheets|*.xls";
+                               var res = w.ShowDialog();
+
+                               if (res != DialogResult.Cancel && w.FileName != null)
+                               {
+                                   if (File.Exists(w.FileName))
+                                       File.Delete(w.FileName);
+
+                                   File.WriteAllBytes(w.FileName, Resources.Marks);
+                                   ExcelManager.FillMarks(w.FileName, StudentsDict.Values.ToList(), Subjects, CurClass);
                                }
                            }));
             }
