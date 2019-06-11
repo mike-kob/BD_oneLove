@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using BD_oneLove.Tools;
 
 namespace BD_oneLove.Models
 {
-    internal class Parent : BaseViewModel
+    internal class Parent : BaseViewModel, IPerson
     {
         #region Props
 
@@ -34,6 +35,12 @@ namespace BD_oneLove.Models
         public string SurnameNamePatr
         {
             get { return Surname + " " + PName + " " + Patronymic; }
+        }
+
+        public List<string> MobileNumbers { get; set; } = new List<string>();
+        public string MobileString
+        {
+            get { return string.Join(", ", MobileNumbers.ToArray()); }
         }
         #endregion
     }

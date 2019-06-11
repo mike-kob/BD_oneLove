@@ -155,7 +155,7 @@
 
             <TextBox Text="{Binding CurStudent.HomePhone}"
                      Grid.Column="0" Grid.Row="14" Width="100" HorizontalAlignment="Left" Margin="5 0" FontWeight="SemiBold" FontSize="16"/>
-            <Button Command="{Binding MobilesCommand}"
+            <Button Command="{Binding MobileCommand}"
                     Grid.Column="1" Grid.Row="14"
                     HorizontalAlignment="Left"
                     Margin="5 0" Width="100" Content="Моб. телефоны" />

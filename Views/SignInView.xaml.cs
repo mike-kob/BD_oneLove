@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Input;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Tools.Navigation;
 using BD_oneLove.ViewModels;

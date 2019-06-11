@@ -1,10 +1,8 @@
 ﻿using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
@@ -28,6 +26,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public List<Class> Classes { get; set; }
         public string[] Types { get; set; } = { "семестр1", "семестр2", "годовая" };
 
+        public bool IsAdmin { get; set; }
 
         public bool IsYearSel
         {
@@ -86,6 +85,19 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             _bigMargin = new Thickness(26, 0, 26, 0);
             _smallMargin = new Thickness(20, 0, 20, 0);
             Margin = SmallMargin;
+
+            if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+            {
+                IsAdmin = false;
+                SelectedClass = Classes.First(c=>c.ClassId == StationManager.CurrentClass.ClassId);
+            }
+            else
+            {
+                IsAdmin = true;
+            }
+            
+            
+
         }
 
 

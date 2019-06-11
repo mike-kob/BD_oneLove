@@ -65,7 +65,11 @@
                 <controls:DataGridTextColumn Header="Дата рождения"
                                              Binding="{Binding BirthdayString, Mode=OneWay}" IsReadOnly="True"
                                              Visibility="{Binding DataContext.IsShowBirthday, Source={StaticResource ProxyElement}}"/>
-               
+                <controls:DataGridTextColumn Header="Моб. тел"
+                                             Binding="{Binding MobileString, Mode=OneWay}" IsReadOnly="True"
+                                             Width="80"
+                                             Visibility="{Binding DataContext.IsShowMobile, Source={StaticResource ProxyElement}}"/>
+
                 <controls:DataGridTextColumn Header="Индекс"
                                              Binding="{Binding Index}"
                                              Visibility="{Binding DataContext.IsShowAddr, Source={StaticResource ProxyElement}}"/>
@@ -113,6 +117,7 @@
             <CheckBox Content="Отчество" IsChecked="{Binding IsShowPatrBool}"></CheckBox>
             <CheckBox Content="Дата рождения" IsChecked="{Binding IsShowBirthdayBool}"></CheckBox>
             <CheckBox Content="Пол" IsChecked="{Binding IsShowSexBool}"></CheckBox>
+            <CheckBox Content="Моб. телефоны" IsChecked="{Binding IsShowMobileBool}"></CheckBox>
             <CheckBox Content="Адрес" IsChecked="{Binding IsShowAddrBool}"></CheckBox>
             <CheckBox Content="Дом. телефон" IsChecked="{Binding IsShowHomePhoneBool}"></CheckBox>
             <CheckBox Content="Работа" IsChecked="{Binding IsShowWorkBool}"></CheckBox>

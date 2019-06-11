@@ -61,7 +61,7 @@
                 <controls:DataGridTextColumn Header="Фамилия" IsReadOnly="True"
                                              Binding="{Binding Surname}" />
                 <controls:DataGridTextColumn Header="Имя" IsReadOnly="True"
-                                             Binding="{Binding PName}" />
+                                             Binding="{Binding StName}" />
                 <controls:DataGridTextColumn Header="Отчество" IsReadOnly="True"
                                              Binding="{Binding Patronymic}" />
                 <controls:DataGridTextColumn Header="Пол" IsReadOnly="True"

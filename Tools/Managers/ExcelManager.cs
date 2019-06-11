@@ -44,6 +44,10 @@ namespace BD_oneLove.Tools.Managers
                         
                         //TODO edit window
                     }
+                    else if (cur.MobileNumbers.Count != 0)
+                    {
+                        StationManager.DataStorage.AddMobileNumber(answ, cur.MobileNumbers[0]);
+                    }
                     
 
                     Parent mother = LoadParent(range, i, 1);
@@ -75,6 +79,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(mother);
+                            if (mother.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(mother, mother.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(mother.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -116,6 +124,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(father);
+                            if (father.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(father, father.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(father.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -164,6 +176,10 @@ namespace BD_oneLove.Tools.Managers
                         else
                         {
                             StationManager.DataStorage.SaveParent(trustee1);
+                            if (trustee1.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(trustee1, trustee1.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(trustee1.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -186,6 +202,7 @@ namespace BD_oneLove.Tools.Managers
                     if (trustee2 != null)
                     {
                         Parent parentAnsw = StationManager.DataStorage.ParentExists(trustee2);
+                        
                         if (parentAnsw != null)
                         {
                             var dialogRes = MessageBox.Show(
@@ -216,7 +233,11 @@ namespace BD_oneLove.Tools.Managers
                         }
                         else
                         {
-                            StationManager.DataStorage.SaveParent(trustee1);
+                            StationManager.DataStorage.SaveParent(trustee2);
+                            if (trustee2.MobileNumbers.Count != 0)
+                            {
+                                StationManager.DataStorage.AddMobileNumber(trustee2, trustee2.MobileNumbers[0]);
+                            }
                             if (!String.IsNullOrEmpty(trustee2.Id) && !String.IsNullOrEmpty(cur.Id))
                             {
                                 ParentChild pc = new ParentChild();
@@ -304,7 +325,9 @@ namespace BD_oneLove.Tools.Managers
             if (val != null)
                 cur.Apart = val.ToString();
 
-            //TODO read mobile number
+            val = range.Range["P" + row]?.Value2;
+            if (val != null)
+                cur.MobileNumbers.Add(val.ToString());
 
             val = range.Range["Q" + row]?.Value2;
             if (val != null)
@@ -367,8 +390,9 @@ namespace BD_oneLove.Tools.Managers
             val = range.Range["F" + row]?.Value2;
             if (val != null)
                 cur.HomePhone = val.ToString();
-            
-            //TODO read mobile number
+            val = range.Range["G" + row]?.Value2;
+            if (val != null)
+                cur.MobileNumbers.Add(val.ToString());
 
             val = range.Range["H" + row]?.Value2;
             if (val != null)
@@ -484,6 +508,118 @@ namespace BD_oneLove.Tools.Managers
             {
                 book?.Close();
             }
+            return res;
+        }
+
+        public static void FillMarks(string file, List<Student> students, List<string> subjects, Class c)
+        {
+            try
+            {
+                Excel.Application app = new Excel.Application();
+                var book = app.Workbooks.Open(file);
+                for (int s = 1; s <= 3; s++)
+                {
+                    Excel.Worksheet worksheet = (Excel.Worksheet) book.Worksheets.Item[s];
+                    var range = worksheet.UsedRange;
+                    range.Cells[1, 9] = c.NumberLetter;
+                    //writing students
+                    for (int i = 0; i < students.Count; i++)
+                    {
+                        range.Cells[i + 4, 1] = students[i].Id;
+                        range.Cells[i + 4, 2] = students[i].SurnameNamePatr;
+                    }
+
+                    //writing subjects
+                    for (int i = 0; i < subjects.Count; i++)
+                    {
+                        range.Cells[3, i + 3] = subjects[i];
+                    }
+                }
+
+                book.Save();
+                book.Close();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Произошла ошибка импорта. " + e.Message, "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        public static List<Mark> LoadMarks(string file, Class c)
+        {
+
+            List<Mark> res = new List<Mark>();
+            Excel.Workbook book = null;
+            try
+            {
+                Excel.Application app = new Excel.Application();
+                book = app.Workbooks.Open(file);
+                for (int s = 1; s <= 3; s++)
+                {
+                    Excel.Worksheet worksheet = (Excel.Worksheet) book.Worksheets.Item[s];
+                    var range = worksheet.UsedRange;
+
+                    for (int i = 4;; i++)
+                    {
+                        var id = range.Range["A" + i]?.Value2;
+                        var FIO = range.Range["B" + i]?.Value2;
+                        if (id == null || String.IsNullOrEmpty(FIO?.ToString()))
+                            break;
+
+                        for (int j = 3;; j++)
+                        {
+                            var subject = ((System.Object[,]) range.Value)[3, j];
+                            var grade = ((System.Object[,]) range.Value)[i, j];
+
+                            if (grade == null || subject == null)
+                            {
+                                break;
+                            }
+
+                            Mark m = new Mark();
+                            m.Subject = subject.ToString();
+                            m.ClassId = c.ClassId;
+                            m.Grade = grade.ToString();
+                            m.MarkDate = DateTime.Now;
+                            switch (s)
+                            {
+                                case 1:
+                                    m.MarkType = "семестр1";
+                                    break;
+                                case 2:
+                                    m.MarkType = "семестр2";
+                                    break;
+                                case 3:
+                                    m.MarkType = "годовая";
+                                    break;
+                            }
+
+                            m.StudentId = id.ToString();
+                            string[] arr = FIO.ToString().Split(' ');
+                            if (arr.Length == 3 || arr.Length == 2)
+                            {
+                                m.StudentSurname = arr[0];
+                                m.StudentName = arr[1];
+                            }
+
+                            res.Add(m);
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Произошла ошибка импорта. " + e.Message, "Error", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return null;
+            }
+            finally
+            {
+                book?.Close();
+            }
+
             return res;
         }
 

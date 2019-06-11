@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Policy;
 using BD_oneLove.Models;
 
 namespace BD_oneLove.Tools.DataStorage
@@ -13,6 +14,7 @@ namespace BD_oneLove.Tools.DataStorage
         //--------------Plans-----------------
 
         List<Plan> GetPlans();
+        Plan GetCurrentPlan(string year);
         bool AddPlan(Plan p);
         bool UpdatePlan(Plan p, Plan oldP);
         bool DeletePlan(Plan p);
@@ -57,13 +59,22 @@ namespace BD_oneLove.Tools.DataStorage
         bool SaveParentChild(ParentChild pc);
         bool RemoveParentChild(ParentChild pc);
 
+        //--------------Mobile phones----------
+        List<string> GetMobileNumbers(Parent p);
+        List<string> GetMobileNumbers(Student s);
+
+        bool AddMobileNumber(Parent p, string num);
+        bool AddMobileNumber(Student s, string num);
+
+        bool RemoveMobileNumber(Parent p, string num);
+        bool RemoveMobileNumber(Student s, string num);
 
         //--------------Classes---------------
         Class GetClass(string classId);
         Class GetCurrentClass(User u);
         List<Class> GetClasses(string year);
         List<Class> GetClassesStatistics(string year,string type);
-        List<Student> GetStudents(Class c);
+      //  List<Student> GetStudents(Class c);
 
         bool AddClass(Class c);
         bool UpdateClass(Class c);
@@ -85,10 +96,12 @@ namespace BD_oneLove.Tools.DataStorage
 
 
         //-------------Marks-------------------
-        bool AddSubject(string subject);
+        bool AddSubject(Class c, string subject);
+        bool RemoveSubject(Class c, string subject);
         List<string> GetSubjects(Class c, string type);
         List<Mark> GetMarks(Class c, string subject, string type);
         List<Mark> SaveMarks(List<Mark> l);
+        List<string> GetSubjects(Class c);
         bool RemoveMarks(List<Mark> l);
 
         //-------------Comments--------------

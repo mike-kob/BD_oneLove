@@ -25,6 +25,7 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
         private ICommand _cancelCommand;
         private ICommand _addCommand;
         private ICommand _removeCommand;
+        private ICommand _mobileCommand;
 
         #endregion
 
@@ -101,6 +102,19 @@ namespace BD_oneLove.ViewModels.UserDialogViewModels
         }
         }
 
+        public ICommand MobileCommand
+        {
+            get
+            {
+                return _mobileCommand ?? (_mobileCommand =
+                           new RelayCommand<object>(o =>
+                           {
+                               StationManager.CurrentMobile = CurParent;
+                               Window w = new MobileNumberDialog();
+                               w.ShowDialog();
+                           }, o=>!String.IsNullOrEmpty(CurParent?.Id)));
+            }
+        }
         #endregion
     }
 
