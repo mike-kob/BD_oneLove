@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using BD_oneLove.Models;
 using BD_oneLove.Tools.Managers;
@@ -1297,10 +1299,12 @@ namespace BD_oneLove.Tools.DataStorage
 
         public bool UpdateUser(User u, User oldU)
         {
+            string t = System.Convert.ToBase64String(u.HashPassword);
             string sql = "UPDATE [user] " +
                          $"SET login='{u.Username}', " +
-                         $" password = '{u.Password}' " +
+                         $" password = '{t}' " +
                          $"WHERE login='{oldU.Username}'";
+
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
@@ -1318,7 +1322,6 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
                 MessageBox.Show("Пользователь с таким логином уже существует", "Warning");
                 return false;
             }
@@ -1332,13 +1335,15 @@ namespace BD_oneLove.Tools.DataStorage
 
         public bool AddUser(User t)
         {
-            string sql = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.Password}', " +
+            string temp = System.Convert.ToBase64String(t.HashPassword);
+            string sql = $"INSERT INTO [user] (password, login, rights) VALUES ('{temp}', " +
                          $"'{t.Username}', '{t.AccessType}'); ";
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             try
             {
                 myConn.Open();
                 int res = 0;
+
                 using (SqlCommand command = new SqlCommand("set ANSI_WARNINGS  OFF;", myConn))
                 {
                     command.ExecuteNonQuery();
@@ -1347,12 +1352,13 @@ namespace BD_oneLove.Tools.DataStorage
 
                 using (SqlCommand command = new SqlCommand(sql, myConn))
                 {
+                    
                     res = command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                MessageBox.Show("Пользователь с таким паролем уже существует!");
                 return false;
             }
             finally
@@ -1363,9 +1369,9 @@ namespace BD_oneLove.Tools.DataStorage
             return true;
         }
 
-        public bool DeleteTeacher(Teacher t)
+        public bool DeleteTeacher(User t)
         {
-            string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.TabNumber}'; ";
+            string sql1 = $"DELETE FROM head_teachers WHERE tab_number = '{t.Teacher.TabNumber}'; ";
 
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -1387,11 +1393,11 @@ namespace BD_oneLove.Tools.DataStorage
                     res = command.ExecuteNonQuery();
                 }
 
-                DeleteUser(t.User);
+                DeleteUser(t);
             }
             catch (Exception ex)
             {
-                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
                 return false;
             }
             finally
@@ -1402,23 +1408,24 @@ namespace BD_oneLove.Tools.DataStorage
             return true;
         }
 
-        public Teacher AddTeacher(Teacher t)
+        public Teacher AddTeacher(User t)
 
         {
-            string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{t.User.Password}', " +
-                          $"'{t.User.Username}', 'Классный руководитель'); ";
+            string pass = System.Convert.ToBase64String(t.HashPassword);
+            string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{pass}', " +
+                          $"'{t.Username}', 'Классный руководитель'); ";
 
             string sql2 = $"INSERT INTO head_teachers " +
-                          $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.TabNumber}', " +
-                          $"'{t.HName}', '{t.Patronymiс}', '{t.Surname}', '{t.User.Username}');";
+                          $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.Teacher.TabNumber}', " +
+                          $"'{t.Teacher.HName}', @patronymic, '{t.Teacher.Surname}', '{t.Username}');";
 
-            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.Teacher.TabNumber}'";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
             Teacher temp = null;
 
-            if (TeacherExists(t.TabNumber))
+            if (TeacherExists(t.Teacher.TabNumber))
             {
                 MessageBox.Show("Классный руководитель с таким номером уже существует!");
                 return null;
@@ -1433,16 +1440,15 @@ namespace BD_oneLove.Tools.DataStorage
                     command.ExecuteNonQuery();
                 }
 
-                if (!UserExistsUseless(t.User.Username))
-                {
+     
                     using (SqlCommand command = new SqlCommand(sql1, myConn))
                     {
                         res = command.ExecuteNonQuery();
                     }
-                }
-
+         
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
+                    command.Parameters.Add("@patronymic", SqlDbType.VarChar).Value = (object)t.Teacher.Patronymiс ?? DBNull.Value;
                     res = command.ExecuteNonQuery();
                 }
 
@@ -1460,7 +1466,8 @@ namespace BD_oneLove.Tools.DataStorage
             }
             catch (Exception ex)
             {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                // MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+                MessageBox.Show("Юзер с таким логином уже существует! ");
             }
             finally
             {
@@ -1470,38 +1477,38 @@ namespace BD_oneLove.Tools.DataStorage
             return temp;
         }
 
-        public bool UserExistsUseless(string login)
-        {
-            string sql1 = $"SELECT COUNT(*) FROM [User] WHERE login='{login}'";
-            string sql2 = $"SELECT COUNT(*) FROM [User] u INNER JOIN head_teachers ht ON u.login=ht.login" +
-                          $" WHERE u.login='{login}'";
-            try
-            {
-                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+        //public bool UserExistsUseless(string login)
+        //{
+        //    string sql1 = $"SELECT COUNT(*) FROM [User] WHERE login='{login}'";
+        //    string sql2 = $"SELECT COUNT(*) FROM [User] u INNER JOIN head_teachers ht ON u.login=ht.login" +
+        //                  $" WHERE u.login='{login}'";
+        //    try
+        //    {
+        //        SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
 
-                myConn.Open();
-                int count1 = 0;
-                int count2 = 0;
-                using (SqlCommand command = new SqlCommand(sql1, myConn))
-                {
-                    count1 = (int)command.ExecuteScalar();
-                }
+        //        myConn.Open();
+        //        int count1 = 0;
+        //        int count2 = 0;
+        //        using (SqlCommand command = new SqlCommand(sql1, myConn))
+        //        {
+        //            count1 = (int)command.ExecuteScalar();
+        //        }
 
-                using (SqlCommand command = new SqlCommand(sql2, myConn))
-                {
-                    count2 = (int)command.ExecuteScalar();
-                }
+        //        using (SqlCommand command = new SqlCommand(sql2, myConn))
+        //        {
+        //            count2 = (int)command.ExecuteScalar();
+        //        }
 
-                myConn.Close();
-                return count1 != 0 && count2 == 0;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
-            }
+        //        myConn.Close();
+        //        return count1 != 0 && count2 == 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+        //    }
 
-            return false;
-        }
+        //    return false;
+        // }
 
         public bool TeacherExists(string tabNum)
         {
@@ -1528,7 +1535,7 @@ namespace BD_oneLove.Tools.DataStorage
             return false;
         }
 
-        public bool UserExists(string login, string password)
+       /* public bool UserExists(string login, string password)
         {
             string sql = $"SELECT COUNT(*) FROM \"User\" WHERE login='{login}' AND password='{password}'";
             try
@@ -1551,11 +1558,46 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return false;
+        }*/
+
+            public bool UserExists(string login, string password)
+        {
+            string sql = $"SELECT password FROM \"User\" WHERE login='{login}'";
+            String res="";
+            try
+            {
+                SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+
+                myConn.Open();
+
+                using (SqlCommand command = new SqlCommand(sql, myConn))
+                {
+                    var reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        string p = reader.GetString(0);
+                        byte[] data = System.Convert.FromBase64String(p);
+                        byte[] decoded = ProtectedData.Unprotect(data, StationManager.SecretKey,
+                                    DataProtectionScope.CurrentUser);
+
+                        res = Encoding.Unicode.GetString(decoded);
+                    }
+                }
+
+                myConn.Close();
+                return password.Equals(res);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+            }
+
+            return false;
         }
 
-        public User GetUser(string login, string password)
+        public User GetUser(string login, string password) // make check for password
         {
-            string sql = $"SELECT rights FROM \"User\" WHERE login='{login}' AND password='{password}'";
+            string sql = $"SELECT rights,password FROM \"User\" WHERE login='{login}'";
             try
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -1566,7 +1608,9 @@ namespace BD_oneLove.Tools.DataStorage
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        user = new User(login, password, reader.GetString(0));
+                        user = new User(login, reader.GetString(0));
+                        user.HashPassword = System.Convert.FromBase64String(reader.GetString(1));
+                        user.Password = password;
                     }
 
                     reader.Close();
@@ -1628,10 +1672,11 @@ namespace BD_oneLove.Tools.DataStorage
             return res;
         }
 
-        public List<User> GetUsers()
+        public List<User> GetUsers(string access)
         {
-            string sql = "SELECT password, login, rights" +
-                         " FROM [user] ";
+            string sql = "SELECT password, u.login, rights, h_name, patronymic, surname, tab_number " +
+                         " FROM [user] u LEFT OUTER JOIN head_teachers ht ON u.login=ht.login" +
+                         $" WHERE rights='{access}'; ";
 
             List<User> res = new List<User>();
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -1644,9 +1689,24 @@ namespace BD_oneLove.Tools.DataStorage
                     var reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        User cur = new User(reader.GetString(1), reader.GetString(0), reader.GetString(2));
+                        
+                        User cur = new User();
+                        cur.Username = reader.GetString(1);
+                        cur.AccessType = reader.GetString(2);
+                        cur.HashPassword = System.Convert.FromBase64String(reader.GetString(0));
+
+                        
+                        byte[] decoded = ProtectedData.Unprotect(cur.HashPassword, StationManager.SecretKey,
+                                    DataProtectionScope.CurrentUser);
+
+                        cur.Password = Encoding.Unicode.GetString(decoded);
+                        cur.Teacher.HName = reader.IsDBNull(3) ? "" : reader.GetString(3);
+                        cur.Teacher.Patronymiс = reader.IsDBNull(4) ? "" : reader.GetString(4);
+                        cur.Teacher.Surname = reader.IsDBNull(5) ? "" : reader.GetString(5);
+                        cur.Teacher.TabNumber = reader.IsDBNull(6) ? "" : reader.GetString(6);
 
                         res.Add(cur);
+
                     }
 
                     reader.Close();
@@ -1665,8 +1725,8 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
-
-        public List<Teacher> GetTeachers()
+        /*
+      public List<Teacher> GetTeachers()
         {
             string sql = "SELECT ht.tab_number, ht.h_name, ht.patronymic, ht.surname, ht.login, u.password, u.rights" +
                          " FROM head_teachers ht INNER JOIN [user] u ON u.login=ht.login; ";
@@ -1687,7 +1747,11 @@ namespace BD_oneLove.Tools.DataStorage
                         cur.Patronymiс = reader.GetString(2);
                         cur.Surname = reader.GetString(3);
                         cur.User.Username = reader.GetString(4);
-                        cur.User.Password = reader.GetString(5);
+                        cur.User.HashPassword = System.Convert.FromBase64String(reader.GetString(5));
+                        byte[] decoded = ProtectedData.Unprotect(cur.User.HashPassword, StationManager.SecretKey,
+                                    DataProtectionScope.CurrentUser);
+
+                        cur.User.Password = Encoding.Unicode.GetString(decoded);
                         cur.User.AccessType = reader.GetString(6);
 
                         res.Add(cur);
@@ -1709,25 +1773,32 @@ namespace BD_oneLove.Tools.DataStorage
 
             return res;
         }
-
-        public Teacher UpdateTeacher(Teacher t, Teacher oldT)
+        */
+        public Teacher UpdateTeacher(User t, User oldT)
         {
-            //to make with parameters
-
 
             string sql2 = "UPDATE  head_teachers " +
-                          $"SET h_name = '{t.HName}', " +
-                          $"surname = '{t.Surname}', " +
-                          $"patronymic = '{t.Patronymiс}', " +
-                          $"login = '{t.User.Username}' " +
-                          $"WHERE tab_number='{t.TabNumber}'";
+                          $"SET h_name = '{t.Teacher.HName}', " +
+                          $"surname = '{t.Teacher.Surname}', " +
+                          $"patronymic = @patronymic, " +
+                          $"login = '{t.Username}', " +
+                          $"tab_number = '{t.Teacher.TabNumber}' " +
+                          $"WHERE tab_number='{oldT.Teacher.TabNumber}'";
 
 
-            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.TabNumber}'";
+            string sql3 = $"SELECT tab_number FROM head_teachers WHERE tab_number='{t.Teacher.TabNumber}'";
 
             SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
             int res = 0;
             Teacher temp = null;
+
+            if (TeacherExists(t.Teacher.TabNumber) && t.Teacher.TabNumber!=oldT.Teacher.TabNumber)
+            {
+                MessageBox.Show("Классный руководитель с таким номером уже существует!");
+                return null;
+            }
+
+
 
             try
             {
@@ -1739,17 +1810,13 @@ namespace BD_oneLove.Tools.DataStorage
                     command.ExecuteNonQuery();
                 }
 
-
-                //maybe it is possible just to use (!UserExists(...)) if login is AK in head_teachers
-
-                if (!UserExistsUseless(t.User.Username))
-                {
-                    bool flag = UpdateUser(t.User, oldT.User);
-                    if (!flag) return temp;
-                }
+                bool flag = UpdateUser(t, oldT);
+                if (!flag) return temp;
+               
 
                 using (SqlCommand command = new SqlCommand(sql2, myConn))
                 {
+                    command.Parameters.Add("@patronymic", SqlDbType.VarChar).Value = (object)t.Teacher.Patronymiс ?? DBNull.Value;
                     res = command.ExecuteNonQuery();
                 }
 
@@ -1776,7 +1843,7 @@ namespace BD_oneLove.Tools.DataStorage
 
             return temp;
         }
-
+        
         public Teacher GetTeacher(string id)
         {
             string sql = $"SELECT h_name, patronymic, surname FROM head_teachers WHERE tab_number='{id}'";

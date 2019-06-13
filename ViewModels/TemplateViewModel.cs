@@ -47,7 +47,7 @@ namespace BD_oneLove.ViewModels
             switch (StationManager.CurrentUser.AccessType)
             {
                 case "Директор":
-                    Items.Add("Учителя", ViewType.TeachersView);
+                 //   Items.Add("Учителя", ViewType.TeachersView);
                     Items.Add("Пользователи", ViewType.UsersView);
                     Items.Add("Учебный план", ViewType.PlanView);
                     Items.Add("Классы", ViewType.ClassesView);

@@ -4,6 +4,7 @@ using BD_oneLove.Tools.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -17,16 +18,8 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public User OldUser { get; set; }
         public bool AddWindow { get; set; }
 
-
-        public string[] Positions
-        {
-            get { return _arr; }
-            set { _arr = value; }
-        }
-
         #endregion
 
-        string[] _arr = { "Классный руководитель", "Секретарь", "Заместитель директора" };
 
         #region Commands
 
@@ -65,10 +58,14 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void SaveImplementation(Window win)
         {
+            byte[] data = Encoding.Unicode.GetBytes(User.Password);
+            byte[] encoded = ProtectedData.Protect(data, StationManager.SecretKey,
+                   DataProtectionScope.CurrentUser);
+
+            User.HashPassword = encoded;
             bool res = AddWindow ? StationManager.DataStorage.AddUser(User) :
                 StationManager.DataStorage.UpdateUser(User, OldUser);
-            win?.Close();
+            if (res) win?.Close();
         }
-
     }
 }

@@ -10,12 +10,10 @@ namespace BD_oneLove.Models
         public Teacher(string tabNum)
         {
             TabNumber = tabNum;
-            User = new User();
         }
 
         public Teacher()
         {
-            User = new User();
         }
 
         #region Property
@@ -35,7 +33,6 @@ namespace BD_oneLove.Models
        // public Class Class { get; set; }
        
    
-        public User User { get; set; }
 
         #endregion
 

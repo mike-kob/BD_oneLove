@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
@@ -75,6 +77,8 @@ namespace BD_oneLove.ViewModels
 
         private void SignInInplementation(object obj)
         {
+           
+            
             bool answ = StationManager.DataStorage.UserExists(_login, StationManager.MainPassword.Password);
             if (answ)
             {

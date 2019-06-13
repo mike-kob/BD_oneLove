@@ -1,20 +1,45 @@
 ﻿using BD_oneLove.Models;
 using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
+using BD_oneLove.Views.UserDialogs;
 using BD_oneLove.Views.UsersViews;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
 {
     class UsersViewModel:BaseViewModel
     {
+        private string _type;
         public List<User> Users { get; set; }
         public User SelUser { get; set; }
 
+        public Visibility _isShowTabNumber;
+
+        public Visibility IsShowTeacherInfo
+        {
+            get {
+                if (SelectedType == "Классный руководитель") return Visibility.Visible;
+                return Visibility.Hidden;
+            }
+        }
+
+
+
+        public string SelectedType
+        {
+            get { return _type; }
+            set { _type = value;
+                Users = StationManager.DataStorage.GetUsers(_type);
+                OnPropertyChanged("Users");
+                OnPropertyChanged("IsShowTeacherInfo");
+            }
+        }
+        public string[] UserTypes { get; set; } = { "Классный руководитель", "Секретарь", "Заместитель директора", "Директор" };
         #region Commands
 
         private RelayCommand<object> _addUserCommand;
@@ -46,14 +71,17 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             get
             {
                 return _deleteUserCommand ?? (_deleteUserCommand = new RelayCommand<object>(
-                         o => DeleteUserImplementation(), o => SelUser != null));
+                         o => DeleteUserImplementation(), o => SelUser != null ));
             }
         }
 
         public void AddUserImplementation()
         {
             StationManager.CurrentUser = new User();
-            UsersAddWindowView win = new UsersAddWindowView();
+            StationManager.CurrentUser.AccessType = SelectedType;
+            Window win;
+            if (SelectedType == "Классный руководитель") win = new TeachersAddWindowView();
+            else win = new UsersAddWindowView();
             win.Owner = StationManager.MyMain;
             win.ShowDialog();
             RefreshList();
@@ -62,7 +90,9 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         public void EditUserImplementation()
         {
             StationManager.CurrentUser = SelUser;
-            UsersAddWindowView win = new UsersAddWindowView();
+            Window win;
+            if (SelectedType == "Классный руководитель")  win = new TeachersAddWindowView(); 
+            else  win = new UsersAddWindowView(); 
             win.Owner = StationManager.MyMain;
             win.ShowDialog();
             RefreshList();
@@ -70,28 +100,16 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         public void DeleteUserImplementation()
         {
-            StationManager.DataStorage.DeleteUser(SelUser);
+            if (SelectedType == "Классный руководитель") StationManager.DataStorage.DeleteTeacher(SelUser);
+            else StationManager.DataStorage.DeleteUser(SelUser); ;
             RefreshList();
         }
 
-        public UsersViewModel()
-        {
-            //  SchoolYears = StationManager.DataStorage.GetYears();
-            Users = StationManager.DataStorage.GetUsers();
-        }
-
-        public void PublicRefreshList()
-        {
-            Users = StationManager.DataStorage.GetUsers();
-            OnPropertyChanged("Users");
-        }
-
-
+     
         private void RefreshList()
         {
-            Users = StationManager.DataStorage.GetUsers();
+            Users = StationManager.DataStorage.GetUsers(SelectedType);
             OnPropertyChanged("Users");
-            StationManager.TeachersView?.PublicRefreshList();
         }
 
     }
