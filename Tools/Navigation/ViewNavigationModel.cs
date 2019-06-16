@@ -20,9 +20,6 @@ namespace BD_oneLove.Tools.Navigation
                 case ViewType.MyClassView:
                     ViewsDictionary.Add(viewType, new MyClassView());
                     break;
-                case ViewType.TeachersView:
-                   ViewsDictionary.Add(viewType, new TeachersView());
-                   break;
                 case ViewType.ParentsView:
                     ViewsDictionary.Add(viewType, new ParentsView());
                     break;

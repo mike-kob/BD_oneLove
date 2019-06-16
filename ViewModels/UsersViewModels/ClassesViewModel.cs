@@ -3,6 +3,7 @@ using BD_oneLove.Tools;
 using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
@@ -96,8 +97,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void DeleteTeacherImplementation()
         {
-            StationManager.DataStorage.DeleteTeacherClass(SelectedTeacher,  SelectedClass);
-            RefreshTeachersList();
+            var res = MessageBox.Show("Вы действитьно хотите удалить учителя из класса?", "Warning", MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
+                StationManager.DataStorage.DeleteTeacherClass(SelectedTeacher, SelectedClass);
+                RefreshTeachersList();
+            }
         }
 
         public ICommand AddClassCommand
@@ -149,8 +155,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         private void DeleteClassImplementation()
         {
-            StationManager.DataStorage.DeleteClass(SelectedClass);
-            RefreshList();
+            var res = MessageBox.Show("Вы действитьно хотите удалить класс?", "Warning", MessageBoxButtons.YesNo,
+               MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
+                StationManager.DataStorage.DeleteClass(SelectedClass);
+                RefreshList();
+            }
         }
 
         private void RefreshTeachersList()

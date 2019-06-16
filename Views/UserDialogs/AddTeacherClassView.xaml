@@ -24,12 +24,12 @@
         </Grid.ColumnDefinitions>
 
 
-        <TextBlock Margin="5 0 0 0" Text="Номер класса: " Grid.Row="1"></TextBlock>
-        <TextBlock Margin="5 0 0 0" Text="Класс:" Grid.Row="3"></TextBlock>
+        <TextBlock Margin="5 0 0 0" Text="Номер: " Grid.Row="1"></TextBlock>
+        <TextBlock Margin="5 0 0 0" Text="Буква:" Grid.Row="3"></TextBlock>
         <TextBlock Margin="5 0 0 0" Text="Учитель:" Grid.Row="1" Grid.Column="1"></TextBlock>
 
-        <TextBox IsEnabled="False" Margin="5 3" Text="{Binding Class.ClassId, Mode=OneWay}" Grid.Row="2" ></TextBox>
-        <TextBox IsEnabled="False" Margin="5 3" Text="{Binding Class.NumberLetter, Mode=OneWay}" Grid.Row="4" Grid.ColumnSpan="2" ></TextBox>
+        <TextBox IsEnabled="False" Margin="5 3" Text="{Binding Class.Number, Mode=OneWay}" Grid.Row="2" ></TextBox>
+        <TextBox IsEnabled="False" Margin="5 3" Text="{Binding Class.Letter, Mode=OneWay}" Grid.Row="4" Grid.ColumnSpan="2" ></TextBox>
         <ComboBox SelectedItem="{Binding SelTeacherString}"  ItemsSource="{Binding TeachersString}"  Margin="5 1"  Grid.Column="1" Grid.Row="2">
 
         </ComboBox>

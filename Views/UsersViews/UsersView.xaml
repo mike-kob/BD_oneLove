@@ -7,28 +7,35 @@
              xmlns:controls="http://schemas.microsoft.com/wpf/2008/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
- 
-        <Grid>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <FrameworkElement x:Key="ProxyElement" DataContext="{Binding}" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
 
+        <ContentControl Content="{StaticResource ProxyElement}" Visibility="Collapsed" />
 
-            <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition Width="150"></ColumnDefinition>
                     <ColumnDefinition Width="150"></ColumnDefinition>
-                    <ColumnDefinition Width="209*"></ColumnDefinition>
-                    <ColumnDefinition Width="140*"/>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-             
 
-                <Button Command="{Binding AddUserCommand}" Margin="15 5" >Добавить</Button>
-                <Button Command="{Binding EditUserCommand}" Margin="15 5" Grid.Column="1">Редак-ть</Button>
-                <Button Command="{Binding DeleteUserCommand}" Margin="15 5" Grid.Column="2">Удалить</Button>
+                <ComboBox ItemsSource="{Binding UserTypes}" SelectedItem="{Binding SelectedType}"  Margin="15 5" ></ComboBox>
+                <Button Command="{Binding AddUserCommand}" Margin="15 5" Grid.Column="1">Добавить</Button>
+                <Button Command="{Binding EditUserCommand}" Margin="15 5" Grid.Column="2">Редак-ть</Button>
+                <Button Command="{Binding DeleteUserCommand}" Margin="15 5" Grid.Column="3">Удалить</Button>
         </Grid>
 
             <controls:DataGrid ItemsSource="{Binding Users}" 
@@ -40,15 +47,24 @@
                 <controls:DataGrid.Columns>
                     <controls:DataGridTextColumn Header="Логин"
                                              Binding="{Binding Username, Mode=OneWay}"/>
-                    <controls:DataGridTextColumn Header="Пароль"
+                <controls:DataGridTextColumn Header="Пароль"
                                              Binding="{Binding Password, Mode=OneWay}"/>
-                    <controls:DataGridTextColumn Header="Права доступа"
-                                             Binding="{Binding AccessType, Mode=OneWay}"/>
-                 
+                <controls:DataGridTextColumn Header="Табельный номер"
+                                             Binding="{Binding Teacher.TabNumber, Mode=OneWay}"
+                                             Visibility="{Binding DataContext.IsShowTeacherInfo, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Фамилия"
+                                             Binding="{Binding Teacher.Surname, Mode=OneWay}"
+                                             Visibility="{Binding DataContext.IsShowTeacherInfo, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Имя"
+                                             Binding="{Binding Teacher.HName, Mode=OneWay}"
+                                             Visibility="{Binding DataContext.IsShowTeacherInfo, Source={StaticResource ProxyElement}}"/>
+                <controls:DataGridTextColumn Header="Отчество"
+                                             Binding="{Binding Teacher.Patronymiс, Mode=OneWay}"
+                                             Visibility="{Binding DataContext.IsShowTeacherInfo, Source={StaticResource ProxyElement}}"/>
 
 
 
-                </controls:DataGrid.Columns>
+            </controls:DataGrid.Columns>
 
             </controls:DataGrid>
 

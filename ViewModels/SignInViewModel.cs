@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 using System.Windows;
 using BD_oneLove.Models;
 using BD_oneLove.Tools;
@@ -75,13 +77,25 @@ namespace BD_oneLove.ViewModels
 
         private void SignInInplementation(object obj)
         {
+           
+            if(_login=="admin"&& StationManager.MainPassword.Password == "admin" 
+                && StationManager.DataStorage.DirectorExists())
+            {
+                User u = new User();
+                u.AccessType = "Директор";
+                u.Username = u.Password = "admin";
+                StationManager.CurrentUser = u;
+                NavigationManager.Instance.Navigate(ViewType.MainView);
+                return;
+            }
+            
             bool answ = StationManager.DataStorage.UserExists(_login, StationManager.MainPassword.Password);
             if (answ)
             {
                 User u = StationManager.DataStorage.GetUser(_login, StationManager.MainPassword.Password);
                 StationManager.CurrentUser = u;
                 StationManager.CurrentYear = StationManager.DataStorage.GetCurYear();
-                if (u.AccessType == "Классный руководитель")
+                if (u.AccessType == "Классный руководитель" || u.AccessType == "Суперпользователь")
                 {
                     StationManager.CurrentClass = StationManager.DataStorage.GetCurrentClass(u);
                     if (String.IsNullOrEmpty(StationManager.CurrentClass.ClassId)) { 

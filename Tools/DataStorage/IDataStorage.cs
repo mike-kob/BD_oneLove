@@ -23,10 +23,11 @@ namespace BD_oneLove.Tools.DataStorage
 
         //--------------Users-----------------
 
+        bool DirectorExists();
         bool UserExists(string login, string password);
-        bool UserExistsUseless(string login);
+    //    bool UserExistsUseless(string login);
         User GetUser(string login, string password);
-        List<User> GetUsers();
+        List<User> GetUsers(string access);
         bool AddUser(User t);
         bool DeleteUser(User t);
         bool UpdateUser(User t, User oldT);
@@ -86,10 +87,10 @@ namespace BD_oneLove.Tools.DataStorage
         List<string> GetYears();
         List<Teacher> GetTeachers(string year);
         List<Teacher> GetTeachers(Class c);
-        List<Teacher> GetTeachers();
-        Teacher UpdateTeacher(Teacher t, Teacher oldT);
-        Teacher AddTeacher(Teacher t);
-        bool DeleteTeacher(Teacher t);
+    //    List<Teacher> GetTeachers();
+        Teacher UpdateTeacher(User t, User oldT);
+        Teacher AddTeacher(User t);
+        bool DeleteTeacher(User t);
         bool TeacherExists(string tabNum);
         Teacher GetTeacher(string id);
         bool AddTeacherClass(Teacher t, Class c);

@@ -144,7 +144,6 @@
     <Compile Include="ViewModels\UsersViewModels\PutMarksViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\TeacherAddWindowViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\SocialPassportViewModel.cs" />
-    <Compile Include="ViewModels\UsersViewModels\TeachersViewModel.cs" />
     <Compile Include="ViewModels\UserDialogViewModels\UsersAddWindowViewModel.cs" />
     <Compile Include="ViewModels\UsersViewModels\UsersViewModel.cs" />
     <Compile Include="Views\UserDialogs\AddClassDialogView.xaml.cs">
@@ -200,9 +199,6 @@
     </Compile>
     <Compile Include="Views\UsersViews\SubjectProgressView.xaml.cs">
       <DependentUpon>SubjectProgressView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UsersViews\TeachersView.xaml.cs">
-      <DependentUpon>TeachersView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TemplateControlView.xaml.cs">
       <DependentUpon>TemplateControlView.xaml</DependentUpon>
@@ -338,10 +334,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UsersViews\SubjectProgressView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UsersViews\TeachersView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

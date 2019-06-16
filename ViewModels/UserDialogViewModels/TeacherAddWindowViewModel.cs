@@ -4,6 +4,7 @@ using BD_oneLove.Tools.Managers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -13,18 +14,21 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     class TeacherAddWindowViewModel
     {
         #region Props
-        public Teacher Teacher { get; set; }
-        public Teacher OldTeacher { get; set; }
+        public User User { get; set; }
+        public User OldUser { get; set; }
         public bool AddWindow { get; set; }
 
         #endregion
 
         public TeacherAddWindowViewModel()
         {
-            OldTeacher = new Teacher(StationManager.CurrentTeacher.TabNumber);
-            OldTeacher.User.Username = StationManager.CurrentTeacher.User.Username;
-            Teacher = StationManager.CurrentTeacher;
-            AddWindow = Teacher.TabNumber == null;
+          
+            User = StationManager.CurrentUser;
+            OldUser = new User();
+            OldUser.HashPassword = User.HashPassword;
+            OldUser.Username = User.Username;
+            OldUser.Teacher.TabNumber = User.Teacher.TabNumber;
+            AddWindow = User.Username == null;
         }
 
         #region Commands
@@ -49,17 +53,23 @@ namespace BD_oneLove.ViewModels.UsersViewModels
         }
 
         private bool CanExecuteCommand(Object o)
-        {    
-            return !String.IsNullOrEmpty(Teacher.HName) && !String.IsNullOrEmpty(Teacher.Surname) &&
-                !String.IsNullOrEmpty(Teacher.Patronymiс) && !String.IsNullOrEmpty(Teacher.TabNumber) &&
-                !String.IsNullOrEmpty(Teacher.User.Username) && !String.IsNullOrEmpty(Teacher.User.Password);
+        {
+            return !String.IsNullOrEmpty(User.Teacher.HName) && !String.IsNullOrEmpty(User.Teacher.Surname) &&
+                !String.IsNullOrEmpty(User.Teacher.TabNumber) &&
+                !String.IsNullOrEmpty(User.Username) && !String.IsNullOrEmpty(User.Password);
         }
 
         private void SaveImplementation(Window win)
         {
-        
-                Teacher t = AddWindow ? StationManager.DataStorage.AddTeacher(Teacher): 
-                    StationManager.DataStorage.UpdateTeacher(Teacher, OldTeacher);
+    
+            byte[] data = Encoding.Unicode.GetBytes(User.Password);
+            byte[] encoded = ProtectedData.Protect(data, StationManager.SecretKey,
+                   DataProtectionScope.CurrentUser);
+
+            User.HashPassword = encoded;
+
+            Teacher t = AddWindow ? StationManager.DataStorage.AddTeacher(User)
+                   : StationManager.DataStorage.UpdateTeacher(User, OldUser);
   
             if (t != null) win?.Close();
 

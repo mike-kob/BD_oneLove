@@ -95,8 +95,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 IsAdmin = true;
             }
-            
-            
+
+            StationManager.RefreshYearListEvent += () =>
+            {
+                Years = StationManager.DataStorage.GetYears();
+                OnPropertyChanged("StYears");
+            };
 
         }
 
