@@ -23,6 +23,7 @@ namespace BD_oneLove.Tools.DataStorage
 
         //--------------Users-----------------
 
+        bool DirectorExists();
         bool UserExists(string login, string password);
     //    bool UserExistsUseless(string login);
         User GetUser(string login, string password);

@@ -1413,7 +1413,7 @@ namespace BD_oneLove.Tools.DataStorage
         {
             string pass = System.Convert.ToBase64String(t.HashPassword);
             string sql1 = $"INSERT INTO [user] (password, login, rights) VALUES ('{pass}', " +
-                          $"'{t.Username}', 'Классный руководитель'); ";
+                          $"'{t.Username}', '{t.AccessType}'); ";
 
             string sql2 = $"INSERT INTO head_teachers " +
                           $"(tab_number, h_name, patronymic, surname, login) VALUES ('{t.Teacher.TabNumber}', " +
@@ -1535,9 +1535,33 @@ namespace BD_oneLove.Tools.DataStorage
             return false;
         }
 
-       /* public bool UserExists(string login, string password)
+        /* public bool UserExists(string login, string password)
+         {
+             string sql = $"SELECT COUNT(*) FROM \"User\" WHERE login='{login}' AND password='{password}'";
+             try
+             {
+                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
+
+                 myConn.Open();
+                 int count = 0;
+                 using (SqlCommand command = new SqlCommand(sql, myConn))
+                 {
+                     count = (int)command.ExecuteScalar();
+                 }
+
+                 myConn.Close();
+                 return count != 0;
+             }
+             catch (Exception ex)
+             {
+                 MessageBox.Show("There's problem with you connection!\n" + ex.Message);
+             }
+
+             return false;
+         }*/
+        public bool DirectorExists()
         {
-            string sql = $"SELECT COUNT(*) FROM \"User\" WHERE login='{login}' AND password='{password}'";
+            string sql = $"SELECT COUNT(*) FROM \"User\" WHERE rights='Директор' ";
             try
             {
                 SqlConnection myConn = new SqlConnection(StationManager.ConnectionString);
@@ -1550,7 +1574,7 @@ namespace BD_oneLove.Tools.DataStorage
                 }
 
                 myConn.Close();
-                return count != 0;
+                return count == 0;
             }
             catch (Exception ex)
             {
@@ -1558,9 +1582,8 @@ namespace BD_oneLove.Tools.DataStorage
             }
 
             return false;
-        }*/
-
-            public bool UserExists(string login, string password)
+        }
+        public bool UserExists(string login, string password)
         {
             string sql = $"SELECT password FROM \"User\" WHERE login='{login}'";
             String res="";

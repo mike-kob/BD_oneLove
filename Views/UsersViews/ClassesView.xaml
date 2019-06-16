@@ -50,8 +50,7 @@
                            CanUserAddRows="False"
                            AutoGenerateColumns="False" Grid.ColumnSpan="2">
                 <controls:DataGrid.Columns>
-                    <controls:DataGridTextColumn Header="Номер"
-                                             Binding="{Binding ClassId, Mode=OneWay}"/>
+
                     <controls:DataGridTextColumn Header="Класс"
                                              Binding="{Binding NumberLetter, Mode=OneWay}"
                                              SortMemberPath="OrderNum"/>

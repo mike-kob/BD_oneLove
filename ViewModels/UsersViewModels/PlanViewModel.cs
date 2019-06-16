@@ -4,6 +4,7 @@ using BD_oneLove.Tools.Managers;
 using BD_oneLove.Views.UserDialogs;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace BD_oneLove.ViewModels.UsersViewModels
@@ -24,7 +25,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 _selectedStYear = value;
                 if (!StationManager.DataStorage.UpdateCurYear(_selectedStYear))
-                    MessageBox.Show("Проблемы с обновлением текущего года.");
+                    System.Windows.MessageBox.Show("Проблемы с обновлением текущего года.");
             }
         }
 
@@ -66,8 +67,13 @@ namespace BD_oneLove.ViewModels.UsersViewModels
 
         public void DeleteYearImplementation()
         {
-            StationManager.DataStorage.DeletePlan(SelPlan);
-            RefreshList();
+            var res = System.Windows.Forms.MessageBox.Show("Вы действитьно хотите удалить учебный год из плана?", "Warning", MessageBoxButtons.YesNo,
+                 MessageBoxIcon.Warning);
+            if (res == DialogResult.Yes)
+            {
+                StationManager.DataStorage.DeletePlan(SelPlan);
+                RefreshList();
+            }
         }
 
 

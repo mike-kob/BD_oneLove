@@ -84,6 +84,11 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             _bigMargin = new Thickness(26, 0, 26, 0);
             _smallMargin = new Thickness(20, 0, 20, 0);
             Margin = SmallMargin;
+            StationManager.RefreshYearListEvent += () =>
+            {
+                Years = StationManager.DataStorage.GetYears();
+                OnPropertyChanged("StYears");
+            };
         }
 
        

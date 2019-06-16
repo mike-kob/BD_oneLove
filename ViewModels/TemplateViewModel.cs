@@ -68,7 +68,10 @@ namespace BD_oneLove.ViewModels
                     Items.Add("Успеваемость", ViewType.ProgressView);
                     // Items.Add("Отчет по ученикам");
                     Items.Add("Выставление оценок", ViewType.PutMarksView);
-                    
+                    break;
+                case "Суперпользователь":
+                    Items.Add("Выставление оценок", ViewType.PutMarksView);
+
                     break;
             }
         }

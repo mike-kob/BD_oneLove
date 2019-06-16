@@ -18,7 +18,7 @@ namespace BD_oneLove.ViewModels.UsersViewModels
     {
         public PutMarksViewModel()
         {
-            if (StationManager.CurrentUser.AccessType == "Классный руководитель")
+            if (StationManager.CurrentUser.AccessType == "Классный руководитель" || StationManager.CurrentUser.AccessType == "Суперпользователь")
             {
                 IsAdminVisible = Visibility.Hidden;
                 CurClass = StationManager.CurrentClass;
@@ -38,6 +38,12 @@ namespace BD_oneLove.ViewModels.UsersViewModels
             {
                 CurClass = StationManager.CurrentClass;
                 RefreshDict();
+            };
+
+            StationManager.RefreshYearListEvent += () =>
+            {
+                StYears = StationManager.DataStorage.GetYears();
+                OnPropertyChanged("StYears");
             };
         }
 
