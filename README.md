@@ -5,7 +5,8 @@ App for school students and grades management. Support several types of reports 
 
 ### Stack
 
- - WPF 
+ - C#
+ - WPF
  - SQL Server 
  - MVVM
 
